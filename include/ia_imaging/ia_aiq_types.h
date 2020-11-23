@@ -391,7 +391,7 @@ typedef enum
 typedef struct
 {
     ia_aiq_flash_status status;  /*!< Flash status. */
-    char power_prc;              /*!< Flash power [0,100] value range maps 0% to 100%, 0 if off. */
+    int8_t power_prc;              /*!< Flash power [0,100] value range maps 0% to 100%, 0 if off. */
 } ia_aiq_flash_parameters;
 
 

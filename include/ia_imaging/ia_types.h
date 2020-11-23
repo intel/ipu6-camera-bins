@@ -201,7 +201,8 @@ typedef enum {
     ia_err_data     = (1 << 3), /*!< Corrupted data*/
     ia_err_internal = (1 << 4), /*!< Error in code*/
     ia_err_argument = (1 << 5), /*!< Invalid argument for a function*/
-    ia_err_disabled = (1 << 6)  /*!< Functionality is disabled*/
+    ia_err_disabled = (1 << 6), /*!< Functionality is disabled*/
+    ia_err_not_run  = (1 << 7)  /*!< No need to execute*/
 } ia_err;
 
 #define IA_RESOLUTION_STATIC_GRAPH_PACK 4

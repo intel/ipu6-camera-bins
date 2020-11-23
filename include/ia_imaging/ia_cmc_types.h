@@ -194,6 +194,8 @@ typedef enum
     cmc_name_id_valid_image_area,                        /*!< 32 */
     cmc_name_id_lens_shading_correction_4x4_ratio,       /*!< 33 */
     cmc_name_id_multi_gain_conversions,                  /*!< 34 */
+    cmc_name_id_pipe_comp_decomp,                        /*!< 35 */
+    cmc_name_id_sensor_decomp,                           /*!< 36 */
 } cmc_name_id;
 
 /*!
@@ -1505,6 +1507,9 @@ typedef struct
     cmc_valid_image_area *cmc_valid_image_area;
     cmc_lens_shading_ratio_correction *cmc_lens_shading_ratio;
     cmc_multi_gain_conversions_t *cmc_multi_gain_conversions;
+    cmc_parsed_pipe_compand_t *cmc_parsed_pipe_compand;
+    cmc_parsed_pipe_decompand_t *cmc_parsed_pipe_decompand;
+    cmc_parsed_sensor_decompand_t *cmc_parsed_sensor_decompand;
 } ia_cmc_t;
 
 #ifdef __cplusplus

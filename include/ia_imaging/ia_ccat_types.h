@@ -219,6 +219,32 @@ typedef struct ia_ccat_ambient_light_event
     unsigned long long fs;  /*!< Frame stamp in usec (microseconds) */
 } ia_ccat_ambient_light_event;
 
+/*!
+*  \brief enum for accurate or preferred CCM interpolation
+*/
+typedef enum
+{
+    ia_ccat_ccm_type_accurate = 0,       /*!< Label for accurate CCM interpolation. */
+    ia_ccat_ccm_type_preferred = 1,      /*!< Label for preferred CCM interpolation. */
+} ia_ccat_ccm_type_t;
+
+/*!
+*  \brief enum for accurate or preferred CCM interpolation
+*/
+typedef enum
+{
+    ia_ccat_point_type_rg_bg = 0,       /*!< Label for using RperG, BperG point for CCM interpolation. */
+    ia_ccat_point_type_cie_xy = 1,      /*!< Label for using CieXY point for CCM interpolation. */
+} ia_ccat_point_type_t;
+
+#ifdef IA_CCAT_LIGHT_SOURCE_ESTIMATION_ENABLED
+typedef struct {
+    light_source_t light_source[CMC_NUM_LIGHTSOURCES];            /* Weights per each light source type */
+    unsigned short likelihood[CMC_NUM_LIGHTSOURCES];              /* Likelihood based on CCT for different light source */
+    float confidence;                                             /* Confidence of LSE result */
+} ia_ccat_lse_results_t;
+#endif
+
 #if 0
 /*!
  * \brief Face rectangle

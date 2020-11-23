@@ -30,7 +30,6 @@
 #define IA_PAL_TYPES_ISP_IDS_AUTOGEN_H
 
 #include <stdint.h>
-#include <memory.h>
 
 #ifdef __cplusplus
 extern "C"{
@@ -381,6 +380,7 @@ typedef enum
     ia_pal_uuid_system_api_bnlm_3_3 = 5901,
     ia_pal_uuid_system_api_gdc7 = 62512,
     ia_pal_uuid_system_api_io_buffer = 47777,
+    ia_pal_uuid_system_api_lsc_1_2 = 19967,
     ia_pal_uuid_system_api_tvs_1_0 = 29571,
 
 } ia_system_api_uuid;
