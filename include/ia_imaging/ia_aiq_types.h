@@ -19,8 +19,8 @@
  * \brief Definitions of input/output structures of the Intel 3A library.
  */
 
-#ifndef _IA_AIQ_TYPES_H_
-#define _IA_AIQ_TYPES_H_
+#ifndef IA_AIQ_TYPES_H_
+#define IA_AIQ_TYPES_H_
 
 #include "ia_types.h"
 #include "ia_cmc_types.h"
@@ -37,7 +37,7 @@ extern "C" {
  */
 #define IA_AIQ_MAX_NUMBER_OF_SENSOR_EVENTS 20
 
-typedef struct ia_aiq_t ia_aiq;
+typedef struct _ia_aiq_t ia_aiq;
 
 /*!
  * \brief Target (frame use) for the analysis algorithms calculations.
@@ -245,18 +245,18 @@ typedef enum
 typedef enum
 {
     ia_aiq_scene_mode_none                = 0,
-    ia_aiq_scene_mode_close_up_portrait   = (1 << 0),
-    ia_aiq_scene_mode_portrait            = (1 << 1),
-    ia_aiq_scene_mode_lowlight_portrait   = (1 << 2),
-    ia_aiq_scene_mode_low_light           = (1 << 3),
-    ia_aiq_scene_mode_action              = (1 << 4),
-    ia_aiq_scene_mode_backlight           = (1 << 5),
-    ia_aiq_scene_mode_landscape           = (1 << 6),
-    ia_aiq_scene_mode_document            = (1 << 7),
-    ia_aiq_scene_mode_firework            = (1 << 8),
-    ia_aiq_scene_mode_lowlight_action     = (1 << 9),
-    ia_aiq_scene_mode_baby                = (1 << 10),
-    ia_aiq_scene_mode_barcode             = (1 << 11)
+    ia_aiq_scene_mode_close_up_portrait   = (1U << 0U),
+    ia_aiq_scene_mode_portrait            = (1U << 1U),
+    ia_aiq_scene_mode_lowlight_portrait   = (1U << 2U),
+    ia_aiq_scene_mode_low_light           = (1U << 3U),
+    ia_aiq_scene_mode_action              = (1U << 4U),
+    ia_aiq_scene_mode_backlight           = (1U << 5U),
+    ia_aiq_scene_mode_landscape           = (1U << 6U),
+    ia_aiq_scene_mode_document            = (1U << 7U),
+    ia_aiq_scene_mode_firework            = (1U << 8U),
+    ia_aiq_scene_mode_lowlight_action     = (1U << 9U),
+    ia_aiq_scene_mode_baby                = (1U << 10U),
+    ia_aiq_scene_mode_barcode             = (1U << 11U)
 } ia_aiq_scene_mode;
 
 /*!
@@ -265,8 +265,8 @@ typedef enum
 typedef enum
 {
     ia_aiq_bracket_mode_none,             /*!< No bracketing used. */
-    ia_aiq_bracket_mode_ull  = (1 << 0),  /*!< Ultra Low Light bracketing used. */
-    ia_aiq_bracket_mode_hdr  = (1 << 1)   /*!< High Dynamic Range bracketing used. */
+    ia_aiq_bracket_mode_ull  = (1U << 0U),  /*!< Ultra Low Light bracketing used. */
+    ia_aiq_bracket_mode_hdr  = (1U << 1U)   /*!< High Dynamic Range bracketing used. */
 } ia_aiq_bracket_mode;
 
 /*!
@@ -906,6 +906,6 @@ typedef struct
 }
 #endif
 
-#endif /* _IA_AIQ_TYPES_H_ */
+#endif /* IA_AIQ_TYPES_H_ */
 
 

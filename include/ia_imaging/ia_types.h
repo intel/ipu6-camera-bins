@@ -21,6 +21,13 @@
 #include <stdarg.h>
 #include <stdint.h>
 
+/* MISRA typedefs*/
+#ifndef BUILDIN_TYPE
+#define BUILDIN_TYPE
+typedef float float32_t;
+typedef double float64_t;
+#endif
+
 #if defined(_MSC_VER)
     #if !defined(__BOOL_DEFINED)
         #if _MSC_VER >= 1800 /* stdbool.h is available starting from VS2013. */

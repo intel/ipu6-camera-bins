@@ -215,7 +215,7 @@ typedef struct ia_isp_bxt_input_params_v2
     float manual_digital_gain;                       /*!< Optional. Additional digital gain that is applied to all color channels of the image before ISP statistics collection.
                                                                     Values less than 1.0 means no additional gain. */
     ia_ob_output ob_black_level;                     /*!< Optional. Black level values calculated on-the-fly when the sensor supports. */
-    unsigned long long timestamp;                    /*!< Mandatory. Current timestamp (is microseconds) when ia_isp_bxt_run function is called. AIC uses timestamp to decide what
+    uint64_t timestamp;                    /*!< Mandatory. Current timestamp (is microseconds) when ia_isp_bxt_run function is called. AIC uses timestamp to decide what
                                                                      calculations are done based on tunable run rate for each ISP configuration algorithm. */
     ia_dvs_image_transformation *gdc_transformation; /*!< Mandatory. Image transformation parameters for GDC5 ISP FW. This feature replaces the need for morph_table usage.*/
     ia_isp_bxt_view_params_t const *view_params;     /*!< Optional. View parameters for running in GDC5 mode.*/

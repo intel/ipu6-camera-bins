@@ -1,5 +1,5 @@
 /*
- * Copyright 2012-2013, 2019 Intel Corporation
+ * Copyright 2012-2021, Intel Corporation
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -43,9 +43,9 @@ extern "C" {
  * \return                          Pointer to the makernote handle.
  */
 LIBEXPORT ia_mkn*
-ia_mkn_init(ia_mkn_config_bits mkn_config_bits,
-            size_t mkn_section_1_size,
-            size_t mkn_section_2_size);
+ia_mkn_init(ia_mkn_config_bits a_mkn_config_bits,
+            size_t a_mkn_section_1_size,
+            size_t a_mkn_section_2_size);
 
 /*!
  * \brief Deletes Make Note system handle.
@@ -55,7 +55,7 @@ ia_mkn_init(ia_mkn_config_bits mkn_config_bits,
  * \return                       Error code.
  */
 LIBEXPORT void
-ia_mkn_uninit(ia_mkn *mkn);
+ia_mkn_uninit(ia_mkn *a_mkn_ptr);
 
 /*!
  * \brief Reset Make Note system to default state.
@@ -65,7 +65,7 @@ ia_mkn_uninit(ia_mkn *mkn);
  * \return                       Error code.
  */
 LIBEXPORT ia_err
-ia_mkn_reset(ia_mkn *mkn);
+ia_mkn_reset(ia_mkn *a_mkn_data_ptr);
 
 /*!
  * \brief Adds or updates a data record in the makernote.
@@ -86,12 +86,12 @@ ia_mkn_reset(ia_mkn *mkn);
  * \return                       Error code.
 */
 LIBEXPORT ia_err
-ia_mkn_add_record(ia_mkn *mkn,
-                  ia_mkn_dfid mkn_data_format_id,
-                  ia_mkn_dnid mkn_data_name_id,
-                  const void *data,
-                  unsigned int num_elements,
-                  const char *key);
+ia_mkn_add_record(ia_mkn *a_mkn_data_ptr,
+                  ia_mkn_dfid a_data_format_id,
+                  ia_mkn_dnid a_data_name_id,
+                  const void *a_data_ptr,
+                  unsigned int a_num_elements,
+                  const char *a_key);
 
 /*!
  * \brief Deletes a data record from the makernote.
@@ -105,9 +105,9 @@ ia_mkn_add_record(ia_mkn *mkn,
  * \return                       Error code.
 */
 LIBEXPORT ia_err
-ia_mkn_delete_record(ia_mkn *mkn,
-                     ia_mkn_dfid mkn_data_format_id,
-                     ia_mkn_dnid mkn_data_name_id);
+ia_mkn_delete_record(ia_mkn *a_mkn_data_ptr,
+                     ia_mkn_dfid a_data_format_id,
+                     ia_mkn_dnid a_data_name_id);
 
 /*!
  * \brief Prepares makernote so that it can be included into the EXIF.
@@ -120,8 +120,8 @@ ia_mkn_delete_record(ia_mkn *mkn,
  * \return                       Binary data structure with pointer and size of data..
  */
 LIBEXPORT ia_binary_data
-ia_mkn_prepare(ia_mkn *mkn,
-               ia_mkn_trg data_target);
+ia_mkn_prepare(ia_mkn *a_mkn_data_ptr,
+               ia_mkn_trg a_data_target);
 
 /*!
  * \brief Enable/Disable makernote data collecting.
@@ -133,8 +133,8 @@ ia_mkn_prepare(ia_mkn *mkn,
  * \return                       Error code.
 */
 LIBEXPORT ia_err
-ia_mkn_enable(ia_mkn *mkn,
-              bool enable_data_collection);
+ia_mkn_enable(ia_mkn *a_mkn_data_ptr,
+              bool a_enable_data_collection);
 
 /*!
  * \brief Merge two makernotes.
@@ -147,8 +147,8 @@ ia_mkn_enable(ia_mkn *mkn,
  * \return                       Error code.
  */
 LIBEXPORT ia_err
-ia_mkn_merge(ia_mkn *mkn_trg,
-             const ia_mkn *mkn_src);
+ia_mkn_merge(ia_mkn *a_mkn_trg_ptr,
+             const ia_mkn *a_mkn_src_ptr);
 
 /*!
  * \brief Converts makernote (MKNT) binary data to full MKN data.
@@ -158,7 +158,7 @@ ia_mkn_merge(ia_mkn *mkn_trg,
  * \return                       Pointer to the makernote handle.
  */
 LIBEXPORT ia_mkn*
-ia_mknt_to_mkn(const ia_binary_data *mknt_src_data);
+ia_mknt_to_mkn(const ia_binary_data *a_mknt_data_ptr);
 
 #ifdef __cplusplus
 }

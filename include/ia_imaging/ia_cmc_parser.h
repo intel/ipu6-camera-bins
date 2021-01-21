@@ -1,5 +1,5 @@
 /*
- * Copyright 2012-2017 Intel Corporation
+ * Copyright 2012-2020 Intel Corporation
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -39,6 +39,11 @@ ia_cmc_parser_init_v1(
 
 LIBEXPORT void
 ia_cmc_parser_deinit(ia_cmc_t *ia_cmc);
+
+LIBEXPORT void
+ia_aiqb_others_parser_init(
+    const ia_binary_data *a_aiqb_binary,
+    ia_cmc_t *cmc);
 
 #ifdef __cplusplus
 }

@@ -21,24 +21,21 @@
 #ifndef IA_ISP_BXT_STATISTICS_TYPES_H_
 #define IA_ISP_BXT_STATISTICS_TYPES_H_
 
-#ifdef __cplusplus
-extern "C"
-{
-#endif
+#include "ia_types.h"
 
 #define BXT_HISTOGRAM_BINS                          256
 #define BXT_FILTER_RESPONSE_GRID_MAX_NUM_ELEMENTS   1024    /* Max grid size = [32, 32] */
 
 #define BXT_RGBS_GRID_MAX_WIDTH                     96 /* Max grid size = [96, 72] */
 #define BXT_RGBS_GRID_MAX_HEIGHT                    72
-#define BXT_RGBS_GRID_MAX_NUM_ELEMENTS              BXT_RGBS_GRID_MAX_WIDTH*BXT_RGBS_GRID_MAX_HEIGHT
+#define BXT_RGBS_GRID_MAX_NUM_ELEMENTS              (BXT_RGBS_GRID_MAX_WIDTH*BXT_RGBS_GRID_MAX_HEIGHT)
 
 #define BXT_DVS_STATS_L0_MAX_NUM_ELEMENTS 154
 #define BXT_DVS_STATS_L1_MAX_NUM_ELEMENTS 120
 #define BXT_DVS_STATS_L2_MAX_NUM_ELEMENTS 85
 
 #define BXT_PAF_STATS_MAX_STEPS                      11     /*!< Max number of phase shifts in a block. */
-#define BXT_PAF_STATS_GRID_MAX_NUM_ELEMENTS          16*12*BXT_PAF_STATS_MAX_STEPS /*!< Max grid size = [16, 12] */
+#define BXT_PAF_STATS_GRID_MAX_NUM_ELEMENTS          (16*12*BXT_PAF_STATS_MAX_STEPS) /*!< Max grid size = [16, 12] */
 
 #define BXT_HDR_RGBY_GRID_MAX_WIDTH                  484  /*!< Maximum grid width for HDR-statisics.*/
 #define BXT_HDR_RGBY_GRID_MAX_HEIGHT                 276  /*!< Maximum grid height for HDR-statisics.*/
@@ -121,7 +118,7 @@ typedef struct
     int32_t r_avg[BXT_RGBS_GRID_MAX_NUM_ELEMENTS];              /*!< U20. Average level of red color for each grid block. */
     int32_t g_avg[BXT_RGBS_GRID_MAX_NUM_ELEMENTS];              /*!< U20. Average level of (gr+gb)/2 color for each grid block. */
     int32_t b_avg[BXT_RGBS_GRID_MAX_NUM_ELEMENTS];              /*!< U20. Average level of blue color for each grid block. */
-    unsigned char sat[BXT_RGBS_GRID_MAX_NUM_ELEMENTS];          /*!< U8. currently this is saturation count and it will be saturation percentage after a few weeks. All codes need to be updated accordingly.*/
+    uint8_t sat[BXT_RGBS_GRID_MAX_NUM_ELEMENTS];          /*!< U8. currently this is saturation count and it will be saturation percentage after a few weeks. All codes need to be updated accordingly.*/
 } ia_isp_bxt_hdr_rgbs_grid_t;
 
 /*!
@@ -134,10 +131,10 @@ typedef struct
     ia_isp_bxt_statistics_header_t header;                      /*!< Header data. */
     int32_t grid_width;                                         /*!< The actual grid width. Specifies the amount of valid data in the below arrays. */
     int32_t grid_height;                                        /*!< The actual grid height. Specifies the amount of valid data in the below arrays. */
-    unsigned short r_avg[BXT_HDR_RGBY_GRID_MAX_NUM_ELEMENTS];   /*!< U15. Average level of R color for each grid block with high resolution. */
-    unsigned short b_avg[BXT_HDR_RGBY_GRID_MAX_NUM_ELEMENTS];   /*!< U15. Average level of B color for each grid block with high resolution. */
-    unsigned short g_avg[BXT_HDR_RGBY_GRID_MAX_NUM_ELEMENTS];   /*!< U15. Average level of (GR+GB)/2 color for each grid block with high resolution. */
-    unsigned short y_avg[BXT_HDR_RGBY_GRID_MAX_NUM_ELEMENTS];   /*!< U15. Average level of Y (luminance) for each grid block with high resolution. */
+    uint16_t r_avg[BXT_HDR_RGBY_GRID_MAX_NUM_ELEMENTS];   /*!< U15. Average level of R color for each grid block with high resolution. */
+    uint16_t b_avg[BXT_HDR_RGBY_GRID_MAX_NUM_ELEMENTS];   /*!< U15. Average level of B color for each grid block with high resolution. */
+    uint16_t g_avg[BXT_HDR_RGBY_GRID_MAX_NUM_ELEMENTS];   /*!< U15. Average level of (GR+GB)/2 color for each grid block with high resolution. */
+    uint16_t y_avg[BXT_HDR_RGBY_GRID_MAX_NUM_ELEMENTS];   /*!< U15. Average level of Y (luminance) for each grid block with high resolution. */
 } ia_isp_bxt_hdr_rgby_grid_t;
 
 /*!
@@ -150,8 +147,8 @@ typedef struct
     ia_isp_bxt_statistics_header_t header;                      /*!< Header data. */
     int32_t grid_width;                                         /*!< The actual grid width. Specifies the amount of valid data in the below arrays. */
     int32_t grid_height;                                        /*!< The actual grid height. Specifies the amount of valid data in the below arrays. */
-    unsigned short v_max[BXT_HDR_RGBY_GRID_MAX_NUM_ELEMENTS];   /*!< U15.v_max = max(R,G,B) in HSV color space. Compressed or not based on sensor type. */
-    unsigned short y_avg[BXT_HDR_RGBY_GRID_MAX_NUM_ELEMENTS];   /*!< U15.y_avg is same data as the y_avg in ia_isp_bxt_hdr_rgby_grid_t, but sub-sampled by 2x. */
+    uint16_t v_max[BXT_HDR_RGBY_GRID_MAX_NUM_ELEMENTS];   /*!< U15.v_max = max(R,G,B) in HSV color space. Compressed or not based on sensor type. */
+    uint16_t y_avg[BXT_HDR_RGBY_GRID_MAX_NUM_ELEMENTS];   /*!< U15.y_avg is same data as the y_avg in ia_isp_bxt_hdr_rgby_grid_t, but sub-sampled by 2x. */
 } ia_isp_bxt_hdr_yv_grid_t;
 
 typedef struct
@@ -187,15 +184,11 @@ typedef struct
 
 typedef struct
 {
-    float r;        /*!< Compensation gain for R */
-    float gr;       /*!< Compensation gain for Gr */
-    float gb;       /*!< Compensation gain for Gb */
-    float b;        /*!< Compensation gain for B */
-    float isp;      /*!< Compensation gain to be used as ISP gain in the pipeline */
+    float32_t r;        /*!< Compensation gain for R */
+    float32_t gr;       /*!< Compensation gain for Gr */
+    float32_t gb;       /*!< Compensation gain for Gb */
+    float32_t b;        /*!< Compensation gain for B */
+    float32_t isp;      /*!< Compensation gain to be used as ISP gain in the pipeline */
 } ia_isp_bxt_ir_compgain_t;
 
-#ifdef __cplusplus
-}
-
-#endif
 #endif /* IA_ISP_BXT_STATISTICS_TYPES_H_ */

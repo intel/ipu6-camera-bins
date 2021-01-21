@@ -25,8 +25,8 @@
 * suppliers or licensors in any way.
 */
 
-#ifndef IA_PAL_TYPES_ISP_H_
-#define IA_PAL_TYPES_ISP_H_
+#ifndef IA_PAL_TYPES_ISP_H
+#define IA_PAL_TYPES_ISP_H
 
 #ifdef __cplusplus
 extern "C"{
@@ -37,13 +37,13 @@ extern "C"{
  */
 typedef struct
 {
-    int uuid;                   /*!< UUID of PAL output. Indicates, which ISP block configuration this record contains. */
-    int size;                   /*!< Size of PAL output for a particular kernel. */
+    int32_t uuid;                   /*!< UUID of PAL output. Indicates, which ISP block configuration this record contains. */
+    int32_t size;                   /*!< Size of PAL output for a particular kernel. */
     bool update;                /*!< Flag indicating if PAL calculations updated results. */
     char enable;                /*!< Three-state kernel enable (passthrough, enable, disable) */
-    unsigned int run_time_diff; /*!< Time difference since these PAL results were previously calculated. */
-    unsigned short width;       /*!< Input width of frame for this ISP block. */
-    unsigned short height;      /*!< Input height of frame for this ISP block. */
+    uint32_t run_time_diff; /*!< Time difference since these PAL results were previously calculated. */
+    uint16_t width;       /*!< Input width of frame for this ISP block. */
+    uint16_t height;      /*!< Input height of frame for this ISP block. */
 } ia_pal_record_header;
 
 
@@ -51,4 +51,4 @@ typedef struct
 }
 #endif
 
-#endif /* IA_PAL_TYPES_ISP_H_ */
+#endif /* IA_PAL_TYPES_ISP_H */

@@ -76,7 +76,7 @@ typedef enum
     ia_ccat_histogram_type_invalid = ia_ccat_histogram_type_count,
 } ia_ccat_histogram_type;
 
-typedef struct ia_ccat_histograms
+typedef struct
 {
     ia_histogram r;
     ia_histogram g;
@@ -85,7 +85,7 @@ typedef struct ia_ccat_histograms
 
 #ifdef IA_CCAT_RGBS_GRID_ENABLED
 #ifdef IA_CCAT_HSV_GRID_ENABLED
-typedef struct ia_ccat_hsv_channels
+typedef struct
 {
     float h;
     float s;
@@ -95,7 +95,7 @@ typedef struct ia_ccat_hsv_channels
 /*!
 * \brief HSV grid structure.
 */
-typedef struct ia_ccat_hsv_grid
+typedef struct
 {
     unsigned int grid_width;                        /*! Width of the grid. */
     unsigned int grid_height;                       /*! Height of the grid. */
@@ -118,7 +118,7 @@ typedef struct ia_ccat_grid_char
 /*!
 * \brief Generic 16 bit grid structure.
 */
-typedef struct ia_ccat_grid_short
+typedef struct
 {
     unsigned int grid_width;                    /*! Width of the grid. */
     unsigned int grid_height;                   /*! Height of the grid. */
@@ -128,14 +128,14 @@ typedef struct ia_ccat_grid_short
 /*!
  * \brief Generic grid structure with floating point values.
  */
-typedef struct ia_ccat_grid_float
+typedef struct
 {
     unsigned int grid_width;                    /*! Width of the grid. */
     unsigned int grid_height;                   /*! Height of the grid. */
     float data[IA_RGBS_GRID_SIZE];              /*! Grid data in floating point format. */
 } ia_ccat_grid_float;
 #if defined IA_CCAT_IR_GRID_ENABLED
-typedef struct ia_ccat_ir_grid
+typedef struct
 {
     ia_ccat_grid_char grid_data;
     float i_per_y;
@@ -144,7 +144,7 @@ typedef struct ia_ccat_ir_grid
 #endif
 #endif
 
-typedef struct ia_ccat_frame_statistics
+typedef struct
 {
     bool frame_parameters_available;                                         /*!< Mandatory. Flag indicating that frame parameters can be used by CCAT. Set to false to invalidate frame parameters. */
     bool shading_corrected;                                                  /*!< Mandatory. Flag indicating if statistics were calculated using lens shading corrected data. */
@@ -175,7 +175,7 @@ typedef struct ia_ccat_frame_statistics
 #endif
 } ia_ccat_frame_statistics;
 
-typedef struct ia_ccat_frame_parameters
+typedef struct
 {
     ia_aec_results aec_results;                                              /*!< Mandatory. Exposure parameters used to capture the frame. */
     ia_aiq_pa_results_v1 pa_results;                                         /*!< Optional. */
@@ -196,7 +196,7 @@ typedef struct ia_ccat_frame_parameters
  * Gyroscope Events:
  *  - The data holds information on the angular velocity of the device in rad/sec.
  */
-typedef struct ia_ccat_motion_sensor_event
+typedef struct
 {
     unsigned long long ts;  /*!< Time stamp in usec (microseconds) */
     float x;                /*!< Sensor Data in X direction depending on the type of the sensor */
@@ -211,13 +211,27 @@ typedef struct ia_ccat_motion_sensor_event
  * NOTE: This should always match to libsensorhub API
  * TODO: Update the structure according to the API
  */
-typedef struct ia_ccat_ambient_light_event
+typedef struct
 {
     unsigned long long ts;  /*!< Time stamp in usec (microseconds) */
     float data;             /*!< Ambient Light data ? */
     float sensitivity;      /*!< Sensitivity of Ambient Light sensor */
     unsigned long long fs;  /*!< Frame stamp in usec (microseconds) */
 } ia_ccat_ambient_light_event;
+
+typedef struct ia_ccat_lse_size_t
+{
+    uint16_t width;
+    uint16_t height;
+} ia_ccat_lse_size_t;
+
+typedef struct ia_ccat_color_order_bayer_t
+{
+    uint8_t r;
+    uint8_t gr;
+    uint8_t gb;
+    uint8_t b;
+} ia_ccat_color_order_bayer_t;
 
 /*!
 *  \brief enum for accurate or preferred CCM interpolation
@@ -251,7 +265,7 @@ typedef struct {
  * Range of rectangle values is defined in ia_coordinate.h:
  * IA_COORDINATE_TOP, IA_COORDINATE_LEFT, IA_COORDINATE_BOTTOM, IA_COORDINATE_RIGHT
  */
-typedef struct ia_face_roi
+typedef struct
 {
     int tracking_id;                   /*!< Tracking id of the face. */
     ia_rectangle face_area;            /*!< Bounding box of the face in the coordination system where (0,0) indicates left-top position. */

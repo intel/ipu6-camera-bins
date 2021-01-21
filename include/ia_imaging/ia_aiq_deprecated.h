@@ -1,5 +1,5 @@
 /*
- * Copyright 2018-2019 Intel Corporation
+ * Copyright 2018-2020 Intel Corporation
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -19,8 +19,8 @@
  * \brief Definitions and declarations of Intel 3A library.
  */
 
-#ifndef _IA_AIQ_DEPRECATED_H_
-#define _IA_AIQ_DEPRECATED_H_
+#ifndef IA_AIQ_DEPRECATED_H_
+#define IA_AIQ_DEPRECATED_H_
 
 #include "ia_aiq_types.h"
 
@@ -94,7 +94,7 @@ typedef struct
 * \return                          Error code.
 */
 LIBEXPORT ia_err
-ia_aiq_pa_run(ia_aiq *ia_aiq,
+ia_aiq_pa_run(ia_aiq *a_ia_aiq_ptr,
      const struct ia_aiq_pa_input_params *pa_input_params,
      ia_aiq_pa_results **pa_results);
 
@@ -109,7 +109,7 @@ ia_aiq_pa_run(ia_aiq *ia_aiq,
  * \return                                  Error code.
  */
 LIBEXPORT ia_err
-ia_aiq_sensor_events_set(ia_aiq *ia_aiq, const ia_aiq_sensor_events *sensor_events_input);
+ia_aiq_sensor_events_set(ia_aiq *ia_aiq_ptr, const ia_aiq_sensor_events *sensor_events_input);
 
 
 /*!
@@ -164,7 +164,7 @@ typedef struct
  * \return                          Error code.
  */
 LIBEXPORT ia_err
-ia_aiq_ae_run(ia_aiq *ia_aiq,
+ia_aiq_ae_run(ia_aiq *a_ia_aiq_ptr,
               const ia_aiq_ae_input_params *ae_input_params,
               ia_aiq_ae_results **ae_results);
 
@@ -177,7 +177,7 @@ ia_aiq_ae_run(ia_aiq *ia_aiq,
 * \return                          Pointer to the calculated histograms.
 */
 LIBEXPORT ia_aiq_histogram *
-ia_aiq_get_histograms(ia_aiq *ia_aiq);
+ia_aiq_get_histograms(ia_aiq *a_ia_aiq_ptr);
 
 /*
  *  \brief Input parameter structure for Shading Adaptor. DEPRECATED
@@ -254,7 +254,7 @@ typedef struct
 * \return                          Error code.
 */
 LIBEXPORT ia_err
-ia_aiq_awb_run(ia_aiq *ia_aiq,
+ia_aiq_awb_run(ia_aiq *a_ia_aiq_ptr,
 const ia_aiq_awb_input_params *awb_input_params,
 ia_aiq_awb_results **awb_results);
 
@@ -263,4 +263,4 @@ ia_aiq_awb_results **awb_results);
 }
 #endif
 
-#endif /* _IA_AIQ_DEPRECATED_H_ */
+#endif /* IA_AIQ_DEPRECATED_H_ */

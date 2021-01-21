@@ -1,6 +1,6 @@
 /*
  * INTEL CONFIDENTIAL
- * Copyright (c) 2012-2017 Intel Corporation
+ * Copyright (c) 2012-2020 Intel Corporation
  * All Rights Reserved.
  *
  * The source code contained or described herein and all documents related to
@@ -41,10 +41,10 @@ extern "C" {
 #endif
 
 #define IA_NVM_NUM_CHANNELS 4
-#define IA_NVM_LSC_BIT_DEPTH_THRESHOLD 8
+#define IA_NVM_LSC_BIT_DEPTH_THRESHOLD 8U
 #define IA_NVM_MIN_LSC_WIDTH 7
 #define IA_NVM_MIN_LSC_HEIGHT 5
-#define IA_NVM_SENSITIVITY_BIT_DEPTH 10
+#define IA_NVM_SENSITIVITY_BIT_DEPTH 10U
 #define IA_NVM_CIE_RANGE_MIN 0.270
 #define IA_NVM_CIE_RANGE_MAX 0.490
 
@@ -146,13 +146,13 @@ typedef struct
 
 /*!
  * \brief Parses intel specified camera NVM data into ia_nvm structure.
- * \param[in]  nvm        Camera NVM data in Intel specified format.
- * \param[out] parsed_nvm Camera NVM in parsed (ia_nvm) structure.
+ * \param[in]  a_nvm_ptr        Camera NVM data in Intel specified format.
+ * \param[out] a_parsed_nvm_ptr Camera NVM in parsed (ia_nvm) structure.
  * \return                NVM parsing error code.
  */
 LIBEXPORT ia_nvm_error
-ia_nvm_parse(const ia_binary_data *nvm,
-             ia_nvm** parsed_nvm);
+ia_nvm_parse(const ia_binary_data * a_nvm_ptr,
+             ia_nvm** a_parsed_nvm_ptr);
 
 /*!
  * \brief Frees contents of ia_nvm structure.

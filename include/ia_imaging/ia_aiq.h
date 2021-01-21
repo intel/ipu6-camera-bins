@@ -153,8 +153,8 @@
  * \brief Definitions and declarations of Intel 3A library.
  */
 
-#ifndef _IA_AIQ_H_
-#define _IA_AIQ_H_
+#ifndef IA_AIQ_H_
+#define IA_AIQ_H_
 
 #include "ia_aiq_types.h"
 #include "ia_types.h"
@@ -209,14 +209,14 @@ ia_aiq_init(const ia_binary_data *aiqb_data,
             unsigned int stats_max_height,
             unsigned int max_num_stats_in,
             ia_cmc_t *ia_cmc,
-            ia_mkn *ia_mkn);
+            ia_mkn *ia_mkn_ptr);
 
 /*!
  * \brief Set tuning to an existing AIQ instance.
  * This function can be used to switch tunings on-the-fly in a way that 3A preserves its state and offers smooth transition from one tuning to another.
  */
 LIBEXPORT ia_err
-ia_aiq_set_tuning(ia_aiq *ia_aiq,
+ia_aiq_set_tuning(ia_aiq *ia_aiq_ptr,
                   const ia_binary_data *aiqb_data);
 
 /*!
@@ -227,7 +227,7 @@ ia_aiq_set_tuning(ia_aiq *ia_aiq,
  *                                  AIQ instance handle.
  */
 LIBEXPORT void
-ia_aiq_deinit(ia_aiq *ia_aiq);
+ia_aiq_deinit(ia_aiq *ia_aiq_ptr);
 
 /*!
  *  \brief Input parameter structure for AE algorithm.
@@ -284,7 +284,7 @@ typedef struct
  * \return                          Error code.
  */
 LIBEXPORT ia_err
-ia_aiq_ae_run_v1(ia_aiq *ia_aiq,
+ia_aiq_ae_run_v1(ia_aiq *ia_aiq_ptr,
               const ia_aiq_ae_input_params_v1 *ae_input_params,
               ia_aiq_ae_results **ae_results);
 
@@ -297,7 +297,7 @@ ia_aiq_ae_run_v1(ia_aiq *ia_aiq,
 * \return                          Pointer to the calculated histograms.
 */
 LIBEXPORT ia_aiq_histogram *
-ia_aiq_get_histograms_v1(ia_aiq *ia_aiq, unsigned int a_exposure_index);
+ia_aiq_get_histograms_v1(ia_aiq *ia_aiq_ptr, unsigned int a_exposure_index);
 
 /*!
  *  \brief Input parameter structure for AF algorithm.
@@ -332,7 +332,7 @@ typedef struct
  * \return                          Error code.
  */
 LIBEXPORT ia_err
-ia_aiq_af_run(ia_aiq *ia_aiq,
+ia_aiq_af_run(ia_aiq *ia_aiq_ptr,
               const ia_aiq_af_input_params *af_input_params,
               ia_aiq_af_results **af_results);
 
@@ -360,7 +360,7 @@ typedef struct
  * \return                          Error code.
  */
 LIBEXPORT ia_err
-ia_aiq_awb_run_v1(ia_aiq *ia_aiq,
+ia_aiq_awb_run_v1(ia_aiq *ia_aiq_ptr,
                   const ia_aiq_awb_input_params_v1 *awb_input_params,
                   ia_aiq_awb_results **awb_results);
 
@@ -391,7 +391,7 @@ typedef struct
  * \return                                  Error code.
  */
 LIBEXPORT ia_err
-ia_aiq_gbce_run(ia_aiq *ia_aiq,
+ia_aiq_gbce_run(ia_aiq *ia_aiq_ptr,
                 const ia_aiq_gbce_input_params *gbce_input_params,
                 ia_aiq_gbce_results **gbce_results);
 
@@ -418,7 +418,7 @@ typedef struct
  * \return                          Error code.
  */
 LIBEXPORT ia_err
-ia_aiq_dsd_run(ia_aiq *ia_aiq,
+ia_aiq_dsd_run(ia_aiq *ia_aiq_ptr,
                const ia_aiq_dsd_input_params *dsd_input_params,
                ia_aiq_scene_mode *dsd_scene);
 
@@ -448,7 +448,7 @@ typedef struct ia_aiq_pa_input_params
 * \return                          Error code.
 */
 LIBEXPORT ia_err
-ia_aiq_pa_run_v1(ia_aiq *ia_aiq,
+ia_aiq_pa_run_v1(ia_aiq *ia_aiq_ptr,
                const ia_aiq_pa_input_params *pa_input_params,
                ia_aiq_pa_results_v1 **pa_results);
 
@@ -468,7 +468,7 @@ ia_aiq_pa_run_v1(ia_aiq *ia_aiq,
  * \return                          Error code.
  */
 LIBEXPORT ia_err
-ia_aiq_sa_run_v2(ia_aiq *ia_aiq,
+ia_aiq_sa_run_v2(ia_aiq *ia_aiq_ptr,
                const ia_aiq_sa_input_params_v1 *sa_input_params,
                ia_aiq_sa_results_v1 **sa_results);
 
@@ -527,7 +527,7 @@ typedef struct
  * \return                                  Error code.
  */
 LIBEXPORT ia_err
-ia_aiq_statistics_set_v4(ia_aiq *ia_aiq,
+ia_aiq_statistics_set_v4(ia_aiq *ia_aiq_ptr,
     const ia_aiq_statistics_input_params_v4 *statistics_input_params);
 
 /*!
@@ -552,7 +552,7 @@ typedef struct
  * \return                                  Error code.
  */
 LIBEXPORT ia_err
-ia_aiq_af_bracket(ia_aiq *ia_aiq,
+ia_aiq_af_bracket(ia_aiq *ia_aiq_ptr,
                   const ia_aiq_af_bracket_input_params *af_bracket_input_params,
                   ia_aiq_af_bracket_results **af_bracket_results);
 
@@ -567,7 +567,7 @@ ia_aiq_af_bracket(ia_aiq *ia_aiq,
  * \return                          Error code.
  */
 LIBEXPORT ia_err
-ia_aiq_get_aiqd_data(ia_aiq *ia_aiq,
+ia_aiq_get_aiqd_data(ia_aiq *ia_aiq_ptr,
                 ia_binary_data *out_ia_aiq_data);
 
 
@@ -601,7 +601,7 @@ typedef struct
  * \return                                  Error code.
  */
 LIBEXPORT ia_err
-ia_aiq_sensor_events_set_v1(ia_aiq *ia_aiq,
+ia_aiq_sensor_events_set_v1(ia_aiq *ia_aiq_ptr,
                             const ia_aiq_sensor_events_v1 *sensor_events_input);
 
 
@@ -619,4 +619,4 @@ LIBEXPORT const char* ia_aiq_get_version(void);
 }
 #endif
 
-#endif /* _IA_AIQ_H_ */
+#endif /* IA_AIQ_H_ */

@@ -203,15 +203,15 @@ typedef enum
  * Bit '1' means that the feature is presented.
  */
 typedef enum {
-    cmc_camera_feature_lens_position_sensor        = 1,            /*!< Physical Lens Position sensor */
-    cmc_camera_feature_voice_coil_actuator         = (1 << 1),     /*!< 'Voice Coil' type of lens actuator */
-    cmc_camera_feature_hybrid_voice_coil_actuator  = (1 << 2),     /*!< 'Hybrid Voice Coil' type of lens actuator */
-    cmc_camera_feature_piezo_actuator              = (1 << 3),     /*!< 'Piezo' type of lens actuator */
-    cmc_camera_feature_mems_actuator               = (1 << 4),     /*!< 'MEMS' type of lens actuator */
-    cmc_camera_feature_nd_filter                   = (1 << 5),     /*!< Neutral Density filter */
-    cmc_camera_feature_mechanical_shutter          = (1 << 6),     /*!< Mechanical Shutter */
-    cmc_camera_feature_variable_apertures          = (1 << 7),     /*!< Variable Apertures */
-    cmc_camera_feature_optical_zoom                = (1 << 8)      /*!< Optical Zoom */
+    cmc_camera_feature_lens_position_sensor        = 1U,            /*!< Physical Lens Position sensor */
+    cmc_camera_feature_voice_coil_actuator         = (1U << 1U),     /*!< 'Voice Coil' type of lens actuator */
+    cmc_camera_feature_hybrid_voice_coil_actuator  = (1U << 2U),     /*!< 'Hybrid Voice Coil' type of lens actuator */
+    cmc_camera_feature_piezo_actuator              = (1U << 3U),     /*!< 'Piezo' type of lens actuator */
+    cmc_camera_feature_mems_actuator               = (1U << 4U),     /*!< 'MEMS' type of lens actuator */
+    cmc_camera_feature_nd_filter                   = (1U << 5U),     /*!< Neutral Density filter */
+    cmc_camera_feature_mechanical_shutter          = (1U << 6U),     /*!< Mechanical Shutter */
+    cmc_camera_feature_variable_apertures          = (1U << 7U),     /*!< Variable Apertures */
+    cmc_camera_feature_optical_zoom                = (1U << 8U)      /*!< Optical Zoom */
 } cmc_camera_feature;
 
 /*!
@@ -310,7 +310,7 @@ typedef struct
     uint8_t project_id[16];      /*!< NULL terminated Project ID string. Date format: yymmddHHMMSSFFF. For example: 1202201823444. */
 /*    uint8_t comment[];          / *!< Free C string text comment (NULL terminated). Must end at 64 bit alignment. * / */
 } cmc_comment_t;
-#define SIZEOF_CMC_COMMENT_T 24
+#define SIZEOF_CMC_COMMENT_T 24UL
 
 /*!
  * \brief CMC General Data
@@ -341,7 +341,7 @@ typedef struct
     uint32_t analog_gain;                /*!< Analog gain. */
     cmc_color_channels color_channels;     /*!< Color channel correction for given exposure time and analog gain. */
 } cmc_black_level_lut_t;
-#define SIZEOF_CMC_BLACK_LEVEL_LUT_T 16
+#define SIZEOF_CMC_BLACK_LEVEL_LUT_T 16U
 
 typedef struct
 {
@@ -349,7 +349,7 @@ typedef struct
     uint32_t num_bl_luts;            /*!< Number of black level lookup tables (number of analog gain * number of exposures).  */
 /*    cmc_black_level_lut_t bl_luts[]; / *!< Lookup tables for black level correction. * / */
 } cmc_black_level_t;
-#define SIZEOF_CMC_BLACK_LEVEL_T 12
+#define SIZEOF_CMC_BLACK_LEVEL_T 12U
 
 /*!
 * \brief CMC for global black Level
@@ -401,7 +401,7 @@ typedef struct
     uint8_t num_linearity_cc4;   /*!< Number of points in color channel 4 linearity lookup table. */
 /*    uint16_t lut_linearities[]; / *!< Linearity lookup table for color channels in order: Ch1, Ch2, Ch3 and Ch4. * / */
 } cmc_linearity_t;
-#define SIZEOF_CMC_LINEARITY_T 16
+#define SIZEOF_CMC_LINEARITY_T 16U
 
 /*!
  * \brief CMC Module Sensitivity
@@ -441,7 +441,7 @@ typedef struct
     cie_coords_t cie_coords;   /*!< CIE x and y coordinates. */
 /*    uint16_t lsc_grid[];       / *!< LSC Grid. * / */
 } cmc_lsc_grid_t;
-#define SIZEOF_CMC_LSC_GRID_T 8
+#define SIZEOF_CMC_LSC_GRID_T 8U
 
 /*!
  * \brief CMC_Lens Shading Correction
@@ -459,7 +459,7 @@ typedef struct
     uint16_t grid_height;        /*!< LSC Grid height. */
 /*  cmc_lsc_grid_t lsc_grids[]; / *!< LSC grids. * / */
 } cmc_lens_shading_t;
-#define SIZEOF_CMC_LENS_SHADING_T 16
+#define SIZEOF_CMC_LENS_SHADING_T 16U
 
 typedef struct
 {
@@ -469,7 +469,7 @@ typedef struct
     cie_coords_t cie_coords;   /*!< CIE x and y coordinates. */
 /*    uint16_t lsc_grid[];       / *!< LSC Grid. * / */
 } cmc_lsc_ratio_grid_t;
-#define SIZEOF_CMC_LSC_RATIO_GRID_T 10
+#define SIZEOF_CMC_LSC_RATIO_GRID_T 10U
 
 /*!
  * \brief Lens Shading Correction Ratio
@@ -482,7 +482,7 @@ typedef struct
     uint16_t grid_height;             /*!< LSC Grid height. */
 /*    cmc_lsc_ratio_grid_t lsc_grids[]; / *!< LSC grids. * / */
 } cmc_lens_shading_ratio_t;
-#define SIZEOF_CMC_LENS_SHADING_RATIO_T 14
+#define SIZEOF_CMC_LENS_SHADING_RATIO_T 14U
 
 /*!
  * \brief CMC Geometric Distortion Correction
@@ -535,7 +535,7 @@ typedef struct
     uint16_t min_focus_distance;                         /*!< Minimum focusing distance, (cm). */
     uint16_t num_apertures;                              /*!< Actual number of apertures, presented in camera. */
 } cmc_optomechanics_t;
-#define SIZEOF_CMC_OPTOMECHANICS    72
+#define SIZEOF_CMC_OPTOMECHANICS    72U
 
 /*!
  * \brief CMC Module Spectral Response
@@ -548,7 +548,7 @@ typedef struct
     uint16_t wavelength_sampling_rate;    /*!< Wave length sampling rate. */
 /*    cmc_color_channels spectral_response[]; / *!< Module spectral response in order: Ch1,Ch2,Ch3 and Ch4. * / */
 } cmc_spectral_response_t;
-#define SIZEOF_CMC_SPECTRAL_RESPONSE 14
+#define SIZEOF_CMC_SPECTRAL_RESPONSE 14U
 
 /*!
  * \brief Lightsource definition.
@@ -558,7 +558,7 @@ typedef struct
     cie_coords_t cie_coords;           /*!< Light source CIE xy coordinates. */
     chromaticity_t chromaticity_response; /*!< Avg Chromaticity response for R/G anf B/G.*/
 } cmc_lightsource_t;
-#define SIZEOF_CMC_LIGHTSOURCE_T 8
+#define SIZEOF_CMC_LIGHTSOURCE_T 8U
 
 /*!
  * \brief CMC Chromaticity Response
@@ -570,7 +570,7 @@ typedef struct
     uint16_t num_nvm_lightsources;    /*!< Number of nvm light sources. */
 /*  cmc_lightsource_t lightsources[]; / *!< Lightsources in the order: avg, high and low. * / */
 } cmc_chromaticity_response_t;
-#define SIZEOF_CMC_CHROMATICITY_RESPONSE 12
+#define SIZEOF_CMC_CHROMATICITY_RESPONSE 12U
 
 /*!
  *  \brief Flash chromaticity responses for a point.
@@ -579,7 +579,7 @@ typedef struct
 {
     chromaticity_t flash_chromaticity_response;    /*!< Flash Chromaticity response, R/G and B/G */
 } cmc_poly_point_t;
-#define SIZEOF_CMC_POLY_POINT_T 4
+#define SIZEOF_CMC_POLY_POINT_T 4U
 
 /*!
  * \brief CMC Flash Chromaticity
@@ -591,7 +591,7 @@ typedef struct
     uint16_t num_poly_points;           /*!< Number of points defining polygon. */
 /*    cmc_poly_point_t poly_point[];    / *!< Flash Chromaticity Deviation in R/G, B/G plane. * / */
 } cmc_flash_chromaticity_t;
-#define SIZEOF_CMC_FLASH_CHROMATICITY_T 14
+#define SIZEOF_CMC_FLASH_CHROMATICITY_T 14U
 
 typedef struct
 {
@@ -601,7 +601,7 @@ typedef struct
     int32_t matrix_accurate[9];   /*!< 3x3 accurate CCM, each 3 consequtive elemets sum to 1. */
     int32_t matrix_preferred[9];  /*!< 3x3 preferred CCM, each 3 consequtive elemets sum to 1. */
 } cmc_color_matrix_t;
-#define SIZEOF_CMC_COLOR_MATRIX_T 84
+#define SIZEOF_CMC_COLOR_MATRIX_T 84U
 
 /*!
  * \brief CMC Color matrices
@@ -612,7 +612,7 @@ typedef struct
     uint16_t num_matrices;               /*!< Number of color matrices. */
 /*    cmc_color_matrix_t color_matrices[]; / *!< Color matrices. * / */
 } cmc_color_matrices_t;
-#define SIZEOF_CMC_COLOR_MATRICES_T 10
+#define SIZEOF_CMC_COLOR_MATRICES_T 10U
 /*!
  * \brief CMC NVM Info
  */
@@ -632,7 +632,7 @@ typedef struct
 {
     uint16_t nvm_scaling_method;        /*!< NVM table scaling method. */
 } cmc_nvm_info_v101_t;
-#define SIZEOF_CMC_NVM_INFO_V101_T   2
+#define SIZEOF_CMC_NVM_INFO_V101_T   2U
 
 typedef struct
 {
@@ -649,7 +649,7 @@ typedef struct
     uint32_t gain;                 /*!< Gain in fixed point format (16bit integer part + 16bit fraction part). */
     uint32_t code;                 /*!< Code corresponding to gain. */
 } cmc_analog_gain_pair_t;
-#define SIZEOF_CMC_ANALOG_GAIN_PAIR_T 8
+#define SIZEOF_CMC_ANALOG_GAIN_PAIR_T 8U
 
 /*!
  * \brief Analog gain to gain code mapping of a segment.
@@ -668,7 +668,7 @@ typedef struct
     int16_t M1;                  /*!< Gain code M1 as in SMIA. */
     int16_t C1;                  /*!< Gain code C1 as in SMIA. */
 } cmc_analog_gain_segment_t;
-#define SIZEOF_CMC_ANALOG_GAIN_SEGMENT_T 28
+#define SIZEOF_CMC_ANALOG_GAIN_SEGMENT_T 28U
 
 /*!
  * \brief CMC Analog gain conversion types
@@ -695,7 +695,7 @@ typedef struct
 /*    cmc_analog_gain_segment_t gain_segments[]; */
 /*    cmc_analog_gain_pair_t gain_pairs[]; */
 } cmc_analog_gain_conversion_t;
-#define SIZEOF_CMC_ANALOG_GAIN_CONVERSION_T 16
+#define SIZEOF_CMC_ANALOG_GAIN_CONVERSION_T 16U
 
 /*!
  * \brief CMC Digital gain conversion types
@@ -731,7 +731,7 @@ typedef struct
     uint16_t num_pairs;                  /*!< Number of gain/code pairs which describe the digital gain. */
     uint16_t reserved;                   /*!< Not used at the moment. Reserved to ensure correct (32 bit) alignment. */
 } cmc_digital_gain_v102_t;
-#define SIZEOF_CMC_DIGITAL_GAIN_V102_T 6
+#define SIZEOF_CMC_DIGITAL_GAIN_V102_T 6U
 
 /*!
  * \brief CMC Sensor exposure registers ranges.
@@ -758,7 +758,7 @@ typedef struct
     uint16_t reserved[2];                  /*!< Reserved for future changes. Always 0 (for now).. */
     cmc_poly_point_t *poly_points;         /*!< Flash Chromaticity Deviation in R/G, B/G plane. */
 } cmc_flash_device_t;
-#define SIZEOF_CMC_FLASH_DEVICE_T 16     /*!< Size of the structure without pointers. Used in copying data from CPF to this structure. */
+#define SIZEOF_CMC_FLASH_DEVICE_T 16U     /*!< Size of the structure without pointers. Used in copying data from CPF to this structure. */
 
 typedef struct
 {
@@ -868,14 +868,14 @@ typedef struct
     uint16_t *gamut_r_per_g;             /*!< Illumination gamut (convex hull). R per g points in clockwise order*/
     uint16_t *gamut_b_per_g;             /*!< Illumination gamut (convex hull). R per g points in clockwise order*/
 } cmc_gamut_t;
-#define SIZEOF_CMC_GAMUT_T 12
+#define SIZEOF_CMC_GAMUT_T 12U
 
 typedef struct
 {
     uint16_t num_illumination_gamuts;   /*!< Number of illumination gamuts */
     cmc_gamut_t *cmc_gamut;
 } cmc_chromaticity_response_v101_t;
-#define SIZEOF_CMC_CHROMATICITY_RESPONSE_V101 2
+#define SIZEOF_CMC_CHROMATICITY_RESPONSE_V101 2U
 
 /*!
  * \brief Parametric model coefficients for the average chromaticity locus and CCT curve
@@ -1113,9 +1113,9 @@ typedef struct
     cmc_wfov_ldc_lut_t *wfov_ldc_lut;                  /*!< WFOV LDC LUTs: Number of LUTs specified by num_wfov_luts */
     cmc_affine_params_t *affine_params;                /*!< WFOV affine parameters: One for each LUT */
 } cmc_parsed_geometric_distortion2_t;
-#define SIZEOF_CMC_GEOMETRIC_DISTORTION_V100_T 22
-#define SIZEOF_CMC_GEOMETRIC_DISTORTION_SPHERICAL_R_LUT 1024 /* 256 * 4 */
-#define SIZEOF_CMC_GEOMETRIC_DISTORTION_SPHERICAL_CFG_PARAMS 16
+#define SIZEOF_CMC_GEOMETRIC_DISTORTION_V100_T 22U
+#define SIZEOF_CMC_GEOMETRIC_DISTORTION_SPHERICAL_R_LUT 1024U /* 256 * 4 */
+#define SIZEOF_CMC_GEOMETRIC_DISTORTION_SPHERICAL_CFG_PARAMS 16U
 
 
 
@@ -1128,7 +1128,7 @@ typedef struct
     uint16_t light_sources_count;        /*!< Number of light sources. */
     uint16_t sector_count;               /*!< Number of color matrix sectors.  */
 } cmc_advanced_color_matrix_info_t;
-#define SIZEOF_CMC_ADVANCED_COLOR_MATRIX_INFO_T 12
+#define SIZEOF_CMC_ADVANCED_COLOR_MATRIX_INFO_T 12U
 
 /*!
  * \brief CMC color matrix
@@ -1137,7 +1137,7 @@ typedef struct
 {
     float color_matrix[9];                 /*!< 3x3 accurate CCM, each consequtive elements sum to 1. */
 } cmc_acm_color_matrix_t;
-#define SIZEOF_CMC_ACM_COLOR_MATRIX_T 36
+#define SIZEOF_CMC_ACM_COLOR_MATRIX_T 36U
 
 /*!
  * \brief CMC advanced color matrices info for light sources
@@ -1148,7 +1148,7 @@ typedef struct
     float chromaticity[2];               /*!< Chromaticity (sensor) in R/G, B/G plane. */
     float src_cie_xy[2];                 /*!< CIE x and y coordinates. */
 } cmc_acm_color_matrices_info_t;
-#define SIZEOF_CMC_ACM_COLOR_MATRICES_INFO_T 20
+#define SIZEOF_CMC_ACM_COLOR_MATRICES_INFO_T 20U
 
 typedef struct
 {
@@ -1195,8 +1195,8 @@ typedef struct
     cmc_hdr_ratio_limits_t pair_ratio_limits;       /*!< v101. Ratio limits between exposure pairs. */
 } cmc_parsed_hdr_parameters_t;
 
-#define SIZEOF_CMC_HDR_T        16
-#define SIZEOF_CMC_HDR_V101_T   (2*(uint32_t)sizeof(cmc_hdr_ratio_limits_t))
+#define SIZEOF_CMC_HDR_T        16U
+#define SIZEOF_CMC_HDR_V101_T   (2U*(uint32_t)sizeof(cmc_hdr_ratio_limits_t))
 
 typedef enum
 {
@@ -1217,7 +1217,7 @@ typedef struct
     uint16_t grid_height;           /*!< IR Weight Grid height. */
 }
 cmc_ir_weight_info_t;
-#define SIZEOF_CMC_IR_WEIGHT_INFO_T 32
+#define SIZEOF_CMC_IR_WEIGHT_INFO_T 32U
 
 
 typedef struct
@@ -1226,7 +1226,7 @@ typedef struct
     float chromaticity[2];          /*!< Chromaticity (sensor) in R/G, B/G plane. */
     float cie_coords[2];            /*!< CIE x and y coordinates. */
 } cmc_ir_weight_grid_info_t;
-#define SIZEOF_CMC_IR_WEIGHT_GRID_INFO_T 20
+#define SIZEOF_CMC_IR_WEIGHT_GRID_INFO_T 20U
 
 typedef struct
 {
@@ -1298,7 +1298,7 @@ typedef struct
     unsigned short fraction_bits;         /*!< Number of fraction bits in the shading table fix point representation. */
     unsigned short *grids[4][4];          /*!< LSC gain grid stored in fixed point format with variable number of fraction bits, (16-fraction_bits)Qfraction_bits. */
 } cmc_lsc_grid;
-#define SIZEOF_CMC_LSC_GAIN_GRID_T 22
+#define SIZEOF_CMC_LSC_GAIN_GRID_T 22U
 
 typedef struct
 {
@@ -1309,7 +1309,7 @@ typedef struct
     unsigned short grid_height;           /*!< LSC grid height. */
     cmc_lsc_grid *lsc_grids;              /*!< LSC grids for all light sources (as defined by num_light_srcs). */
 } cmc_lens_shading_correction;
-#define SIZEOF_CMC_LENS_SHADING4x4_T 32
+#define SIZEOF_CMC_LENS_SHADING4x4_T 32U
 
 typedef struct
 {
@@ -1510,6 +1510,7 @@ typedef struct
     cmc_parsed_pipe_compand_t *cmc_parsed_pipe_compand;
     cmc_parsed_pipe_decompand_t *cmc_parsed_pipe_decompand;
     cmc_parsed_sensor_decompand_t *cmc_parsed_sensor_decompand;
+    float tnr7us_threshold_gain;
 } ia_cmc_t;
 
 #ifdef __cplusplus
