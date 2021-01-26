@@ -1,0 +1,18 @@
+prefix=/usr
+exec_prefix=/usr
+libdir=/usr/lib
+includedir=/usr/include
+
+Name: libiacss
+Description: Camera Subsystem libraries on IA
+URL:
+Version: 
+Libs: -L${libdir} -lgcss -lia_camera -lia_cipf -lia_cipr_core
+Cflags: -I${includedir} \
+        -I${includedir}/ia_camera \
+        -I${includedir}/ia_cipf   \
+        -I${includedir}/ia_cipf_common \
+        -I${includedir}/ia_cipf_css \
+        -I${includedir}/ia_cipr \
+        -I${includedir}/ia_tools \
+        -I${includedir}/gcss
