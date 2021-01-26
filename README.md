@@ -1,13 +1,21 @@
 # ipu6-camera-bins
 
-This repository provides the libraries and firmware of camera related for chrome.
+This repository supports MIPI cameras through the IPU6 on Intel Tigerlake platforms. There are 4 repositories that provide the complete setup:
+
+* https://github.com/intel/ipu6-drivers - kernel drivers for the IPU and sensors
+* https://github.com/intel/ipu6-camera-hal - HAL for processing of images in userspace
+* https://github.com/intel/ipu6-camera-bins - IPU firmware and proprietary image processing libraries
+* https://github.com/intel/icamerasrc (branch:icamerasrc_slim_api) - Gstreamer src plugin
+
 
 ## Content of this repository:
-* IPU6EP firmware
-* Library binary dependencies for IPU6EP HAL
+* IPU6 firmware
+* Library binary dependencies for IPU6 HAL
+* Headerfiles for those libraries
 
-## Release Note:
-2021-01-22:
-OS:           Chrome 64 bits
-TGL FW tag:   B0 signed PO & DSS PG cpd binaries for commit 6bd8030
-Test Build:   internal build(2)
+## Deployment
+ipu6-camera-bins should be copied to build server and target
+```
+cp -r ipu6-camera-bins/include/* /usr/include/
+cp -r ipu6-camera-bins/lib/* /usr/lib/
+```
