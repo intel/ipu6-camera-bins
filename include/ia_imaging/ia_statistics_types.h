@@ -1,5 +1,5 @@
 /*
- * Copyright 2018-2020 Intel Corporation
+ * Copyright 2018-2021 Intel Corporation
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,7 +20,7 @@
 #include "ia_types.h"
 #include "ia_configuration.h"
 
-#define IA_RGBS_GRID_SIZE (IA_RGBS_GRID_WIDTH * IA_RGBS_GRID_HEIGHT)
+#define IA_RGBS_GRID_SIZE ((IA_RGBS_GRID_WIDTH) * (IA_RGBS_GRID_HEIGHT))
 
  /*!
  * \brief Bayer color channels grouped into one structure.

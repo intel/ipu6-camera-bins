@@ -1,5 +1,5 @@
 /*
- * Copyright 2017-2020 Intel Corporation
+ * Copyright 2017-2021 Intel Corporation
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -180,6 +180,8 @@ ia_isp_bxt_deinit(ia_isp_bxt *ia_isp_bxt);
 
 /*!
 *  \brief IA_ISP_BXT parameter input structure.
+* Please do not use 'const' for the following pointer members in this structure.
+* Otherwise ia_isp_bxt_input_params_load() function will load incorrectly.
 */
 typedef struct ia_isp_bxt_input_params_v2
 {
@@ -215,13 +217,16 @@ typedef struct ia_isp_bxt_input_params_v2
     float manual_digital_gain;                       /*!< Optional. Additional digital gain that is applied to all color channels of the image before ISP statistics collection.
                                                                     Values less than 1.0 means no additional gain. */
     ia_ob_output ob_black_level;                     /*!< Optional. Black level values calculated on-the-fly when the sensor supports. */
-    uint64_t timestamp;                    /*!< Mandatory. Current timestamp (is microseconds) when ia_isp_bxt_run function is called. AIC uses timestamp to decide what
+    uint64_t timestamp;                              /*!< Mandatory. Current timestamp (is microseconds) when ia_isp_bxt_run function is called. AIC uses timestamp to decide what
                                                                      calculations are done based on tunable run rate for each ISP configuration algorithm. */
     ia_dvs_image_transformation *gdc_transformation; /*!< Mandatory. Image transformation parameters for GDC5 ISP FW. This feature replaces the need for morph_table usage.*/
-    ia_isp_bxt_view_params_t const *view_params;     /*!< Optional. View parameters for running in GDC5 mode.*/
+    ia_isp_bxt_view_params_t *view_params;           /*!< Optional. View parameters for running in GDC5 mode.*/
     ia_media_format media_format;                    /*!< Mandatory. Selected Digital television output format.(e.g. BT709) */
-    ia_bcomp_results const *bcomp_results;           /*!< Optional.  bit-compression curves. */
-    ia_isp_bxt_gdc_limits const *gdc_mbr_limits;     /*!< Optional.  GDC MBR limits for WFOV usecases */
+    ia_bcomp_results *bcomp_results;                 /*!< Optional.  bit-compression curves. */
+    ia_isp_bxt_gdc_limits *gdc_mbr_limits;           /*!< Optional.  GDC MBR limits for WFOV usecases */
+
+    ia_isp_bxt_csc *manual_csc_matrix;               /*!< Optional.  Manual rgb2yuv_coef matrix which is valid combination with custom media_format.
+                                                                     Can be set as null if it is not used. */
 
     ia_isp_call_rate_control call_rate_control;
 } ia_isp_bxt_input_params_v2;
@@ -399,29 +404,30 @@ ia_isp_statistics_convert_awb_ccat(
 * \brief Converts rgbs grid statistics to ccat format (IPU7->).
 * ISP generated statistics may not be in the ccat format. Statistics need to be converted
 * from various ISP formats into CCAT statistics format.
-* \param[in] ia_isp_bxt             Mandatory. ia_isp_bxt instance handle.
-* \param[in] stats_width            Mandatory actual width of the statistics grid.
-* \param[in] stats_height           Mandatory actual height of the statistics grid.
-* \param[in] buf1_c0_c1_c2_c3       Mandatory Average level of c0-c3 colors
-* \param[in] buf2_c4_c5_c6_c7       Average level of c4-c7 colors. Can be NULL, if buf2_cid_count is 0.
-* \param[in] sat_buf                Mandatory Represents Saturation ratio.
-*                                       0: 0% above saturation
-*                                       255: 100% above saturation
-* \param[in] buf1_cid_count         Mandatory. Number of color ids in buf1_c0_c1_c2_c3. Either 1 or 4.
-* \param[in] buf2_cid_count         Mandatory. Number of color ids in buf2_c4_c5_c6_c7. Can be 0, 1 or 4.
-* \param[in] min_out_bytes_per_cell Mandatory. Minimum number of bytes per grid cell.
-* \param[in] uint8_t_statistics     Mandatory.
-*                                       true:  uint8_t  average values in buf1 and buf2
-*                                       false: uint16_t average values in buf1 and buf2
-* \param[in] ir_weight              Mandatory for RGB-IR sensors, NULL otherwise. IR contamination grid.
-* \param[in] ae_results             Mandatory for 2DP-SVE sensors for frames captured with >=2 exposures, ignored otherwise. Exposure parameters
-*                                   used in de-stiching of input HDR statistics to num_exposures LDR RGBS grids.
-* \param[in] wb_color_gains         Mandatory for cases(such as DOL) where statistics have WB already applied in the ISP which needs to be reverted for valid RGBS stat calculation,
-*                                   ignored otherwise. The color gains are from PA results(ia_aiq_pa_results.color_gains) used in de-stiching of input HDR statistics to num_exposures LDR RGBS grids.
-* \param[in] bcomp_results          Mandatory for compressed statistics data (e.g. in case of 20-bit DOL statistics in IPU7).
-* \param[out] out_rgbs_grid         Mandatory. CCAT output rgbs-grids. At least IA_CCAT_STATISTICS_MAX_NUM grids.
-* \param[out] out_ir_grid           Mandatory for RGB-IR sensors, NULL otherwise. CCAT output ir-grid.
-* \return                           Error code.
+* \param[in] ia_isp_bxt                 Mandatory. ia_isp_bxt instance handle.
+* \param[in] stats_width                Mandatory actual width of the statistics grid.
+* \param[in] stats_height               Mandatory actual height of the statistics grid.
+* \param[in] buf1_c0_c1_c2_c3           Mandatory Average level of c0-c3 colors
+* \param[in] buf2_c4_c5_c6_c7           Average level of c4-c7 colors. Can be NULL, if buf2_cid_count is 0.
+* \param[in] sat_buf                    Mandatory Represents Saturation ratio.
+*                                           0: 0% above saturation
+*                                           255: 100% above saturation
+* \param[in] buf1_cid_count             Mandatory. Number of color ids in buf1_c0_c1_c2_c3. Either 1 or 4.
+* \param[in] buf2_cid_count             Mandatory. Number of color ids in buf2_c4_c5_c6_c7. Can be 0, 1 or 4.
+* \param[in] min_out_bytes_per_cell     Mandatory. Minimum number of bytes per grid cell.
+* \param[in] uint8_t_statistics         Mandatory.
+*                                           true:  uint8_t  average values in buf1 and buf2
+*                                           false: uint16_t average values in buf1 and buf2
+* \param[in] ir_weight                  Mandatory for RGB-IR sensors, NULL otherwise. IR contamination grid.
+* \param[in] ae_results                 Mandatory for 2DP-SVE sensors for frames captured with >=2 exposures, ignored otherwise. Exposure parameters
+*                                       used in de-stiching of input HDR statistics to num_exposures LDR RGBS grids.
+* \param[in] wb_color_gains             Mandatory for cases(such as DOL) where statistics have WB already applied in the ISP which needs to be reverted for valid RGBS stat calculation,
+*                                       ignored otherwise. The color gains are from PA results(ia_aiq_pa_results.color_gains) used in de-stiching of input HDR statistics to num_exposures LDR RGBS grids.
+* \param[in] bcomp_results              Mandatory for compressed statistics data (e.g. in case of 20-bit DOL statistics in IPU7).
+* \param[out] out_is_shading_corrected  Mandatory. Output indicator whether the grid is shading corrected or not.
+* \param[out] out_rgbs_grids            Mandatory. CCAT output rgbs-grids. At least IA_CCAT_STATISTICS_MAX_NUM grids.
+* \param[out] out_ir_grid               Mandatory for RGB-IR sensors, NULL otherwise. CCAT output ir-grid.
+* \return                               Error code.
 */
 LIBEXPORT ia_err
 ia_isp_statistics_convert_rgbs_grid_ccat(
@@ -439,6 +445,7 @@ ia_isp_statistics_convert_rgbs_grid_ccat(
     const ia_aiq_ae_results *ae_results,
     const ia_aiq_color_channels *wb_color_gains,
     const ia_bcomp_results *bcomp_results,
+    bool *out_is_shading_corrected,
     ia_rgbs_grid *out_rgbs_grids,
     ia_ccat_grid_char *out_ir_grid);
 

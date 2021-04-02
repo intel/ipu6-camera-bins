@@ -14,7 +14,9 @@
  * limitations under the License.
  */
 
-#pragma once
+#ifndef CCAMACRO_H_
+#define CCAMACRO_H_
+
 #include <stdint.h>
 
 namespace cca {
@@ -75,3 +77,4 @@ const uint32_t MAX_PG_TERMINAL_NUM = 16;
 
 const uint64_t INVALID_FRAME_ID = static_cast<uint64_t>(-1);
 }//cca
+#endif //CCAMACRO_H_

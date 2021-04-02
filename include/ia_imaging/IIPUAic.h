@@ -13,8 +13,8 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
-#pragma once
+#ifndef IIPUAIC_H_
+#define IIPUAIC_H_
 
 #include "CCAStorage.h"
 #include "IntelCCATypes.h"
@@ -308,3 +308,4 @@ public:
 
 };
 }//cca
+#endif //IIPUAIC_H_

@@ -14,20 +14,21 @@
  * limitations under the License.
  */
 
-#pragma once
+#ifndef INTELCCA_TYPES_H_
+#define INTELCCA_TYPES_H_
 
 #include "ia_configuration.h"
 #include "ia_aiq.h"
 #include "ia_types.h"
 #include "ia_ob.h"
 #include "ia_lard.h"
-
+#ifndef PAC_ENABLE
 #ifdef ENABLE_LTM
 #include "ia_ltm.h"
 #endif
-
 #ifdef ENABLE_DVS
 #include "ia_dvs.h"
+#endif
 #endif
 #include "ia_view.h"
 #include "ia_cmc_types.h"
@@ -45,34 +46,49 @@
 
 namespace cca {
 
+/*!
+ *  \brief cca cpf struct.
+ */
 typedef struct
 {
-    size_t size;
-    uint8_t buf[MAX_CPF_LEN];
+    size_t size;                /*!< Mandatory. size of aiqb data. */
+    uint8_t buf[MAX_CPF_LEN];   /*!< Mandatory. buffer of aiqb data. */
 } cca_cpf;
 
+/*!
+ *  \brief cca nvm struct.
+ */
 typedef struct
 {
-    size_t size;
-    uint8_t buf[MAX_NVM_LEN];
+    size_t size;               /*!< Mandatory. size of sensor nvm data. */
+    uint8_t buf[MAX_NVM_LEN];  /*!< Mandatory. buffer of sensor nvm data. */
 } cca_nvm;
 
+/*!
+ *  \brief aiq data struct.
+ */
 typedef struct
 {
-    size_t size;
-    uint8_t buf[MAX_AIQD_LEN];
+    size_t size;               /*!< Mandatory. size of aiq data. */
+    uint8_t buf[MAX_AIQD_LEN]; /*!< Mandatory. buffer of aiq data. */
 } cca_aiqd;
 
+/*!
+ *  \brief aiq data struct.
+ */
 typedef struct
 {
-    size_t size;
-    uint8_t buf[MAX_MKN_LEN];
+    size_t size;               /*!< Mandatory. size of mkn data. */
+    uint8_t buf[MAX_MKN_LEN];  /*!< Mandatory. buffer of mkn data. */
 } cca_mkn;
 
+/*!
+ *  \brief statistics data struct.
+ */
 typedef struct
 {
-    size_t size;
-    uint8_t buf[MAX_STATS_LEN];
+    size_t size;                /*!< Mandatory. size of statistics bin. */
+    uint8_t buf[MAX_STATS_LEN]; /*!< Mandatory. buffer of statistics data. */
 } cca_stats_bin;
 
 /*!
@@ -104,6 +120,9 @@ enum CCALardItem
     CCA_LARD_OTHER = 1 << 3
 };
 
+/*!
+ * \brief lard contents.
+ */
 typedef struct
 {
     uint32_t cmc_count;
@@ -138,6 +157,9 @@ enum CCADVSOutputType
     CCA_DVS_IMAGE_TRANSFORM
 };
 
+/*!
+ * \brief exposure algo input parameters.
+ */
 typedef struct
 {
     bool is_bypass;                                             /*!< Mandatory. bypass AEC run. */
@@ -228,6 +250,9 @@ typedef struct
     bool trigger_new_search;                                    /*!< TRUE if new AF search is needed, FALSE otherwise. Host is responsible for flag cleaning. */
 } cca_af_input_params;
 
+/*!
+ *  \brief output of AF algorithm.
+ */
 typedef struct
 {
     ia_aiq_af_status status;                           /*!< Focus status */
@@ -242,6 +267,7 @@ typedef struct
  */
 typedef struct
 {
+    bool is_bypass;                                   /*!< Mandatory. bypass AWB run. */
     ia_aiq_awb_operation_mode scene_mode;             /*!< Mandatory. AWB scene mode. */
     ia_aiq_awb_manual_cct_range manual_cct_range;     /*!< Optional. Manual CCT range. Used only if AWB scene mode
                                                            'ia_aiq_awb_operation_manual_cct_range' is used. */
@@ -318,8 +344,8 @@ typedef struct
  */
 typedef struct
 {
-    uint32_t      num_faces;                 /**< Number of faces in the recently processed input frame. */
-    ia_atbx_face  faces[MAX_FACE_NUM];       /**< Array of face information. */
+    uint32_t      num_faces;                 /*!< Number of faces in the recently processed input frame. */
+    ia_atbx_face  faces[MAX_FACE_NUM];       /*!< Array of face information. */
 } cca_face_state;
 
 /*!
@@ -414,23 +440,26 @@ typedef struct
  */
 typedef struct
 {
-    cca_af_results af_output;
-    cca_awb_results awb_output;
-    cca_sa_results sa_output;
-    cca_gbce_params gbce_output;
-    cca_pa_params  pa_output;
+    cca_af_results af_output;    /*!< auto focus algo output */
+    cca_awb_results awb_output;  /*!< auto white balance algo output */
+    cca_sa_results sa_output;    /*!< shading adaptor algo focus output */
+    cca_gbce_params gbce_output; /*!< global brightness contrast enhancement algo output */
+    cca_pa_params  pa_output;    /*!< parameter adaptor algo output */
 } cca_aiq_results;
 
-/** LTM SIS.
- * This structure contains LTM statistics.
+/*!
+ *  \brief structure for LTM statistics.
  */
 typedef struct
 {
-    ia_image_full_info image_info;       /* image info e.g image resolution */
-    uint32_t size;                       /* length of SIS */
-    uint8_t data[MAX_SIS_FRAME_SIZE];    /* SIS frame */
+    ia_image_full_info image_info;       /*!< image info e.g image resolution */
+    uint32_t size;                       /*!< length of SIS */
+    uint8_t data[MAX_SIS_FRAME_SIZE];    /*!< SIS frame */
 } cca_ltm_statistics;
 
+/*!
+ *  \brief input params of LTM
+ */
 typedef struct
 {
     ia_ltm_level ltm_level;                 /*!< Mandatory. LTM level. -1 to use tuning defaults.*/
@@ -438,22 +467,22 @@ typedef struct
     uint8_t ltm_strength_manual;            /*!< Optional. (ob) User defined manual control for ltm strength, will be casted into unsigned char,
                                                  [0, 200], default is 100 and means no manual effect*/
     int16_t frame_width;                    /*!< Mandatory. Width of the frame where the results will be applied. */
-    int16_t frame_height;
-    cca_ltm_statistics sis;
+    int16_t frame_height;                   /*!< Mandatory. Height of the frame where the results will be applied. */
+    cca_ltm_statistics sis;                 /*!< Mandatory. downscaling raw image as LTM statistics. */
 } cca_ltm_input_params;
 
 
-/** DVS Motion vectors.
- * This structure contains DVS statistics.
+/*!
+ * \brief  structure contains DVS statistics.
  */
 typedef struct
 {
-    uint32_t vector_count;              /* Number of motion vectors */
-    ia_dvs_motion_vector motion_vectors[MAX_DVS_VECTOR_COUNT];   /* Table of local motion vectors. Contains [vector_count] values. */
+    uint32_t vector_count;              /*!< Number of motion vectors */
+    ia_dvs_motion_vector motion_vectors[MAX_DVS_VECTOR_COUNT];   /*!< Table of local motion vectors. Contains [vector_count] values. */
 } cca_dvs_statistics;
 
-/** DVS configuration.
- * This structure contains DVS configuration.
+/*!
+ * \brief  structure contains DVS configuration.
  */
 typedef struct
 {
@@ -466,13 +495,16 @@ typedef struct
     uint8_t splitMetadata[GDC_SPLIT_METADATA_LEN];
 } cca_gdc_configuration;
 
+/*!
+ * \brief  struct of zoom parameters.
+ */
 struct cca_dvs_zoom
 {
-    float digital_zoom_ratio;               /* Digital zoom ratio */
-    float digital_zoom_factor;              /* If LGD correction is enabled and envelope is not big enough, small amount of DZ is automatically applied. */
-    ia_dvs_zoom_mode zoom_mode;             /* Digital zooming mode */
-    ia_rectangle zoom_region;               /* Zooming region which defines area to be scaled for the output. */
-    ia_coordinate zoom_coordinate;          /* Zooming coordinate which defines point where digital zoom is applied. */
+    float digital_zoom_ratio;               /*!< Digital zoom ratio */
+    float digital_zoom_factor;              /*!< If LGD correction is enabled and envelope is not big enough, small amount of DZ is automatically applied. */
+    ia_dvs_zoom_mode zoom_mode;             /*!< Digital zooming mode */
+    ia_rectangle zoom_region;               /*!< Zooming region which defines area to be scaled for the output. */
+    ia_coordinate zoom_coordinate;          /*!< Zooming coordinate which defines point where digital zoom is applied. */
 };
 
 /*!
@@ -484,18 +516,27 @@ typedef struct
     uint8_t data[MAX_PAL_TUNING_SIZE];
 } cca_pal_tuning;
 
+/*!
+*  \brief parameters structure for customer customization.
+*/
 typedef struct
 {
-    int count;
-    float parameters[MAX_CUSTOM_CONTROLS_PARAM_SIZE];
+    int count;                                        /*!< number of customized parameters */
+    float parameters[MAX_CUSTOM_CONTROLS_PARAM_SIZE]; /*!< customized parameters */
 } cca_custom_control_params;
 
+/*!
+*  \brief ia view parameters structure for image rotation/affine...
+*/
 typedef struct
 {
-    bool enabled;
-    ia_view_config_t view_config;
+    bool enabled;                  /*!< enable/disable the feature */
+    ia_view_config_t view_config;  /*!< configuration of ia view */
 } cca_view_params;
 
+/*!
+*  \brief program group of pipeline configuration as known as graph config
+*/
 typedef struct
 {
     ia_isp_bxt_program_group base;
@@ -505,6 +546,9 @@ typedef struct
     ia_isp_bxt_resolution_info_t resolution_history[MAX_KERNEL_NUMBERS_IN_PIPE];       /*!< Resolution changes done before current kernel with respect to sensor output. NULL, if not available*/
 } cca_program_group;
 
+/*!
+*  \brief AIC parameters input params structure including 3A and manual settings
+*/
 typedef struct
 {
     ia_aiq_advanced_ccm_t preferred_acm;       /*!< Optional, manual setting for acm to replace the acm in PA results */
@@ -533,8 +577,8 @@ typedef struct
     cca_pa_params manual_pa_setting;           /*!< Optional. manual settings (ccm & gain) for pa results.*/
     cca_gbce_params manual_gbce_setting;       /*!< Optional. manual settings (gamma lut) for gbce results.*/
     bool force_lsc_update;                     /*!< Optional. force to update LSC for SA results.*/
-
-    ia_isp_call_rate_control call_rate_control;
+    ia_isp_call_rate_control call_rate_control; /*!< Optional. algo run frequency for power saving purpose.*/
+    ia_isp_bxt_csc csc_matrix;                  /*!< Optional. manual rgb2yuv matrix for bxt_csc.*/
 } cca_pal_input_params;
 
 /*!
@@ -545,26 +589,29 @@ typedef struct
     uint16_t base_iso;
     cmc_optomechanics_t optics;
     uint16_t lut_apertures;
-    float tnr7us_threshold_gain;
+    tnr7us_trigger_info_t tnr7us_trigger_info;
 } cca_cmc;
 
+/*!
+*  \brief initlization paramters of CCA Flow.
+*/
 struct cca_init_params{
-    cca_cpf aiq_cpf;
-    cca_nvm aiq_nvm;
-    cca_aiqd aiq_aiqd;
-    unsigned int bitmap;       /*!< Mandatory. list all components (CCAModuleBitMap) that need initialization. */
+    cca_cpf aiq_cpf;                 /*!< Mandatory. tuning data */
+    cca_nvm aiq_nvm;                 /*!< Mandatory. sensor nvm data */
+    cca_aiqd aiq_aiqd;               /*!< Mandatory. aiq algo calibration data, NULL for 1st time launch */
+    unsigned int bitmap;             /*!< Mandatory. list all components (CCAModuleBitMap) that need initialization. */
     ia_aiq_frame_params frameParams; /*!< Mandatory. Sensor frame parameters. Describe frame scaling/cropping done in sensor. */
-    ia_aiq_frame_use frameUse;
+    ia_aiq_frame_use frameUse;       /*!< Mandatory. scenario for use case still/preview/video */
     //BComp init params
     float conversionGainRatio;
     ia_bcomp_dol_mode_t dolMode;
     //DVS
-    CCADVSOutputType dvsOutputType;
-    float dvsZoomRatio;
-    bool enableVideoStablization;
-    cca_gdc_configuration gdcConfig;
-    uint8_t aiqStorageLen;
-    uint8_t aecFrameDelay;
+    CCADVSOutputType dvsOutputType;  /*!< Mandatory. DVS algo output configuration must match with GDC kernel */
+    float dvsZoomRatio;              /*!< Mandatory. zoom factor */
+    bool enableVideoStablization;    /*!< Mandatory. enable/disable video statlization */
+    cca_gdc_configuration gdcConfig; /*!< Mandatory. GDC resolution configuration */
+    uint8_t aiqStorageLen;           /*!< Mandatory. lehgth of history to store algo results */
+    uint8_t aecFrameDelay;           /*!< Mandatory. frame delay for auto exposure take effect */
     cca_init_params() :
         frameUse(ia_aiq_frame_use_preview),
         conversionGainRatio(1),
@@ -588,3 +635,4 @@ struct cca_init_params{
 };
 
 }//cca
+#endif //INTELCCA_TYPES_H_

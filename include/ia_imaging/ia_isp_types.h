@@ -1,5 +1,5 @@
 /*
- * Copyright 2014-2020 Intel Corporation
+ * Copyright 2014-2021 Intel Corporation
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -102,6 +102,11 @@ typedef struct
     ia_isp_call_rate_mode mode;
     int execution_interval;         /* Execution interval in us, when the mode is ia_isp_call_rate_reduce_on_converged. */
 } ia_isp_call_rate_control;
+
+typedef struct
+{
+    int32_t rgb2yuv_coef[9];        /* One 3x3 martix for RGB to YUV conversion, each value is normalized to 1000 */
+} ia_isp_bxt_csc;
 
 #ifdef __cplusplus
 }

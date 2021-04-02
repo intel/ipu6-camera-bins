@@ -1,5 +1,5 @@
 /*
- * Copyright 2020 Intel Corporation
+ * Copyright 2021 Intel Corporation
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -908,6 +908,7 @@ typedef enum
     ccm_estimate_method_bypass,     /*!< Return unity CCM matrix. */
     ccm_estimate_method_wp,         /*!< Return CCM matrix using only white point estimate from AWB. */
     ccm_estimate_method_wp_sa,      /*!< Return CCM matrix using both white point estimate from AWB and Shading Adaptor Results. */
+    ccm_estimate_method_cct,        /*!< Return CCM matrix using cct */
 } ccm_estimate_method_t;
 
 typedef struct
@@ -1147,8 +1148,11 @@ typedef struct
     uint32_t src_type;                   /*!< Light source type (enum), e.g. Fluorescent. */
     float chromaticity[2];               /*!< Chromaticity (sensor) in R/G, B/G plane. */
     float src_cie_xy[2];                 /*!< CIE x and y coordinates. */
+    uint32_t cct;                        /*!< Color temperature */
 } cmc_acm_color_matrices_info_t;
+
 #define SIZEOF_CMC_ACM_COLOR_MATRICES_INFO_T 20U
+#define SIZEOF_CMC_ACM_COLOR_MATRICES_INFO_V101_T  24U
 
 typedef struct
 {
@@ -1470,6 +1474,20 @@ typedef struct
     uint32_t *slopes;               /*Array of slopes for pipe decompand curve. Count of array is equal segments*/
 } cmc_parsed_pipe_decompand_t;
 
+typedef struct
+{
+    float gain;
+    int32_t frame_count;
+} trigger_info_t;
+
+#define MAX_TNR7US_TRIGGER_INFO_COUNT   8U
+typedef struct
+{
+    float tnr7us_threshold_gain;
+    uint32_t num_gains;
+    trigger_info_t trigger_infos[MAX_TNR7US_TRIGGER_INFO_COUNT];
+} tnr7us_trigger_info_t;
+
 /*!
  * \brief Parsed CMC structure.
  * Parser will fill the pointers in this structure so that data can be accessed more easily.
@@ -1510,7 +1528,7 @@ typedef struct
     cmc_parsed_pipe_compand_t *cmc_parsed_pipe_compand;
     cmc_parsed_pipe_decompand_t *cmc_parsed_pipe_decompand;
     cmc_parsed_sensor_decompand_t *cmc_parsed_sensor_decompand;
-    float tnr7us_threshold_gain;
+    tnr7us_trigger_info_t *tnr7us_trigger_info;
 } ia_cmc_t;
 
 #ifdef __cplusplus

@@ -44,6 +44,8 @@
 
 #endif
 
+#include "ia_misra_types.h"
+
 /*!
  * \brief extra Q number format typedefs.
  */
@@ -54,12 +56,6 @@ typedef uint16_t uq4_12_t;
 typedef int32_t sq15_16_t;
 typedef uint32_t uq16_16_t;
 typedef uint16_t half;
-/* MISRA typedefs*/
-#ifndef BUILDIN_TYPE
-#define BUILDIN_TYPE
-typedef float float32_t;
-typedef double float64_t;
-#endif
 
 /* Float Epsilon for divide by zero checks */
 #define IA_EPSILON 0.0001F
@@ -156,7 +152,7 @@ typedef double float64_t;
 
 
 
-#define IA_MAX_FIXEDPOINT(integer_bits, frac_bits) ((float64_t)((integer_bits?(2<<(integer_bits-1)):1)) - (1.0f/((float64_t)(frac_bits?((unsigned long)2<<(frac_bits-1)):0))))
+#define IA_MAX_FIXEDPOINT(integer_bits, frac_bits) ((float64_t)((((integer_bits) > 0)?(2<<((integer_bits)-1)):1)) - (1.0f/((float64_t)(((frac_bits) > 0)?((unsigned long)2<<((frac_bits)-1)):0))))
 #define IA_MIN_FIXEDPOINT(integer_bits, frac_bits) (-IA_MAX_FIXEDPOINT((integer_bits), frac_bits))
 #define IA_MAX_Q0_FIXEDPOINT(frac_bits) (1.0 - (1.0f/((float64_t)(frac_bits?((unsigned long)2<<(frac_bits-1)):0))))
 

@@ -1,5 +1,5 @@
 /*
- * Copyright 2014-2019 Intel Corporation
+ * Copyright 2014-2021 Intel Corporation
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -34,8 +34,8 @@
 #include <stdint.h>
 #include "ia_dvs_types.h"
 #include "ia_aiq_types.h"
+#include "ia_aiq_types_deprecated.h"
 #include "ia_cmc_types.h"
-#include "ia_aiq.h"
 #include "ia_dvs_deprecated.h"
 #ifdef __cplusplus
 extern "C" {

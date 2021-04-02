@@ -1,5 +1,5 @@
 /*
- * Copyright 2017-2018 Intel Corporation
+ * Copyright 2017-2021 Intel Corporation
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -23,10 +23,10 @@
 #define IA_ISP_BXT_DEPRECATED_H_
 
 #include "ia_aiq_types.h"
+#include "ia_aiq_types_deprecated.h"
 #include "ia_types.h"
 #include "ia_isp_bxt_types.h"
 #include "ia_bcomp_types.h"
-#include "ia_aiq_deprecated.h"
 #include "ia_cmc_types.h"
 
 #ifdef __cplusplus

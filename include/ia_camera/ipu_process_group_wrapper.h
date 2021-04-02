@@ -1,6 +1,6 @@
 /*
  * INTEL CONFIDENTIAL
- * Copyright (c) 2013-2018 Intel Corporation. All Rights Reserved.
+ * Copyright (c) 2013-2021 Intel Corporation. All Rights Reserved.
  *
  * The source code contained or described herein and all documents related to
  * the source code ("Material") are owned by Intel Corporation or its suppliers
@@ -39,6 +39,7 @@
 
 #include <ia_tools/css_types.h>
 #include <ia_p2p_types.h>
+#include <ia_cipf/ia_cipf_types.h>
 
 /* @todo Terminal memory shall be dynamically allocated */
 #define IPU_MAX_TERMINAL_COUNT 40
@@ -317,7 +318,8 @@ css_err_t
 ipu_pg_die_encode_pg_control(ipu_pg_die_t pg_die,
                              uint8_t terminal_index,
                              ia_binary_data *process_group,
-                             ia_binary_data *payload);
+                             ia_binary_data *payload,
+                             ia_cipf_buffer_t *buffer);
 
 /** Decode a terminal payload
  *

@@ -13,7 +13,8 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-#pragma once
+#ifndef CCASTORAGE_H_
+#define CCASTORAGE_H_
 
 #include "ia_abstraction.h"
 #include "IntelCCATypes.h"
@@ -29,6 +30,9 @@
 
 namespace cca {
 
+/*!
+ * \brief aiq results structure used in CCAStorage
+ */
 typedef struct {
     //aec results
     ia_aiq_ae_exposure_result exposure_results[MAX_NUM_EXPOSURE];
@@ -63,6 +67,7 @@ typedef struct {
     ia_aiq_sa_results_v1 sa_results;
     uint32_t result_bitmap;
 } aiq_results;
+
 /*!
  * \brief storage for aiq results
  */
@@ -87,6 +92,9 @@ struct cca_aiq_results_storage {
         {}
 };
 
+/*!
+ * \brief interface exposed to IntelCCA for AIQ algorithm result storage.
+ */
 class CCAStorage {
 public:
     CCAStorage(uint8_t len);
@@ -113,3 +121,4 @@ private:
     aiq_results *mAiqResults;
 };
 }//cca
+#endif //CCASTORAGE_H_

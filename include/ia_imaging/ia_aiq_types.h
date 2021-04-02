@@ -1,5 +1,5 @@
 /*
- * Copyright 2012-2020 Intel Corporation
+ * Copyright 2012-2021 Intel Corporation
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -901,6 +901,43 @@ typedef struct
     ia_aiq_dmd_sensor_motion_level motion;
     unsigned long long fs;  /*!< Frame stamp in usec (microseconds) */
 } ia_aiq_dmd_sensor_events;
+
+/*!
+* \brief Data from external sensors
+*/
+typedef struct
+{
+    ia_aiq_sensor_data* accelerometer_events;                       /*!< The data holds information on the acceleration of the device in mg/sec (miligravity per second).
+                                                                         Acceleration = Gravity + Linear Acceleration*/
+    unsigned int num_accelerometer_events;                          /*!< Number of accelerometer events */
+    ia_aiq_sensor_data* gravity_events;                             /*!< The data holds information on the gravitation of the device in mg/sec (miligravity per second) */
+    unsigned int num_gravity_events;                                /*!< Number of gravity events */
+    ia_aiq_sensor_data* gyroscope_events;                           /*!< The data holds information on the angular velocity of the device in rad/sec */
+    unsigned int num_gyroscope_events;                              /*!< Number of gyroscope events */
+    ia_aiq_ambient_light_events_v1* ambient_light_events;           /*!< The data holds information on the ambient light */
+    unsigned int num_ambient_light_events;                          /*!< Number of ambient light events */
+    ia_aiq_dmd_sensor_events* dmd_events;                           /*!< Device Movement Detector (DMD) virtual sensor */
+    unsigned int num_dmd_events;                                    /*!< Number of DMD sensor events */
+} ia_aiq_sensor_events_v1;
+
+typedef struct
+{
+    float final_target_average; /*! Final target average calculated by AE. */
+} ia_aiq_ae_debug_info;
+
+/*!
+* \brief Segmented grid structure.
+* Contains the segmented grid used for visualization and debug purposes.
+*/
+typedef struct
+{
+    int *grid_ptr;                     /*!< Segmented grid */
+    unsigned int   grid_height;        /*!< Height of the grid */
+    unsigned int   grid_width;         /*!< Height of the grid */
+    unsigned int   min;                /*!< Minimum element in the grid */
+    unsigned int   max;                /*!< Maximum element in the grid */
+    unsigned int   background_num;     /*!< Number of background elements in the grid */
+} ia_aiq_segmented_grid;
 
 #ifdef __cplusplus
 }
