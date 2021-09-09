@@ -354,11 +354,12 @@ public:
     * Parse and decode different statistics from HW including AE/AWB/DVS/HDR
     *
     * \param [in]  stats        statistics binary from HW
+    * \param [in]  bitmap       select RGBS, HIST, AF ... if needed to decode
     * \param [out] results      statistics type after parsing statistics
     *
     * \return                   Error code for status. zero on success, non-zero on failure
     */
-    ia_err decodeStats(const cca_stats_bin &stats, ia_isp_bxt_statistics_query_results_t *results);
+    ia_err decodeStats(const cca_stats_bin &stats, uint32_t bitmap, ia_isp_bxt_statistics_query_results_t *results);
 
     /*!
     *
@@ -367,11 +368,12 @@ public:
     *
     * \param [in]  statsPointer pointer to share memory that stores the statistics binary from HW
     * \param [in]  statsSize    statistics size
+    * \param [in]  bitmap       select RGBS, HIST, AF ... if needed to decode
     * \param [out] results      statistics type after parsing statistics
     *
     * \return                   Error code for status. zero on success, non-zero on failure
     */
-    ia_err decodeStats(uint64_t statsPointer, uint32_t statsSize, ia_isp_bxt_statistics_query_results_t *results);
+    ia_err decodeStats(uint64_t statsPointer, uint32_t statsSize, uint32_t bitmap, ia_isp_bxt_statistics_query_results_t *results);
 
     /*!
     *
@@ -438,12 +440,13 @@ private:
     * Parse and decode different statistics from HW including AE/AWB/DVS/HDR
     *
     * \param [in]  stats        binary to store the statistics binary from HW
+    * \param [in]  bitmap       select RGBS, HIST, AF ... if needed to decode
     * \param [out] results      statistics type after parsing statistics
     *
     *
     * return ia_err_none in success. Errorcode on failure
     */
-    ia_err decodeStats(const ia_binary_data &stats, ia_isp_bxt_statistics_query_results_t *results);
+    ia_err decodeStats(const ia_binary_data &stats, uint32_t bitmap, ia_isp_bxt_statistics_query_results_t *results);
 #endif
 
 private:

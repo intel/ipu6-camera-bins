@@ -29,6 +29,7 @@ namespace cca {
  */
 typedef struct {
     long sequenceId;                            /*!< sequence id of the frame to decode from. */
+    uint32_t bitmap;                            /*!< select RGBS, HIST, AF ... if needed to decode. */
     const ia_aiq_ae_results* ae_settings;       /*!< AE result for sensor exposure setting. */
     const ia_aiq_color_channels *wb_color_gains;/*!< wb gains for all channels. */
     const ia_bcomp_results* bcomp_settings;     /*!< BComp result for lens VCM and PWM setting. */

@@ -140,12 +140,12 @@ typedef struct
  */
 enum CCAStatsType
 {
-    CCA_STATS_RGBS = 0,
-    CCA_STATS_HIST,
-    CCA_STATS_AF,
-    CCA_STATS_YV,
-    CCA_STATS_LTM,
-    CCA_STATS_DVS
+    CCA_STATS_RGBS = 1,
+    CCA_STATS_HIST = 1 << 1,
+    CCA_STATS_AF = 1 << 2,
+    CCA_STATS_YV = 1 << 3,
+    CCA_STATS_LTM = 1 << 4,
+    CCA_STATS_DVS = 1 << 5
 };
 
 /*!
@@ -177,12 +177,12 @@ typedef struct
     ia_rectangle exposure_window;                               /*!< Optional. Rectangle of area which AEC uses to to calculate new exposure parameters. */
     ia_coordinate exposure_coordinate;                          /*!< Optional. Coordinate for a point in which the exposure should be prioritized.
                                                                      AEC increases weight of given point in final AEC results. */
-    float ev_shift;                                             /*!< Optional. Exposure Value shift [-4,4]. */
+    float32_t ev_shift;                                             /*!< Optional. Exposure Value shift [-4,4]. */
     uint32_t manual_exposure_time_us[MAX_NUM_EXPOSURE];         /*!< Optional. Manual exposure time in microseconds. NULL if NA. Otherwise, array of values
                                                                      of num_exposures length. Order of exposure times corresponds to exposure_index of
                                                                      ae_results, e.g.
                                                                      manual_exposure_time_us[ae_results->exposures[0].exposure_index] = 33000; */
-    float manual_analog_gain [MAX_NUM_EXPOSURE];                /*!< Optional. Manual analog gain. NULL if NA. Otherwise, array of values of num_exposures
+    float32_t manual_analog_gain [MAX_NUM_EXPOSURE];                /*!< Optional. Manual analog gain. NULL if NA. Otherwise, array of values of num_exposures
                                                                      length. Order of gain values corresponds to exposure_index of ae_results,
                                                                      e.g., manual_analog_gain[ae_results->exposures[0].exposure_index] = 4.0f; */
     uint16_t manual_iso[MAX_NUM_EXPOSURE];                      /*!< Optional. Manual ISO. Overrides manual_analog_gain. NULL if NA. Otherwise, array of
@@ -190,7 +190,7 @@ typedef struct
                                                                      ae_results, e.g., manual_iso[ae_results->exposures[0].exposure_index] = 100; */
     ia_aiq_ae_manual_limits manual_limits[MAX_NUM_EXPOSURE];    /*!< Optional. Manual limits which override limits defined in AEC tunings. */
     ia_aiq_ae_exposure_distribution_priority exposure_distribution_priority; /*!< Mandatory. AEC exposure distribution priority mode. */
-    float manual_convergence_time;                              /*!< Mandatory. Manual AEC convergence speed in seconds.
+    float32_t manual_convergence_time;                              /*!< Mandatory. Manual AEC convergence speed in seconds.
                                                                      -1.0 if NA (uses tunings).
                                                                      0.0  means convergence filters are bypassed, this is similar behavior as in previous
                                                                           API when using frame_use still
@@ -204,7 +204,7 @@ typedef struct
 {
     ia_aiq_exposure_parameters exposure[MAX_EXPO_PLAN]; /*!< Exposure parameters to be used in the next frame in sensor specific format. */
     ia_aiq_exposure_sensor_parameters sensor_exposure[MAX_EXPO_PLAN]; /*!< Exposure parameters to be used in the next frame in sensor specific format. */
-    float distance_from_convergence;       /*!< Distance of convergence as an EV shift value. Negative is underexposure, positive is overexposure */
+    float32_t distance_from_convergence;       /*!< Distance of convergence as an EV shift value. Negative is underexposure, positive is overexposure */
     bool converged;
 } cca_ae_exposure;
 
@@ -273,7 +273,7 @@ typedef struct
                                                            'ia_aiq_awb_operation_manual_cct_range' is used. */
     ia_coordinate manual_white_coordinate;            /*!< Optional. Manual white point coordinate relative to the full FOV of the scene.
                                                            Used only if AWB scene mode 'ia_aiq_awb_operation_manual_white' is used. */
-    float manual_convergence_time;                    /*!< Optional. Manual AWB convergence speed in seconds. -1.0 if NA.
+    float32_t manual_convergence_time;                    /*!< Optional. Manual AWB convergence speed in seconds. -1.0 if NA.
                                                            Overrides convergence speed from tunings. */
 } cca_awb_input_params;
 
@@ -282,9 +282,9 @@ typedef struct
  */
 typedef struct
 {
-    float accurate_r_per_g;           /*!< Accurate White Point for the image. */
-    float accurate_b_per_g;           /*!< Accurate White Point for the image. */
-    float distance_from_convergence;  /*!< Range [0.0f, 1.0f]. Distance from convergence. Value 0.0f means converged. */
+    float32_t accurate_r_per_g;           /*!< Accurate White Point for the image. */
+    float32_t accurate_b_per_g;           /*!< Accurate White Point for the image. */
+    float32_t distance_from_convergence;  /*!< Range [0.0f, 1.0f]. Distance from convergence. Value 0.0f means converged. */
 } cca_awb_results;
 
 /*!
@@ -293,7 +293,7 @@ typedef struct
 typedef struct
 {
     bool is_bypass;                         /*!< Optional. Don't run gbce, just use last results*/
-    float ev_shift;                         /*!< Optional. Exposure Value shift [-4,4]. */
+    float32_t ev_shift;                         /*!< Optional. Exposure Value shift [-4,4]. */
     bool gbce_on;                           /*!< Optional. This flag is used to return gamma table in output params*/
     bool athena_mode;                       /*!< Optional. This flag is used to indicate whethe athena mode is enabled in ful_gtm algo*/
 } cca_gbce_input_params;
@@ -383,6 +383,7 @@ typedef struct
 {
     ia_aiq_color_channels color_gains;              /*!< Optional. RGB gains for each color channels.
                                                          These gain will be applied on top of RGB gains calculated from WB results. */
+    bool enable_gtm_desaturation;                   /*!< Optional, use base_gamma to calculate saturation factor */
 } cca_pa_input_params;
 
 /*!
@@ -390,7 +391,7 @@ typedef struct
  */
 typedef struct
 {
-    float manual_convergence_time;          /*!< Mandatory, in seconds. Allows override of tunings for LSC transition interval
+    float32_t manual_convergence_time;          /*!< Mandatory, in seconds. Allows override of tunings for LSC transition interval
                                                  -1.0 if NA (uses tunings).
                                                  0.0  forces update of LSC table, this is similar behavior as in previous API when using frame_use still
                                                  > 0.0  Overrides convergence speed from tunings */
@@ -415,11 +416,11 @@ typedef struct
 typedef struct
 {
     bool have_manual_settings;                      /*!< have manual gamma/tm lut. */
-    float r_gamma_lut[MAX_GAMMA_LUT_SIZE];          /*!< Gamma LUT for R channel. Range [0.0, 1.0]. */
-    float b_gamma_lut[MAX_GAMMA_LUT_SIZE];          /*!< Gamma LUT for B channel. Range [0.0, 1.0]. */
-    float g_gamma_lut[MAX_GAMMA_LUT_SIZE];          /*!< Gamma LUT for G channel. Range [0.0, 1.0]. */
+    float32_t r_gamma_lut[MAX_GAMMA_LUT_SIZE];          /*!< Gamma LUT for R channel. Range [0.0, 1.0]. */
+    float32_t b_gamma_lut[MAX_GAMMA_LUT_SIZE];          /*!< Gamma LUT for B channel. Range [0.0, 1.0]. */
+    float32_t g_gamma_lut[MAX_GAMMA_LUT_SIZE];          /*!< Gamma LUT for G channel. Range [0.0, 1.0]. */
     uint32_t gamma_lut_size;                        /*!< size of gamma LUT. */
-    float tone_map_lut[MAX_TONE_MAP_LUT_SIZE];      /*!< GTM LUT. */
+    float32_t tone_map_lut[MAX_TONE_MAP_LUT_SIZE];      /*!< GTM LUT. */
     uint32_t tone_map_lut_size;                     /*!< size of GTM LUT. */
 } cca_gbce_params;
 
@@ -429,7 +430,7 @@ typedef struct
 typedef struct
 {
     bool enable_manual_settings;               /*!< indicate input params is valid. */
-    float color_conversion_matrix[3][3];       /*!< CC matrix. */
+    float32_t color_conversion_matrix[3][3];       /*!< CC matrix. */
     ia_aiq_color_channels color_gains;         /*!< RGB gains for each color channels. */
 } cca_pa_params;
 
@@ -474,7 +475,7 @@ typedef struct
 typedef struct
 {
     ia_ltm_level ltm_level;                 /*!< Mandatory. LTM level. -1 to use tuning defaults.*/
-    float ev_shift;                         /*!< Optional. (ob) Exposure Value shift [-4,4]. */
+    float32_t ev_shift;                         /*!< Optional. (ob) Exposure Value shift [-4,4]. */
     uint8_t ltm_strength_manual;            /*!< Optional. (ob) User defined manual control for ltm strength, will be casted into unsigned char,
                                                  [0, 200], default is 100 and means no manual effect*/
     int16_t frame_width;                    /*!< Mandatory. Width of the frame where the results will be applied. */
@@ -499,10 +500,10 @@ typedef struct
 {
     ia_isp_bxt_resolution_info_t gdc_resolution_history;
     ia_isp_bxt_resolution_info_t gdc_resolution_info;
-    int pre_gdc_top_padding;
-    int pre_gdc_bottom_padding;
-    int gdc_filter_width;
-    int gdc_filter_height;
+    int32_t pre_gdc_top_padding;
+    int32_t pre_gdc_bottom_padding;
+    int32_t gdc_filter_width;
+    int32_t gdc_filter_height;
     uint8_t splitMetadata[GDC_SPLIT_METADATA_LEN];
 } cca_gdc_configuration;
 
@@ -511,8 +512,8 @@ typedef struct
  */
 struct cca_dvs_zoom
 {
-    float digital_zoom_ratio;               /*!< Digital zoom ratio */
-    float digital_zoom_factor;              /*!< If LGD correction is enabled and envelope is not big enough, small amount of DZ is automatically applied. */
+    float32_t digital_zoom_ratio;               /*!< Digital zoom ratio */
+    float32_t digital_zoom_factor;              /*!< If LGD correction is enabled and envelope is not big enough, small amount of DZ is automatically applied. */
     ia_dvs_zoom_mode zoom_mode;             /*!< Digital zooming mode */
     ia_rectangle zoom_region;               /*!< Zooming region which defines area to be scaled for the output. */
     ia_coordinate zoom_coordinate;          /*!< Zooming coordinate which defines point where digital zoom is applied. */
@@ -533,7 +534,7 @@ typedef struct
 typedef struct
 {
     int count;                                        /*!< number of customized parameters */
-    float parameters[MAX_CUSTOM_CONTROLS_PARAM_SIZE]; /*!< customized parameters */
+    float32_t parameters[MAX_CUSTOM_CONTROLS_PARAM_SIZE]; /*!< customized parameters */
 } cca_custom_control_params;
 
 /*!
@@ -574,7 +575,7 @@ typedef struct
                                                     Value -96 means red become blue, green become red, blue become green */
     int8_t manual_saturation;                  /*!< Optional. Manual saturation value range [-128,127]. Value 0 means no change. */
     ia_isp_effect effects;                     /*!< Optional. Manual setting for special effects. Combination of ia_isp_effect enums.*/
-    float manual_digital_gain;                 /*!< Optional. Additional digital gain that is applied to all color channels of the image before ISP
+    float32_t manual_digital_gain;                 /*!< Optional. Additional digital gain that is applied to all color channels of the image before ISP
                                                     statistics collection. Values less than 1.0 means no additional gain. */
     ia_media_format media_format;              /*!< Mandatory. Selected Digital television output format.(e.g. BT709) */
     cca_program_group program_group;           /*!< Program group parameters for running AIC */
@@ -611,15 +612,15 @@ struct cca_init_params{
     cca_cpf aiq_cpf;                 /*!< Mandatory. tuning data */
     cca_nvm aiq_nvm;                 /*!< Mandatory. sensor nvm data */
     cca_aiqd aiq_aiqd;               /*!< Mandatory. aiq algo calibration data, NULL for 1st time launch */
-    unsigned int bitmap;             /*!< Mandatory. list all components (CCAModuleBitMap) that need initialization. */
+    uint32_t bitmap;             /*!< Mandatory. list all components (CCAModuleBitMap) that need initialization. */
     ia_aiq_frame_params frameParams; /*!< Mandatory. Sensor frame parameters. Describe frame scaling/cropping done in sensor. */
     ia_aiq_frame_use frameUse;       /*!< Mandatory. scenario for use case still/preview/video */
     //BComp init params
-    float conversionGainRatio;
+    float32_t conversionGainRatio;
     ia_bcomp_dol_mode_t dolMode;
     //DVS
     CCADVSOutputType dvsOutputType;  /*!< Mandatory. DVS algo output configuration must match with GDC kernel */
-    float dvsZoomRatio;              /*!< Mandatory. zoom factor */
+    float32_t dvsZoomRatio;              /*!< Mandatory. zoom factor */
     bool enableVideoStablization;    /*!< Mandatory. enable/disable video statlization */
     cca_gdc_configuration gdcConfig; /*!< Mandatory. GDC resolution configuration */
     uint8_t aiqStorageLen;           /*!< Mandatory. lehgth of history to store algo results */

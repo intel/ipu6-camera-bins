@@ -431,6 +431,7 @@ typedef struct ia_aiq_pa_input_params
     ia_aiq_awb_results *awb_results;                 /*!< Mandatory. WB results which are to be used to calculate next ISP parameters (WB gains, color matrix,etc). */
     ia_aiq_exposure_parameters *exposure_params;     /*!< Mandatory. Analog gain and exposure time. */
     ia_aiq_color_channels *color_gains;              /*!< Optional. RGB gains for each color channels. These gain will be applied on top of RGB gains calculated from WB results. */
+    bool enable_gtm_desaturation;                    /*!< Optional. calcualte the saturation factor based on the base_gamma */
 } ia_aiq_pa_input_params;
 
 /*!
@@ -514,6 +515,7 @@ typedef struct
     const ia_aiq_depth_grid **depth_grids;                      /*!< Optional. Depth grid statistics */
     unsigned int num_depth_grids;                               /*!< Optional. Number of depth grid statistics */
     const ia_aiq_grid *ir_grid;                                 /*!< Optional. Ir grid statistics, if available. */
+    bool bAssitLightOn;                                         /*!< True if the af assist light is on, false otherwise .*/
 } ia_aiq_statistics_input_params_v4;
 
 /*!
