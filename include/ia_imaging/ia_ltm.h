@@ -1,5 +1,5 @@
 /*
- * Copyright 2016-2020 Intel Corporation
+ * Copyright 2016-2021 Intel Corporation
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,13 +15,13 @@
  */
 
 /*!
- * \mainpage IA LTM API documentation
+ * \note IA LTM API documentation
  *
  * Browse Files and Classes tabs for details.
  *
- * \section general General info
+ * \section LTM General info
  *
- *  \section init Initialization of LTM library
+ *  \section LTM Initialization of LTM library
  *
  * \copybrief ia_ltm_init
  * To create an instance of LTM library one must call function:
@@ -122,6 +122,7 @@ typedef struct ia_ltm_input_params_v2
  *                                          Input parameters for LTM calculations.
  * \param[out] ltm_results                  Mandatory.\n
  *                                          Pointer's pointer where address of LTM results are stored.
+ * \param[out] ltm_results_drc              ia_ltm_drc param.\n
  * \return                                  Error code.
  */
 LIBEXPORT ia_err

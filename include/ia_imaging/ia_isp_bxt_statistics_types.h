@@ -1,5 +1,5 @@
 /*
- * Copyright 2020 Intel Corporation
+ * Copyright 2021 Intel Corporation
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -174,6 +174,7 @@ typedef struct
     ia_isp_bxt_dvs_motion_vector_entry_t mv_l0[BXT_DVS_STATS_L0_MAX_NUM_ELEMENTS];  /*!< Motion vectors for L0 grid. */
     ia_isp_bxt_dvs_motion_vector_entry_t mv_l1[BXT_DVS_STATS_L1_MAX_NUM_ELEMENTS];  /*!< Motion vectors for L1 grid. */
     ia_isp_bxt_dvs_motion_vector_entry_t mv_l2[BXT_DVS_STATS_L2_MAX_NUM_ELEMENTS];  /*!< Motion vectors for L2 grid. */
+    int32_t reserved;                                                               /*! align to 8. */
 } ia_isp_bxt_motion_vectors_t;
 
 typedef struct

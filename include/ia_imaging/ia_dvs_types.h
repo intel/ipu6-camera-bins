@@ -1,5 +1,5 @@
 /*
- * Copyright 2014-2019 Intel Corporation
+ * Copyright 2014-2021 Intel Corporation
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -299,6 +299,8 @@ typedef struct
                                                                             transformation. Can be used e.g.
                                                                             for image alignment or
                                                                             video stabilization. */
+    bool matrices_changed;
+
 } ia_dvs_image_transformation;
 
 #endif /* _IA_DVS_TYPES_H_ */

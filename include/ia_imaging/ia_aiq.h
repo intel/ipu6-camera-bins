@@ -15,7 +15,7 @@
  */
 
 /*!
- * \mainpage IA AIQ API documentation
+ * \note IA AIQ API documentation
  *
  * Browse Files and Classes tabs for details.
  *
@@ -68,10 +68,10 @@
  * \code ia_isp_XXX_statistics_convert \endcode
  * See ia_isp documentation for details.
  *
- * \copybrief ia_aiq_statistics_set
+ * \copybrief ia_aiq_statistics_set_v4
  * To set statistics for algorithms AIQ library, one must call function:
- * \code ia_aiq_statistics_set \endcode
- * \copydetails ia_aiq_statistics_set
+ * \code ia_aiq_statistics_set_v4 \endcode
+ * \copydetails ia_aiq_statistics_set_v4
  *
  * Algorithms can also utilize external sensor data for making better decisions. For example external light sensor
  * can be used by AEC to determine correct cold start exposure parameters when AEC is called the first time without
@@ -93,24 +93,24 @@
  * \copydetails ia_aiq_af_run
  *
  * \subsection aec AEC
- * \copybrief ia_aiq_ae_run
- * \code ia_aiq_ae_run \endcode
- * \copydetails ia_aiq_ae_run
+ * \copybrief ia_aiq_ae_run_v1
+ * \code ia_aiq_ae_run_v1 \endcode
+ * \copydetails ia_aiq_ae_run_v1
  *
  * \subsection awb AWB
- * \copybrief ia_aiq_awb_run
- * \code ia_aiq_awb_run \endcode
- * \copydetails ia_aiq_awb_run
+ * \copybrief ia_aiq_awb_run_v1
+ * \code ia_aiq_awb_run_v1 \endcode
+ * \copydetails ia_aiq_awb_run_v1
  *
  * \subsection sa SA
- * \copybrief ia_aiq_sa_run
- * \code ia_aiq_sa_run \endcode
- * \copydetails ia_aiq_sa_run
+ * \copybrief ia_aiq_sa_run_v2
+ * \code ia_aiq_sa_run_v2 \endcode
+ * \copydetails ia_aiq_sa_run_v2
  *
  * \subsection pa PA
- * \copybrief ia_aiq_pa_run
- * \code ia_aiq_pa_run \endcode
- * \copydetails ia_aiq_pa_run
+ * \copybrief ia_aiq_pa_run_v1
+ * \code ia_aiq_pa_run_v1 \endcode
+ * \copydetails ia_aiq_pa_run_v1
  *
  * \subsection dsd DSD
  * \copybrief ia_aiq_dsd_run
@@ -195,7 +195,7 @@ extern "C" {
  * \param[in]     ia_cmc            Mandatory.\n
  *                                  Parsed camera module characterization structure. ia_cmc structure needs to be kept available by client for
  *                                  the lifetime of AIQ component.
- * \param[in,out] ia_mkn            Optional.\n
+ * \param[in,out] ia_mkn_ptr        Optional.\n
  *                                  Makernote handle which can be initialized with ia_mkn library. If debug data from AIQ is needed
  *                                  to be stored into EXIF, this parameter is needed. Algorithms will update records inside this makernote instance.
  *                                  Client writes the data into Makernote section in EXIF.
@@ -223,7 +223,7 @@ ia_aiq_set_tuning(ia_aiq *ia_aiq_ptr,
  * \brief De-initialize IA_AIQ and its submodules.
  * All memory allocated by AIQ algoriths are freed. AIQ handle can no longer be used.
  *
- * \param[in] ia_aiq                Mandatory.\n
+ * \param[in] ia_aiq_ptr            Mandatory.\n
  *                                  AIQ instance handle.
  */
 LIBEXPORT void
@@ -274,7 +274,7 @@ typedef struct
  * \brief AEC calculation based on input parameters and frame statistics.
  * AE calculates new exposure parameters to be used for the next frame based on previously given statistics and user parameters.
  *
- * \param[in] ia_aiq                Mandatory.\n
+ * \param[in] ia_aiq_ptr            Mandatory.\n
  *                                  AIQ instance handle.
  * \param[in] ae_input_params       Mandatory.\n
  *                                  Input parameters for AEC calculations.
@@ -292,8 +292,9 @@ ia_aiq_ae_run_v1(ia_aiq *ia_aiq_ptr,
 * \brief Get the AEC calculated histograms.
 * AE calculates histograms from the RGBS grid.
 *
-* \param[in] ia_aiq                Mandatory.\n
+* \param[in] ia_aiq_ptr            Mandatory.\n
 *                                  AIQ instance handle.
+* \param[in] a_exposure_index      Mandatory.\n
 * \return                          Pointer to the calculated histograms.
 */
 LIBEXPORT ia_aiq_histogram *
@@ -322,7 +323,7 @@ typedef struct
  * \brief AF calculation based on input parameters and frame statistics.
  * AF calculates new lens position based on statistics and given input parameters.
  *
- * \param[in] ia_aiq                Mandatory.\n
+ * \param[in] ia_aiq_ptr            Mandatory.\n
  *                                  AIQ instance handle.
  * \param[in] af_input_params       Mandatory.\n
  *                                  Input parameters for AF calculations.
@@ -350,7 +351,7 @@ typedef struct
 /*!
  * \brief AWB calculation based on input parameters and frame statistics.
  *
- * \param[in] ia_aiq                Mandatory.\n
+ * \param[in] ia_aiq_ptr            Mandatory.\n
  *                                  AIQ instance handle.
  * \param[in] awb_input_params      Mandatory.\n
  *                                  Input parameters for AWB calculations.
@@ -381,7 +382,7 @@ typedef struct
  * \brief GBCE calculation based on input parameters and frame statistics.
  * Computes gamma
  *
- * \param[in] ia_aiq                        Mandatory.\n
+ * \param[in] ia_aiq_ptr                    Mandatory.\n
  *                                          AIQ instance handle.
  * \param[in] gbce_input_params             Mandatory.\n
  *                                          Input parameters for GBCE calculations.
@@ -409,7 +410,7 @@ typedef struct
  * \brief DSD based on statistics analysis.
  * Determine scene (DSD) the given image.
  *
- * \param[in] ia_aiq                Mandatory.\n
+ * \param[in] ia_aiq_ptr            Mandatory.\n
  *                                  AIQ instance handle.
  * \param[in] dsd_input_params      Mandatory.\n
  *                                  Input parameters for DSD calculations.
@@ -430,6 +431,7 @@ typedef struct ia_aiq_pa_input_params
     ia_aiq_awb_results *awb_results;                 /*!< Mandatory. WB results which are to be used to calculate next ISP parameters (WB gains, color matrix,etc). */
     ia_aiq_exposure_parameters *exposure_params;     /*!< Mandatory. Analog gain and exposure time. */
     ia_aiq_color_channels *color_gains;              /*!< Optional. RGB gains for each color channels. These gain will be applied on top of RGB gains calculated from WB results. */
+    bool enable_gtm_desaturation;                    /*!< Optional. calcualte the saturation factor based on the base_gamma */
 } ia_aiq_pa_input_params;
 
 /*!
@@ -438,7 +440,7 @@ typedef struct ia_aiq_pa_input_params
 * which should be used to correct the next frame. Calculations are based on previously calculated AIQ algorithm results.
 * These generic results are converted to ISP specific parameters by ia_isp component.
 *
-* \param[in] ia_aiq                Mandatory.\n
+* \param[in] ia_aiq_ptr             Mandatory.\n
 *                                  AIQ instance handle.
 * \param[in] pa_input_params       Mandatory.\n
 *                                  Input parameters for PA calculations.
@@ -458,7 +460,7 @@ ia_aiq_pa_run_v1(ia_aiq *ia_aiq_ptr,
  * which should be used to correct the next frame. Calculations are based on previously calculated AIQ algorithm results.
  * These generic results are converted to ISP specific parameters by ia_isp component.
  *
- * \param[in] ia_aiq                Mandatory.\n
+ * \param[in] ia_aiq_ptr            Mandatory.\n
  *                                  AIQ instance handle.
  * \param[in] sa_input_params       Mandatory.\n
  *                                  Input parameters for SA calculations.
@@ -502,7 +504,7 @@ typedef struct
     const ia_aiq_pa_results_v1 *frame_pa_parameters;               /*!< Optional (Mandatory if external_histogram is not given).
                                                                      AWB results used in the frame from where the statistics are collected.
                                                                      GBCE will give default gamma table if external histogram or AWB results are not available. */
-    const ia_atbx_face_state *faces;                            /*!< Mandatory although function will not return error, if not given.
+    ia_atbx_face_state *faces;                                  /*!< Mandatory although function will not return error, if not given.
                                                                      Face coordinates from external face detector.
                                                                      DSD will not return all scene modes, if not given.
                                                                      AWB will not take face information into account, if not given. */
@@ -513,6 +515,7 @@ typedef struct
     const ia_aiq_depth_grid **depth_grids;                      /*!< Optional. Depth grid statistics */
     unsigned int num_depth_grids;                               /*!< Optional. Number of depth grid statistics */
     const ia_aiq_grid *ir_grid;                                 /*!< Optional. Ir grid statistics, if available. */
+    bool bAssitLightOn;                                         /*!< True if the af assist light is on, false otherwise .*/
 } ia_aiq_statistics_input_params_v4;
 
 /*!
@@ -520,7 +523,7 @@ typedef struct
  * AIQ algorithms need various information about the conditions in which the frame and statistics were captured in order to
  * calculate new parameters.
  *
- * \param[in] ia_aiq                        Mandatory.\n
+ * \param[in] ia_aiq_ptr                    Mandatory.\n
  *                                          AIQ instance handle.
  * \param[in] statistics_input_params       Mandatory.\n
  *                                          Input parameters containing statistics and information about a frame.
@@ -543,7 +546,7 @@ typedef struct
 /*!
  * \brief Calculates the list of lens positions for focus bracketing.
  *
- * \param[in]  ia_aiq                       Mandatory.\n
+ * \param[in]  ia_aiq_ptr                   Mandatory.\n
  *                                          AIQ instance handle.
  * \param[in]  af_bracket_input_params      Mandatory.\n
  *                                          Autofocus bracketing parameters.
@@ -557,7 +560,7 @@ ia_aiq_af_bracket(ia_aiq *ia_aiq_ptr,
                   ia_aiq_af_bracket_results **af_bracket_results);
 
 /*!
- * \param[in]  ia_aiq               Mandatory.\n
+ * \param[in]  ia_aiq_ptr           Mandatory.\n
  *                                  AIQ instance handle.
  * \param[out] out_ia_aiq_data      Mandatory.\n
  *                                  Contains various AIQ related information, collected during run-time and subject to
@@ -574,7 +577,7 @@ ia_aiq_get_aiqd_data(ia_aiq *ia_aiq_ptr,
  * \brief Set event statistics.
  * Some of the AIQ algorithms benefit from sensor information which tells about the conditions in which the device is in use
  *
- * \param[in] ia_aiq                        Mandatory.\n
+ * \param[in] ia_aiq_ptr                    Mandatory.\n
  *                                          AIQ instance handle.
  * \param[in] sensor_events_input           Mandatory.\n
  *                                          Sensor events input holds data from libsensorhub.

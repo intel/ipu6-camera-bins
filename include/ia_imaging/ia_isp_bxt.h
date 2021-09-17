@@ -18,7 +18,6 @@
  * \file ia_isp_bxt.h
  * \brief ia_isp_bxt specific implementation.
  *
- * \mainpage
  * \section main Automatic ISP (AIC) Configuration component for IPU4 (and onwards)
  *
  * AIC is stateless component, which purpose is to
@@ -148,7 +147,11 @@ extern "C" {
  *                                   and AF statistics grid allocations.l
  *                                   Initialization parameters for statistics conversion.
  * \param[in]     max_num_stats_in   Mandatory. The maximum number of input statistics for one frame. Each statistics is related to different exposure.
- *                                   Used especially for sensors that support two or more simultaneous exposures (HDR).
+ * \param[in,out] ia_mkn            Optional.\n
+ *                                  Makernote handle which can be initialized with ia_mkn library. If debug data from AIQ is needed
+ *                                  to be stored into EXIF, this parameter is needed. Algorithms will update records inside this makernote instance.
+ *                                  Client writes the data into Makernote section in EXIF.
+ *                                  Used especially for sensors that support two or more simultaneous exposures (HDR).
  */
 
 LIBEXPORT ia_isp_bxt*
@@ -234,7 +237,7 @@ typedef struct ia_isp_bxt_input_params_v2
 /*!
  * \brief Dump AIC input parameters to binary, for debug purpose only.
  *
- * \param[in] input_params                  Mandatory. Input parameters for AIC.
+ * \param[in] bxt_input_params              Mandatory. Input parameters for AIC.
  * \param[out] output_data                  Mandatory. Output data structure which contains the dump of input_params.
  * \return                                  Error code.
  */
@@ -284,7 +287,7 @@ ia_isp_bxt_get_version(void);
 /*!
 * \brief Get PAL kernel statuses.
 * Get PAL kernel status list from previous run.
-* \param[in] ia_isp_bxt                    Mandatory. ISP instance handle.
+* \param[in] ia_isp_bxt_ptr                Mandatory. ISP instance handle.
 * \param[in] pal_status_list               Mandatory. Pointer's pointer where kernel status list is set.
 * \param[in] status_list_count             Mandatory. Pointer where number of statuses is written.
 *
@@ -380,7 +383,7 @@ ia_isp_bxt_statistics_convert_awb_from_binary_v4(
 * \param[in] wb_color_gains         Mandatory for cases(such as DOL) where statistics have WB already applied in the ISP which needs to be reverted for valid RGBS stat calculation,
 *                                   ignored otherwise. The color gains are from PA results(ia_aiq_pa_results.color_gains) used in de-stiching of input HDR statistics to num_exposures LDR RGBS grids.
 * \param[in] bcomp_results          Mandatory for compressed statistics data (e.g. in case of 20-bit DOL statistics in IPU7).
-* \param[out] out_rgbs_grid         Mandatory. CCAT output rgbs-grids. At least IA_CCAT_STATISTICS_MAX_NUM grids.
+* \param[out] out_rgbs_grids        Mandatory. CCAT output rgbs-grids. At least IA_CCAT_STATISTICS_MAX_NUM grids.
 * \param[out] out_ir_grid           Mandatory for RGB-IR sensors, NULL otherwise. CCAT output ir-grid.
 * \return                           Error code.
 */
@@ -601,6 +604,7 @@ ia_isp_bxt_statistics_convert_awb_v4(
 * \param[in]  ia_isp_bxt                         Mandatory. ia_isp_bxt instance handle.
 * \param[in]  statistics                         Mandatory. Statistics in ISP specific format. Must be MSB aligned to ia_isp_bxt_ptr->ia_cmc->cmc_general_data->bit_depth.
 * \param[in]  hdr_compression                    Optional. NULL, if HDR statistics are already in linear space (no compression).
+* \param[in]  ae_results                         Optional.
 * \param[in]  stats_rgbs_hdr_block_pixel_width   Mandatory. TODO: Remove when FW will output saturation percentage instead of saturation count. Width of the block in pixel used in computing the saturation percentage.
 * \param[in]  stats_rgbs_hdr_block_pixel_height  Mandatory. TODO: Remove when FW will output saturation percentage instead of saturation count. Height of the block in pixel used in computing the saturation percentage.
 * \param[in]  r_gain                             Mandatory. Gain applied to the R color channel before HDR statistic collection. Gain will be reverted from HDR statistics.
@@ -629,7 +633,7 @@ ia_isp_bxt_statistics_convert_awb_hdr_from_binary_v2(
 /*!
 * \brief Converts HDR DP RGBS statistics (MSB aligned) to AIQ format.
 * ISP/VLIW generated statistics may not be in the format in which AIQ algorithms expect. Statistics need to be converted  into AIQ statistics format.
-* \param[in]  ia_isp_bxt                         Mandatory. ia_isp_bxt instance handle.
+* \param[in]  ia_isp_bxt_ptr                     Mandatory. ia_isp_bxt instance handle.
 * \param[in]  stats_width                        Mandatory. Actual width of the statistics grid.
 * \param[in]  stats_height                       Mandatory. Actual height of the statistics grid.
 * \param[in]  stats_r                            Mandatory. Must be MSB aligned to ia_isp_bxt_ptr->ia_cmc->cmc_general_data->bit_depth.
@@ -637,6 +641,7 @@ ia_isp_bxt_statistics_convert_awb_hdr_from_binary_v2(
 * \param[in]  stats_g                            Mandatory. Must be MSB aligned to ia_isp_bxt_ptr->ia_cmc->cmc_general_data->bit_depth.
 * \param[in]  stats_s                            Mandatory.
 * \param[in]  hdr_compression                    Optional. NULL, if HDR statistics are already in linear space (no compression).
+* \param[in]  ae_results                         Optional.
 * \param[in]  stats_rgbs_hdr_block_pixel_width   Mandatory. TODO: Remove when FW will output saturation percentage instead of saturation count. Width of the block in pixel used in computing the saturation percentage.
 * \param[in]  stats_rgbs_hdr_block_pixel_height  Mandatory. TODO: Remove when FW will output saturation percentage instead of saturation count. Height of the block in pixel used in computing the saturation percentage.
 * \param[in]  r_gain                             Mandatory. Gain applied to the R color channel before HDR statistic collection. Gain will be reverted from HDR statistics.
@@ -837,7 +842,7 @@ ia_isp_bxt_statistics_convert_dvs(
  * \brief Read parameters, interpolated by GAIC, of requested ISP block.
  * This function queries currently effective Algorithm API parameters, which are interpolated by GAIC, of a target ISP block.
  *
- * \param [in]  ia_isp_bxt         Mandatory.  ia_isp_bxt instance handle.
+ * \param [in]  ia_isp_bxt_ptr     Mandatory.  ia_isp_bxt instance handle.
  * \param [in]  target_id          Mandatory.  uuid of queried ISP block.
  * \param [out] target_data_ptr    Mandatory.  a pointer of a pointer to data buffer that will have read parameters.
  * \param [out] output_size_ptr    Mandatory.  a size of all parameters. 0 if a target record does not exist.
@@ -855,7 +860,7 @@ ia_isp_bxt_get_interpolated_parameters(
 * \brief Get Algo API values interpolated by GAIC of all the ISP blocks.
 * This function queries currently effective Algorithm API parameters, which are interpolated by GAIC, for all the ISP blocks.
 *
-* \param [in] ia_isp_bxt Mandatory. ia_isp_bxt instance handle.
+* \param [in] ia_isp_bxt_ptr Mandatory. ia_isp_bxt instance handle.
 * \param [out] output_data Mandatory. Effective Algorithm API parameters binary data.
 * \return Error code.
 */
@@ -868,7 +873,7 @@ ia_binary_data* output_data);
 * \brief Get Direct Results.
 * This function queries currently effective Direct Results.
 *
-* \param [in] ia_isp_bxt Mandatory. ia_isp_bxt instance handle.
+* \param [in] ia_isp_bxt_ptr Mandatory. ia_isp_bxt instance handle.
 * \param [out] output_data Mandatory. Effective Direct Results data.
 * \return Error code.
 */

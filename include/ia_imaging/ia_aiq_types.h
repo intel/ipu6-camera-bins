@@ -694,6 +694,7 @@ typedef struct {
     unsigned int gamma_lut_size;    /*!< Number of elements in each gamma LUT. */
     float* tone_map_lut;            /*!< Tone Mapping Gain LUT. Range [0.0 FLT_MAX] */
     unsigned int tone_map_lut_size; /*!< Number of elements in tone mapping LUT. */
+    float base_gamma;
 } ia_aiq_gbce_results;
 
 /*!
@@ -771,6 +772,15 @@ typedef struct {
     int8_t grid_indices[16];      /*!< Grid indices */
     unsigned int n_models;        /*!< Number of models */
     ia_aiq_rgbir_model_t *models; /*!< Array of models */
+    float ir_nr_offset;
+    float ir_nr_bnlm;
+    float ir_nr_xnr;
+    float ir_nr_iefd;
+    float ir_nr_tnr;
+    float ir_nr_brightness;
+    float ir_nr_shadow;
+    float ir_nr_tg_adj;
+    float ir_nr_offset_max;
 } ia_aiq_rgbir_t;
 
 /*!
@@ -817,7 +827,7 @@ typedef struct {
     float brightness_level;                           /*!< Range [0.0, 1.0]. Indicates level of brightness in the image. */
     ia_aiq_advanced_ccm_t *preferred_acm;             /*!< Advanced CC matrix. */
     ia_aiq_ir_weight_t *ir_weight;                    /*!< IR Weight. */
-    ia_aiq_rgbir_t *rgbir;                            /*!< RGB IR model. */
+    ia_aiq_rgbir_t *rgbir;                            /*!< RGB IR. */
 } ia_aiq_pa_results;
 
 /*!
@@ -832,7 +842,7 @@ typedef struct {
     float brightness_level;                           /*!< Range [0.0, 1.0]. Indicates level of brightness in the image. */
     ia_aiq_advanced_ccm_t *preferred_acm;             /*!< Advanced CC matrix. */
     ia_aiq_ir_weight_t *ir_weight;                    /*!< IR Weight. */
-    ia_aiq_rgbir_t *rgbir;                            /*!< RGB IR model. */
+    ia_aiq_rgbir_t *rgbir;                            /*!< RGB IR. */
 } ia_aiq_pa_results_v1;
 
 /*!

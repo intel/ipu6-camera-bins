@@ -1,6 +1,6 @@
 /*
  * INTEL CONFIDENTIAL
- * Copyright (c) 2013-2020 Intel Corporation. All Rights Reserved.
+ * Copyright (c) 2013-2021 Intel Corporation. All Rights Reserved.
  *
  * The source code contained or described herein and all documents related to
  * the source code ("Material") are owned by Intel Corporation or its suppliers
@@ -258,6 +258,8 @@
 #define psys_ipu6s_isa_output_af_uid        (psys_ipu6s_isa_uid + 11)
 #define psys_ipu6s_isa_output_awb_uid       (psys_ipu6s_isa_uid + 12)
 #define psys_ipu6s_isa_output_paf_uid       (psys_ipu6s_isa_uid + 13)
+#define psys_ipu6s_isa_out_ae_stat_uid      (psys_ipu6s_isa_uid + 14)
+#define psys_ipu6s_isa_input_paf_uid        (psys_ipu6s_isa_uid + 15)
 
 #define psys_fake_ipu6s_isa_pg_id                199
 #define psys_fake_ipu6s_isa_uid                  psys_2600_pg_uid(psys_fake_ipu6s_isa_pg_id)
@@ -837,6 +839,8 @@
 #define psys_2600_ncr_monods_gdc_output_ds4_uid       psys_2600_ncr_monods_gdc_uid + 5
 #define psys_2600_ncr_monods_gdc_output_ds16_uid      psys_2600_ncr_monods_gdc_uid + 6
 
+#define stilltnr_stage_id             103
+#define stilltnr_stage_uid            ia_cipf_external_stage_uid(stilltnr_stage_id)
 #define tnr_stage_id                  102
 #define tnr_stage_uid                 ia_cipf_external_stage_uid(tnr_stage_id)
 #define veboxtnr_stage_id             101
@@ -901,7 +905,8 @@
 
 #define is_gpu_stage_uid(uid) (uid == burstisp_stage_uid \
                             || uid == tnr_stage_uid \
-                            || uid == veboxtnr_stage_uid)
+                            || uid == veboxtnr_stage_uid \
+                            || uid == stilltnr_stage_uid)
 
 /* COMMON CSS UIDS */
 #define css_program_group_params_uid        ia_fourcc('C','S','S','P')

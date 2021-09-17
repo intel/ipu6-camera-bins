@@ -15,9 +15,9 @@
  */
 
 /*!
- * \mainpage IA DVS documentation
+ * \note IA DVS documentation
  *
- * \section general General info
+ * \section General info
  *
  * Digital video stabilization API.
  *

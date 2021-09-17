@@ -1,6 +1,6 @@
 /*
  * INTEL CONFIDENTIAL
- * Copyright (c) 2012-2020 Intel Corporation
+ * Copyright (c) 2012-2021 Intel Corporation
  * All Rights Reserved.
  *
  * The source code contained or described herein and all documents related to
@@ -26,7 +26,7 @@
  */
 
 /*!
- * \file nvmparser.h
+ * \file ia_nvm.h
  * \brief Definitions of NVM (Non-Volatile Memory) data parser.
 */
 
@@ -159,7 +159,7 @@ ia_nvm_parse(const ia_binary_data * a_nvm_ptr,
  * \param[in] parsed_nvm Camera NVM in parsed (ia_nvm) structure.
  */
 LIBEXPORT void
-ia_nvm_deinit(ia_nvm *parsed_nvm);
+ia_nvm_deinit(ia_nvm *a_nvm_ptr);
 
 /*!
  * \brief Allocates memory and creates Intel specified camera NVM data from input structure.
@@ -167,14 +167,14 @@ ia_nvm_deinit(ia_nvm *parsed_nvm);
  * \return               Binary data containing the camera NVM in Intel specified format.
  */
 LIBEXPORT ia_binary_data*
-ia_nvm_binary_create(const ia_nvm *parsed_nvm);
+ia_nvm_binary_create(const ia_nvm *a_nvm_ptr);
 
 /*!
  * \brief Deletes memory allocated by ia_nvm_binary_create() function.
  * \param[in] nvm_binary Binary data created by function ia_nvm_binary_create.
  */
 LIBEXPORT void
-ia_nvm_binary_delete(ia_binary_data *nvm_binary);
+ia_nvm_binary_delete(ia_binary_data *a_nvm_binary_ptr);
 
 #ifdef __cplusplus
 }

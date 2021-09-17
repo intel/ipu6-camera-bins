@@ -1,6 +1,6 @@
 /*
  * INTEL CONFIDENTIAL
- * Copyright (c) 2012-2020 Intel Corporation
+ * Copyright (c) 2012-2021 Intel Corporation
  * All Rights Reserved.
  *
  * The source code contained or described herein and all documents related to
@@ -149,8 +149,8 @@ typedef struct
     bool frame_parameters_available;                                         /*!< Mandatory. Flag indicating that frame parameters can be used by CCAT. Set to false to invalidate frame parameters. */
     bool shading_corrected;                                                  /*!< Mandatory. Flag indicating if statistics were calculated using lens shading corrected data. */
     ia_ccat_frame_type frame_type;                                           /*!< Mandatory. Indicates if statistics were captured from non-flash or flash illuminated frame. */
-    unsigned long long frame_id;                                             /*!< Mandatory. ID for the captured frame. */
-    unsigned long long frame_timestamp;                                      /*!< Mandatory. Time stamp for captured frame. */
+    uint64_t frame_id;                                             /*!< Mandatory. ID for the captured frame. */
+    uint64_t frame_timestamp;                                      /*!< Mandatory. Time stamp for captured frame. */
     ia_rectangle statistics_crop_area;                                       /*!< Mandatory. RGBS and AF grid area crop with respect to full field of view of sensor output using (relative)ranges from ia_coordinate.h. */
 #ifdef IA_CCAT_EXTERNAL_RGB_HISTOGRAMS_ENABLED
     ia_ccat_histograms rgb_histograms[IA_CCAT_STATISTICS_MAX_NUM];           /*!< Optional. RGB histograms pointer for each exposure statistics. */
@@ -184,6 +184,8 @@ typedef struct
     ia_aiq_af_results af_results;                                            /*!< Optional. */
 #ifdef IA_CCAT_FACE_ANALYSIS_ENABLED
     ia_face_roi faces[IA_CCAT_FACES_MAX_NUM];                                /*!< Optional. Face coordinates from external face detector. NULL if not available. */
+    bool updated;                                                            /*!< The update status of face. true is the real statistics, and false is the false statistics that have not been updated.*/
+    bool is_video_conf;                                                      /*!< video confenerce mode. */
 #endif
 } ia_ccat_frame_parameters;
 
@@ -198,12 +200,12 @@ typedef struct
  */
 typedef struct
 {
-    unsigned long long ts;  /*!< Time stamp in usec (microseconds) */
+    uint64_t ts;  /*!< Time stamp in usec (microseconds) */
     float x;                /*!< Sensor Data in X direction depending on the type of the sensor */
     float y;                /*!< Sensor Data in Y direction depending on the type of the sensor */
     float z;                /*!< Sensor Data in Z direction depending on the type of the sensor */
     float sensitivity;      /*!< Sensitivity of the sensor */
-    unsigned long long fs;  /*!< Frame stamp in usec (microseconds) */
+    uint64_t fs;  /*!< Frame stamp in usec (microseconds) */
 } ia_ccat_motion_sensor_event;
 
 /*!
@@ -213,10 +215,10 @@ typedef struct
  */
 typedef struct
 {
-    unsigned long long ts;  /*!< Time stamp in usec (microseconds) */
+    uint64_t ts;  /*!< Time stamp in usec (microseconds) */
     float data;             /*!< Ambient Light data ? */
     float sensitivity;      /*!< Sensitivity of Ambient Light sensor */
-    unsigned long long fs;  /*!< Frame stamp in usec (microseconds) */
+    uint64_t fs;  /*!< Frame stamp in usec (microseconds) */
 } ia_ccat_ambient_light_event;
 
 typedef struct ia_ccat_lse_size_t

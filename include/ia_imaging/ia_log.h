@@ -14,8 +14,8 @@
  * limitations under the License.
  */
 
-#ifndef _IA_LOG_H_
-#define _IA_LOG_H_
+#ifndef IA_LOG_H_
+#define IA_LOG_H_
 
 #include "ia_types.h"
 
@@ -30,12 +30,12 @@ extern "C" {
 /*!
  * \brief Macro for not logging.
  */
-#define IA_NOLOG(...)           ((void)0)
+#define IA_NOLOG(...)           { /*LDRA_INSPECTED 57 S */ ((void)0);}
 
 /*!
  * \brief Macro wrapper for ia_log function.
  */
-#define IA_LOG(level, fmt, ...) ((void)ia_log(level, fmt, ## __VA_ARGS__))
+#define IA_LOG(level, fmt, ...) ((void)ia_log((level), (fmt), ## __VA_ARGS__))
 
 /*!
  * \brief Logging levels.
@@ -66,6 +66,8 @@ ia_log_init(ia_env *a_env_ptr);
  * \param[in] fmt   Format string.
  * \param[in] ...   Variables to be printed out as defined by the format string.
  */
+
+/*LDRA_INSPECTED 306 S */
 LIBEXPORT void
 ia_log(ia_log_level level, const char *fmt, ...);
 
@@ -84,7 +86,7 @@ ia_log_strerror(ia_err error);
  * Must be called if ia_log_init() was called.
  */
 LIBEXPORT void
-ia_log_deinit();
+ia_log_deinit(void);
 
 #ifdef __cplusplus
 }

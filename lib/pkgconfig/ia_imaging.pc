@@ -1,7 +1,7 @@
 prefix=/usr
-exec_prefix=${prefix}
-libdir=${exec_prefix}/lib
-includedir=${prefix}/include
+exec_prefix=/usr
+libdir=/usr/lib
+includedir=/usr/include
 
 Name: libia_imaging
 Description: ia_imaging libraries

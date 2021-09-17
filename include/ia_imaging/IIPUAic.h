@@ -29,10 +29,13 @@ namespace cca {
  */
 typedef struct {
     long sequenceId;                            /*!< sequence id of the frame to decode from. */
+    uint32_t bitmap;                            /*!< select RGBS, HIST, AF ... if needed to decode. */
     const ia_aiq_ae_results* ae_settings;       /*!< AE result for sensor exposure setting. */
+    const ia_aiq_color_channels *wb_color_gains;/*!< wb gains for all channels. */
     const ia_bcomp_results* bcomp_settings;     /*!< BComp result for lens VCM and PWM setting. */
     ia_binary_data* stats;                      /*!< statistics binary. */
     bool need_decode_dvs_stats;                 /*!< need process DVS statistics. */
+    const ia_aiq_ir_weight_t* ir_weight;        /*!< ir weight from PA. */
 } cca_dec_stats_input;
 
 /*!
@@ -166,7 +169,7 @@ public:
      * \return                           Error code.
      */
     virtual ia_err init(const ia_binary_data *aiqb, const ia_cmc_t *cmc, uint32_t max_stats_width,
-                        uint32_t max_stats_height, uint32_t max_num_stats_in, ia_mkn *mkn) = 0;
+                        uint32_t max_stats_height, uint32_t max_num_stats_in, const ia_mkn *mkn) = 0;
 
     /*!
      * \brief update tuning file aiqb.
@@ -186,9 +189,13 @@ public:
      *                                       parameters for statistis.
      * \param[in] aiqResults                 Mandatory.\n
      *                                       last AIQ results for reference.
+     * \param[out] outStats                  Optional.\n
+     *                                       Output the AIQ statistics data.
      * \return                               Error code.
      */
-    virtual ia_err setStatsParams(ia_aiq* aiqHandle, const cca_stats_params &params, const cca_aiq_results_storage &aiqResults) = 0;
+    virtual ia_err setStatsParams(ia_aiq* aiqHandle, const cca_stats_params &params,
+                                  const cca_aiq_results_storage &aiqResults,
+                                  cca_out_stats *outStats = nullptr) = 0;
 
 #ifdef PAC_ENABLE
     /*!
@@ -228,7 +235,7 @@ public:
      *                                   sequence id for streaming.
      * \return                           Error code.
      */
-    virtual ia_err decodeStats(int groupId, long seqId) = 0;
+    virtual ia_err decodeStats(int32_t groupId, int64_t seqId) = 0;
 
     /*!
      * \brief run AIC parameters with graph config & Intel3A results.

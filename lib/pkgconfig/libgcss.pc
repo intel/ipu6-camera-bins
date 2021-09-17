@@ -1,12 +1,12 @@
 prefix=/usr
 exec_prefix=/usr
-libdir=/usr/lib/
-includedir=/usr/include/
+libdir=/usr/lib
+includedir=/usr/include
 
 Name: libgcss
 Description: Graph Configuration Subsystem library
 URL:
-Version:
+Version: 
 Libs: -L${libdir} -lgcss
 Cflags: -I${includedir} \
         -I${includedir}/ia_camera

@@ -152,7 +152,7 @@ typedef uint16_t half;
 
 
 
-#define IA_MAX_FIXEDPOINT(integer_bits, frac_bits) ((float64_t)((((integer_bits) > 0)?(2<<((integer_bits)-1)):1)) - (1.0f/((float64_t)(((frac_bits) > 0)?((unsigned long)2<<((frac_bits)-1)):0))))
+#define IA_MAX_FIXEDPOINT(integer_bits, frac_bits) ((float64_t)((((integer_bits) > 0)?(2<<((integer_bits)-1)):1)) - (1.0/((float64_t)(((frac_bits) > 0)?((unsigned long)2<<((frac_bits)-1)):0))))
 #define IA_MIN_FIXEDPOINT(integer_bits, frac_bits) (-IA_MAX_FIXEDPOINT((integer_bits), frac_bits))
 #define IA_MAX_Q0_FIXEDPOINT(frac_bits) (1.0 - (1.0f/((float64_t)(frac_bits?((unsigned long)2<<(frac_bits-1)):0))))
 
@@ -185,37 +185,37 @@ typedef uint16_t half;
 #define IA_SX_15_FRAC_BITS  (15)
 #define IA_S4_15_MIN IA_MIN_FIXEDPOINT(4, IA_SX_15_FRAC_BITS)
 #define IA_S4_15_MAX IA_MAX_FIXEDPOINT(4, IA_SX_15_FRAC_BITS)
-#define IA_FLOAT_TO_S4_15(val) CAST_TO_TYPE(uint32_t,(IA_ROUND((IA_LIMIT(val, IA_S4_15_MIN, IA_S4_15_MAX))*((unsigned long)2<<(IA_SX_15_FRAC_BITS-1)))))
+#define IA_FLOAT_TO_S4_15(val) CAST_TO_TYPE(int32_t,(IA_ROUND((IA_LIMIT(val, IA_S4_15_MIN, IA_S4_15_MAX))*((unsigned long)2<<(IA_SX_15_FRAC_BITS-1)))))
 
 /* S4.14 means: total 20 bits =  1 sign bit + 4 int bits + 14 fractional bits*/
 #define IA_SX_14_FRAC_BITS  (14)
 #define IA_S4_14_MIN IA_MIN_FIXEDPOINT(4, IA_SX_14_FRAC_BITS)
 #define IA_S4_14_MAX IA_MAX_FIXEDPOINT(4, IA_SX_14_FRAC_BITS)
-#define IA_FLOAT_TO_S4_14(val) CAST_TO_TYPE(uint32_t,(IA_ROUND((IA_LIMIT(val, IA_S4_14_MIN, IA_S4_14_MAX))*((unsigned long)2<<(IA_SX_14_FRAC_BITS-1)))))
+#define IA_FLOAT_TO_S4_14(val) CAST_TO_TYPE(int32_t,(IA_ROUND((IA_LIMIT(val, IA_S4_14_MIN, IA_S4_14_MAX))*((unsigned long)2<<(IA_SX_14_FRAC_BITS-1)))))
 
 /* S4.19 means: =  1 sign bit + 4 int bits + 19 fractional bits*/
 #define IA_SX_19_FRAC_BITS  (19)
 #define IA_S4_19_MIN IA_MIN_FIXEDPOINT(4, IA_SX_19_FRAC_BITS)
 #define IA_S4_19_MAX IA_MAX_FIXEDPOINT(4, IA_SX_19_FRAC_BITS)
-#define IA_FLOAT_TO_S4_19(val) CAST_TO_TYPE(uint32_t,(IA_ROUND((IA_LIMIT(val, IA_S4_19_MIN, IA_S4_19_MAX))*((unsigned long)2<<(IA_SX_19_FRAC_BITS-1)))))
+#define IA_FLOAT_TO_S4_19(val) CAST_TO_TYPE(int32_t,(IA_ROUND((IA_LIMIT(val, IA_S4_19_MIN, IA_S4_19_MAX))*((unsigned long)2<<(IA_SX_19_FRAC_BITS-1)))))
 
 #define IA_SX_20_FRAC_BITS  (20)
 #define IA_S1_20_MIN IA_MIN_FIXEDPOINT(1, IA_SX_20_FRAC_BITS)
 #define IA_S1_20_MAX IA_MAX_FIXEDPOINT(1, IA_SX_20_FRAC_BITS)
-#define IA_FLOAT_TO_S1_20(val) CAST_TO_TYPE(uint32_t,(IA_ROUND((IA_LIMIT(val, IA_S1_20_MIN, IA_S1_20_MAX))*((unsigned long)2<<(IA_SX_20_FRAC_BITS-1)))))
+#define IA_FLOAT_TO_S1_20(val) CAST_TO_TYPE(int32_t,(IA_ROUND((IA_LIMIT(val, IA_S1_20_MIN, IA_S1_20_MAX))*((unsigned long)2<<(IA_SX_20_FRAC_BITS-1)))))
 
 #define IA_S4_20_MIN IA_MIN_FIXEDPOINT(4, IA_SX_20_FRAC_BITS)
 #define IA_S4_20_MAX IA_MAX_FIXEDPOINT(4, IA_SX_20_FRAC_BITS)
-#define IA_FLOAT_TO_S4_20(val) CAST_TO_TYPE(uint32_t,(IA_ROUNDD((IA_LIMIT(val, IA_S4_20_MIN, IA_S4_20_MAX))*((unsigned long)2<<(IA_SX_20_FRAC_BITS-1)))))
+#define IA_FLOAT_TO_S4_20(val) CAST_TO_TYPE(int32_t,(IA_ROUNDD((IA_LIMIT(val, IA_S4_20_MIN, IA_S4_20_MAX))*((unsigned long)2<<(IA_SX_20_FRAC_BITS-1)))))
 
 #define IA_SX_8_FRAC_BITS  (8)
 #define IA_S14_8_MIN IA_MIN_FIXEDPOINT(14, IA_SX_8_FRAC_BITS)
 #define IA_S14_8_MAX IA_MAX_FIXEDPOINT(14, IA_SX_8_FRAC_BITS)
-#define IA_FLOAT_TO_S14_8(val) CAST_TO_TYPE(uint32_t,(IA_ROUNDD((IA_LIMIT(val, IA_S14_8_MIN, IA_S14_8_MAX))*((unsigned long)2<<(IA_SX_8_FRAC_BITS-1)))))
+#define IA_FLOAT_TO_S14_8(val) CAST_TO_TYPE(int32_t,(IA_ROUNDD((IA_LIMIT(val, IA_S14_8_MIN, IA_S14_8_MAX))*((unsigned long)2<<(IA_SX_8_FRAC_BITS-1)))))
 
 #define IA_S18_8_MIN IA_MIN_FIXEDPOINT(18, IA_SX_8_FRAC_BITS)
 #define IA_S18_8_MAX IA_MAX_FIXEDPOINT(18, IA_SX_8_FRAC_BITS)
-#define IA_FLOAT_TO_S18_8(val) CAST_TO_TYPE(uint32_t,(IA_ROUNDD((IA_LIMIT(val, IA_S18_8_MIN, IA_S18_8_MAX))*((unsigned long)2<<(IA_SX_8_FRAC_BITS-1)))))
+#define IA_FLOAT_TO_S18_8(val) CAST_TO_TYPE(int32_t,(IA_ROUNDD((IA_LIMIT(val, IA_S18_8_MIN, IA_S18_8_MAX))*((unsigned long)2<<(IA_SX_8_FRAC_BITS-1)))))
 
 #if ((!defined _WIN32) && (!defined WIN32) && (!defined _WINDOWS) && (!defined WINDOWS) && (!defined __STDC_LIB_EXT1__) && (!defined memcpy_s))
 

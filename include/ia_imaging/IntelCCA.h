@@ -151,9 +151,11 @@ public:
      *
      * \param[in] params                Mandatory.\n
      *                                  Input parameters containing statistics information about a frame.
+     * \param[out] outStats             Optional.\n
+     *                                  Output the aiq statistics data.
      * \return                          Error code for status. zero on success, non-zero on failure
      */
-    ia_err setStatsParams(const cca_stats_params& params);
+    ia_err setStatsParams(const cca_stats_params& params, cca_out_stats *outStats = nullptr);
 
     /*!
      * \brief AEC calculation based on input parameters and frame statistics.
@@ -331,7 +333,7 @@ public:
     *
     * \return                   Error code for status. zero on success, non-zero on failure
     */
-    ia_err decodeStats(int groupId, long seqId);
+    ia_err decodeStats(int32_t groupId, int64_t seqId);
 
     /*!
     *
@@ -352,11 +354,12 @@ public:
     * Parse and decode different statistics from HW including AE/AWB/DVS/HDR
     *
     * \param [in]  stats        statistics binary from HW
+    * \param [in]  bitmap       select RGBS, HIST, AF ... if needed to decode
     * \param [out] results      statistics type after parsing statistics
     *
     * \return                   Error code for status. zero on success, non-zero on failure
     */
-    ia_err decodeStats(const cca_stats_bin &stats, ia_isp_bxt_statistics_query_results_t *results);
+    ia_err decodeStats(const cca_stats_bin &stats, uint32_t bitmap, ia_isp_bxt_statistics_query_results_t *results);
 
     /*!
     *
@@ -365,11 +368,12 @@ public:
     *
     * \param [in]  statsPointer pointer to share memory that stores the statistics binary from HW
     * \param [in]  statsSize    statistics size
+    * \param [in]  bitmap       select RGBS, HIST, AF ... if needed to decode
     * \param [out] results      statistics type after parsing statistics
     *
     * \return                   Error code for status. zero on success, non-zero on failure
     */
-    ia_err decodeStats(uint64_t statsPointer, uint32_t statsSize, ia_isp_bxt_statistics_query_results_t *results);
+    ia_err decodeStats(uint64_t statsPointer, uint32_t statsSize, uint32_t bitmap, ia_isp_bxt_statistics_query_results_t *results);
 
     /*!
     *
@@ -423,7 +427,7 @@ private:
     void deInitLtm();
 #endif
 #endif
-    ia_err initBcomp(ia_bcomp_dol_mode_t mode, float ratio);
+    ia_err initBcomp(ia_bcomp_dol_mode_t mode, float32_t ratio);
     ia_err updateBcomp();
     void deinitBcomp();
     void runAIC_(uint64_t frameId, const cca_pal_input_params& params, cca_3a_plus_results* results);
@@ -436,12 +440,13 @@ private:
     * Parse and decode different statistics from HW including AE/AWB/DVS/HDR
     *
     * \param [in]  stats        binary to store the statistics binary from HW
+    * \param [in]  bitmap       select RGBS, HIST, AF ... if needed to decode
     * \param [out] results      statistics type after parsing statistics
     *
     *
     * return ia_err_none in success. Errorcode on failure
     */
-    ia_err decodeStats(const ia_binary_data &stats, ia_isp_bxt_statistics_query_results_t *results);
+    ia_err decodeStats(const ia_binary_data &stats, uint32_t bitmap, ia_isp_bxt_statistics_query_results_t *results);
 #endif
 
 private:
@@ -518,7 +523,7 @@ private:
     ia_dvs_configuration_v1 mDVSConfig;
     bool mEnableVideoStablization;
     bool mEnableDVS;
-    float mDvsZoomRatio;
+    float32_t mDvsZoomRatio;
     CCADVSOutputType mDvsOutputType;
 
     /*
@@ -542,7 +547,7 @@ private:
     * mEnableUsingLardResultToInitCCA - whether using lard result to init cca
     */
     bool mEnableUsingLardResultToInitCCA;
-    char reserve[24];
+    int8_t reserve[24];
 };
 }//cca
 #endif //INTELCCA_H_

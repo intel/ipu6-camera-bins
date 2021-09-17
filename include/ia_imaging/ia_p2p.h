@@ -1,5 +1,5 @@
 /*
- * Copyright 2015-2020 Intel Corporation
+ * Copyright 2015-2021 Intel Corporation
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -19,7 +19,7 @@
  * \brief Declares the public2private converter API interface.
  */
 
-/*! \mainpage
+/*!
  *
  *  Public2Private (P2P) is a component designed for converting algorithm-related parameters between the ISP algo API and the actual
  *  register layouts what firmware expects in its terminals. In the context of P2P, ISP algo parameters are referred as public data
@@ -235,7 +235,7 @@
  *  P2P implementation currently supports the following kernels from YUV_CSC:
  *   - CSC_YUV2RGB
  *
- *  \section init Initialization and deinitialization
+ *  \section init3 Initialization and deinitialization
  *
  *  P2P must be initialized before its conversion functions can be used. Initialization happens during the camera start-up with ia_p2p_init().
  *  This function returns a handle to the created P2P instance, required by the encoding and decoding functions. When cleaning up, P2P must be
@@ -571,7 +571,7 @@
  *
  * The following chapters list the required PAL records for each Pre-GDC program group.
  *
- *  \subsection ipu5_pre_gdc_pgs IPU5 Pre-GDC Program Group PALs
+ *  \subsection ipu5_pre_gdc_pgs2 IPU5 Pre-GDC Program Group PALs
  *
  *  \subsubsection  vpregdc IA_P2P_PG_IPU5_VPREGDC_VPLESS (PG id 167)
  *
@@ -693,7 +693,7 @@
  *   - ia_pal_uuid_isp_bxt_xnr4_mh
  *   - ia_pal_uuid_isp_bxt_dvsstatistics
  *
- *  \subsubsection  spregdc_xnr_v2_kernels IA_P2P_PG_SPREGDC_XNR_V2_VCR2 (PG id 149)
+ *  \subsubsection  spregdc_xnr_v2_kernels2 IA_P2P_PG_SPREGDC_XNR_V2_VCR2 (PG id 149)
  *
  *   - ia_pal_uuid_isp_bxt_wb
  *   - ia_pal_uuid_isp_bxt_rynr_splitter
@@ -779,7 +779,7 @@
  *   - ia_pal_uuid_isp_dma_cropper_ppp
  *   - ia_pal_uuid_isp_tnr5_3
  *
- *  \subsubsection vpostgdc IA_P2P_PG_IPU5_VPOSTGDC_V4_10BIT (PG ID 193)
+ *  \subsubsection vpostgdc2 IA_P2P_PG_IPU5_VPOSTGDC_V4_10BIT (PG ID 193)
  *
  *   - ia_pal_uuid_isp_gdc4_2
  *   - ia_pal_uuid_isp_ofa_1
@@ -850,7 +850,7 @@
  *   - ia_pal_uuid_isp_dma_cropper_dp
  *   - ia_pal_uuid_isp_tnr5_22
  *
- *  \subsubsection vpostgdc IA_P2P_PG_VPOSTGDC_V2_MBR (PG id 172)
+ *  \subsubsection vpostgdc3 IA_P2P_PG_VPOSTGDC_V2_MBR (PG id 172)
  *
  *   - ia_pal_uuid_isp_gdc3_1
  *   - ia_pal_uuid_isp_ofa_1
@@ -881,7 +881,7 @@
  *   - ia_pal_uuid_isp_espa_1_0
  *   - ia_pal_uuid_isp_glim_1_0
  *
- *  \subsubsection LB PSA Bypass PG IA_P2P_PG_IPU6_LB (PG id 183)
+ *  \subsubsection LB_PSA_Bypass PG IA_P2P_PG_IPU6_LB (PG id 183)
  *
  *   - ia_pal_uuid_isp_bnlm_3_0
  *   - ia_pal_uuid_isp_bxt_demosaic
@@ -901,7 +901,7 @@
  *   - ia_pal_uuid_isp_espa_1_0
  *   - ia_pal_uuid_isp_glim_1_0
  *
- *  \subsubsection LB ISA RBM PG IA_P2P_PG_IPU6_ISL_RBM (PG id 185)
+ *  \subsubsection LB_ISA_RBM PG IA_P2P_PG_IPU6_ISL_RBM (PG id 185)
  *
  *   - ia_pal_uuid_isp_bxt_pixelformatter
  *   - ia_pal_uuid_isp_bxt_norm_lin
@@ -944,7 +944,7 @@
  *   - ia_pal_uuid_isp_padder_yuv_c
  *   - ia_pal_uuid_isp_pxl_crop_yuv_c
  *
- *  \subsubsection IPU6 combined ISA PG IA_P2P_PG_IPU6_ISA_LB (PG id 187)
+ *  \subsubsection IPU6_combined_ISA PG IA_P2P_PG_IPU6_ISA_LB (PG id 187)
  *   - ia_pal_uuid_espa_isa_sis_a
  *   - ia_pal_uuid_espa_isa_sis_b
  *   - ia_pal_uuid_ycbcrcombine
@@ -1332,8 +1332,8 @@ bool ia_p2p_is_kernel_bitmap_empty(ia_css_kernel_bitmap_t bitmap);
  *  \param [in]   ia_p2p                                     IA_P2P instance handle.
  *  \param [in]   fragment_count                             The number of fragments.
  *  \param [out]  input_pixel_fragment_descs                 The resulting array of fragment descriptors, one for each fragment.
- *  \param [out]  input_pixel_fragment_descs_display_pin     The resulting array of output fragment descriptors for Bayer (non-scaled) output.
- *  \param [out]  input_pixel_fragment_descs_main_pin        The resulting array of output fragment descriptors for YUV (scaled) output.
+ *  \param [out]  output_pixel_fragment_descs_bayer           The resulting array of output fragment descriptors for Bayer (non-scaled) output.
+ *  \param [out]  output_pixel_fragment_descs_yuv             The resulting array of output fragment descriptors for YUV (scaled) output.
  */
 ia_err ia_p2p_calculate_isl_fragments(
     ia_p2p_handle ia_p2p,
@@ -1348,9 +1348,9 @@ ia_err ia_p2p_calculate_isl_fragments(
  *  \param [in]   ia_p2p                                     IA_P2P instance handle.
  *  \param [in]   fragment_count                             The number of fragments.
  *  \param [out]  input_pixel_fragment_descs                 The resulting array of fragment descriptors, one for each fragment.
- *  \param [out]  input_pixel_fragment_descs_display_pin     The resulting array of output fragment descriptors for display pin, one for each fragment.
- *  \param [out]  input_pixel_fragment_descs_main_pin        The resulting array of output fragment descriptors for main pin, one for each fragment.
- *  \param [out]  input_pixel_fragment_descs_postprocess_pin The resulting array of output fragment descriptors for post-process pin, one for each fragment.
+ *  \param [out]  output_pixel_fragment_descs_display_pin     The resulting array of output fragment descriptors for display pin, one for each fragment.
+ *  \param [out]  output_pixel_fragment_descs_main_pin        The resulting array of output fragment descriptors for main pin, one for each fragment.
+ *  \param [out]  output_pixel_fragment_descs_postprocess_pin The resulting array of output fragment descriptors for post-process pin, one for each fragment.
  */
 ia_err ia_p2p_calculate_postgdc_fragments(
     ia_p2p_handle ia_p2p,
@@ -1695,6 +1695,7 @@ ia_err ia_p2p_spatial_param_out_terminal_decode_v2(
  *  \param [in]     pg_id               The program group id.
  *  \param [in]     kernel_id           The program group specific identifier of the kernel whose descriptors to prepare.
  *  \param [in]     fragment_count      The number of fragments.
+ *  \param [in]     pixel_fragment_descs The pixel fragment.
  *  \param [in,out] terminal            The param output terminal.
  *  \param [in]     section_index       The index of the first section where the data for this kernel is written to the terminal.
  *  \param [in]     total_section_count The total number of sections for one fragment including all kernels.

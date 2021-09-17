@@ -1,5 +1,5 @@
 /*
- * Copyright 2018 Intel Corporation
+ * Copyright 2018-2021 Intel Corporation
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -23,8 +23,8 @@
  * \file ia_bcomp.h
  * \brief Definitions and declarations of IA_BCOMP library.
  */
-#ifndef _IA_BCOMP_H_
-#define _IA_BCOMP_H_
+#ifndef IA_BCOMP_H_
+#define IA_BCOMP_H_
 
 #include "ia_aiq_types.h"
 #include "ia_types.h"
@@ -45,9 +45,10 @@ extern "C" {
  * return                               IA_BCOMP handle. Use the returned handle as input parameter for the consequent IA_BCOMP calls.
  *                                      Returns NULL is ia_bcomp initialization fails.
  */
+/*LDRA_INSPECTED 67 X*/
 LIBEXPORT ia_bcomp*
 ia_bcomp_init(const ia_cmc_t *ia_cmc, ia_bcomp_dol_mode_t dol_mode,
-              float cg_ratio);
+              float32_t cg_ratio);
 
 /*!
  * \brief Deinitialize IA_BCOMP.
@@ -57,13 +58,14 @@ ia_bcomp_init(const ia_cmc_t *ia_cmc, ia_bcomp_dol_mode_t dol_mode,
  *
  */
 LIBEXPORT void
-ia_bcomp_deinit(ia_bcomp *ia_bcomp);
+ia_bcomp_deinit(ia_bcomp *ia_bcomp_ptr);
 
 /*!
 * \brief IA_BCOMP parameters to calculate compression info.
 */
-typedef struct ia_bcomp_input_params
+typedef struct
 {
+    /*LDRA_INSPECTED 67 X*/
     ia_aiq_ae_results *ae_results;  /*!< Mandatory. Exposure results which are to be used to calculate next ISP parameters.
                                          Currently only exposure times, analog and digital gains are used. For convenience reasons bcomp takes
                                          ae results and not only needed parameters. */
@@ -79,11 +81,11 @@ typedef struct ia_bcomp_input_params
 *
 */
 LIBEXPORT ia_err
-ia_bcomp_run(ia_bcomp *ia_bcomp,
+ia_bcomp_run(ia_bcomp *ia_bcomp_ptr,
              const ia_bcomp_input_params *bcomp_input_params,
              ia_bcomp_results **bcomp_results);
 
 #ifdef __cplusplus
 }
 #endif
-#endif /* _IA_BCOMP_H_ */
+#endif /* IA_BCOMP_H_ */

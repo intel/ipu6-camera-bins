@@ -43,6 +43,7 @@ extern "C" {
  * Keep in mind also structures' internal padding when defining new structures.
  */
 #define CMC_NUM_CHANNELS 4
+#define VERSION_LEN 16
 
 typedef struct
 {
@@ -307,7 +308,7 @@ typedef enum {
 typedef struct
 {
     ia_mkn_record_header header; /*!< Record header with Format ID: UInt8 (See AIQB_DataID), Name ID: cmc_name_id_comment (See cmc_name_id). */
-    uint8_t project_id[16];      /*!< NULL terminated Project ID string. Date format: yymmddHHMMSSFFF. For example: 1202201823444. */
+    uint8_t project_id[VERSION_LEN];      /*!< NULL terminated Project ID string. Date format: yymmddHHMMSSFFF. For example: 1202201823444. */
 /*    uint8_t comment[];          / *!< Free C string text comment (NULL terminated). Must end at 64 bit alignment. * / */
 } cmc_comment_t;
 #define SIZEOF_CMC_COMMENT_T 24UL
@@ -1480,7 +1481,7 @@ typedef struct
     int32_t frame_count;
 } trigger_info_t;
 
-#define MAX_TNR7US_TRIGGER_INFO_COUNT   8U
+#define MAX_TNR7US_TRIGGER_INFO_COUNT   16U
 typedef struct
 {
     float tnr7us_threshold_gain;

@@ -1,5 +1,5 @@
 /*
- * Copyright 2012-2020 Intel Corporation
+ * Copyright 2012-2021 Intel Corporation
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -315,6 +315,8 @@ typedef struct {
 typedef struct {
     int32_t        num_faces;                /**< Number of faces in the recently processed input frame. */
     ia_atbx_face  *faces;                    /**< Array of face information. */
+    bool updated;                            /**< The update status of face. true is the real statistics, and false is the false statistics that have not been updated.*/
+    bool is_video_conf;                      /**< video confenerce mode. */
 } ia_atbx_face_state;
 
 #ifdef __cplusplus

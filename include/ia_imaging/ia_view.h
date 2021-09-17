@@ -1,5 +1,5 @@
 /*
- * Copyright 2017 Intel Corporation
+ * Copyright 2021 Intel Corporation
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,8 +15,8 @@
  */
 
 
-#ifndef __IA_VIEW_H__
-#define __IA_VIEW_H__
+#ifndef IA_VIEW_H__
+#define IA_VIEW_H__
 
 
 #include "ia_view_types.h"
@@ -82,7 +82,7 @@ ia_view_get_configuration(ia_view_handle view_handle,
 */
 LIBEXPORT ia_err
 ia_view_run(ia_view_handle view_handle,
-    const float camera_rotation[3][3]);
+    const float32_t dvs_rotation[3][3]);
 
 /*! \brief Get the last calculated view parameters
 *
@@ -93,7 +93,7 @@ ia_view_run(ia_view_handle view_handle,
 */
 LIBEXPORT ia_err
 ia_view_get_view_parameters(ia_view_handle view_handle,
-    ia_view_params_t *view_params);
+    ia_view_params_t *isp_params);
 
 
 /*! \brief Set view rotation
@@ -158,6 +158,6 @@ ia_view_get_fine_adjustments(ia_view_handle view_handle,
 }
 #endif
 
-#endif /* __IA_VIEW_H__ */
+#endif /* IA_VIEW_H__ */
 
 

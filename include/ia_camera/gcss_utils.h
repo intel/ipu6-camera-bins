@@ -586,6 +586,15 @@ public:
     static void *numString2binary(const std::string &str, unsigned int *bytes = NULL);
 
     /**
+     * Free the memory allocated by IA_CIPR_CALLOC()
+     *
+     * \ingroup gcss
+     *
+     * \param[in] Pointer to the memory allocated by IA_CIPR_CALLOC()
+     */
+    static void releaseBinary(void *binary);
+
+    /**
      * Process the attribute overrides tags in the graph.
      * The apply tag allows a graph to modify an attribute of a member node.
      * The syntax is:

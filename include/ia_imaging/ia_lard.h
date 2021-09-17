@@ -1,5 +1,5 @@
 /*
- * Copyright 2012 - 2018 Intel Corporation
+ * Copyright 2012 - 2021 Intel Corporation
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,8 +20,8 @@
  * \brief Lard PCF parser specific implementation.
  */
 
-#ifndef _IA_LARD_H_
-#define _IA_LARD_H_
+#ifndef IA_LARD_H_
+#define IA_LARD_H_
 
 #include "ia_types.h"
 #include "ia_mkn_types.h"
@@ -80,17 +80,17 @@ ia_lard_deinit(ia_lard *ia_lard_ptr);
  */
 typedef struct
 {
-    unsigned int cmc_mode_tag;      /*!< Mandatory. CMC mode tag (4 letters) to be used with ia_lard_run. */
-    unsigned int aiq_mode_tag;      /*!< Mandatory. AIQ mode tag (4 letters) to be used with ia_lard_run. */
-    unsigned int isp_mode_index;    /*!< Mandatory. ISP mode index (number) or tag (4 letters) to be used with ia_lard_run. */
-    unsigned int others_mode_tag;   /*!< Mandatory. Other mode tag (4 letters)to be used with ia_lard_run. */
+    uint32_t cmc_mode_tag;      /*!< Mandatory. CMC mode tag (4 letters) to be used with ia_lard_run. */
+    uint32_t aiq_mode_tag;      /*!< Mandatory. AIQ mode tag (4 letters) to be used with ia_lard_run. */
+    uint32_t isp_mode_index;    /*!< Mandatory. ISP mode index (number) or tag (4 letters) to be used with ia_lard_run. */
+    uint32_t others_mode_tag;   /*!< Mandatory. Other mode tag (4 letters)to be used with ia_lard_run. */
 } ia_lard_input_params;
 
 /*!
 * \brief Output parameter structure for ia_lard_run.
 * Pointers to aiqb data of requested mode for each of the groups.
 */
-typedef struct ia_lard_results
+typedef struct
 {
     ia_binary_data aiqb_cmc_data;      /*!< Mandatory. Aiqb binary data struct for CMC data. */
     ia_binary_data aiqb_aiq_data;      /*!< Mandatory. Aiqb binary data struct for AIQ data. */
@@ -140,11 +140,11 @@ ia_lard_get_version(void);
  *                                      tags of available tunings for given mode tag
  * \return                              Error code.
  */
-LIBEXPORT ia_err ia_lard_get_tag_list(ia_lard* ia_lard_ptr, const unsigned int mode_tag, unsigned int* num_tags, const unsigned int** tags);
+LIBEXPORT ia_err ia_lard_get_tag_list(ia_lard* ia_lard_ptr, const uint32_t mode_tag, uint32_t* num_tags, const uint32_t** tags);
 
 
 #ifdef __cplusplus
 }
 #endif
 
-#endif /* _IA_LARD_H_ */
+#endif /* IA_LARD_H_ */

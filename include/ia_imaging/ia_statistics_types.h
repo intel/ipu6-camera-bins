@@ -86,7 +86,6 @@ typedef struct
     bool           skin_type_validity;        /*!< Validity of the Skin Likelihood */
 } ia_face_roi;
 
-
 #define IA_DEPTH_GRID_SIZE (IA_DEPTH_GRID_WIDTH * IA_DEPTH_GRID_HEIGHT)
 
 typedef enum
