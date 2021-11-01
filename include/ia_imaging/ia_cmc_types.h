@@ -197,6 +197,8 @@ typedef enum
     cmc_name_id_multi_gain_conversions,                  /*!< 34 */
     cmc_name_id_pipe_comp_decomp,                        /*!< 35 */
     cmc_name_id_sensor_decomp,                           /*!< 36 */
+    cmc_name_id_media_format,                            /*!< 37 */
+    cmc_name_id_cbd                                      /*!< 38 */
 } cmc_name_id;
 
 /*!
@@ -1490,6 +1492,18 @@ typedef struct
 } tnr7us_trigger_info_t;
 
 /*!
+* \brief CMC Sensor decompand
+*/
+typedef struct
+{
+    ia_mkn_record_header header;    /*!< Record header with Format ID: UInt16 (See AIQB_DataID) Name ID: cmc_name_id_saturation_level. (enum cmc_name_id). */
+    uint8_t enable;
+    uint8_t number_of_points;
+    int32_t *x_coords;             /*Array of x coordinates for sensor decompand curve. Count of array is equal number_of_point*/
+    int32_t *y_coords;             /*Array of y coordinates for sensor decompand curve. Count of array is equal number_of_point*/
+} cmc_parsed_cbd_t;
+
+/*!
  * \brief Parsed CMC structure.
  * Parser will fill the pointers in this structure so that data can be accessed more easily.
  */
@@ -1529,6 +1543,7 @@ typedef struct
     cmc_parsed_pipe_compand_t *cmc_parsed_pipe_compand;
     cmc_parsed_pipe_decompand_t *cmc_parsed_pipe_decompand;
     cmc_parsed_sensor_decompand_t *cmc_parsed_sensor_decompand;
+    cmc_parsed_cbd_t *cmc_parsed_cbd;
     tnr7us_trigger_info_t *tnr7us_trigger_info;
 } ia_cmc_t;
 

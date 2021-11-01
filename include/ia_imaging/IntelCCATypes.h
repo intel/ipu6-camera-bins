@@ -189,6 +189,7 @@ typedef struct
                                                                      values of num_exposures length. Order of ISO values corresponds to exposure_index of
                                                                      ae_results, e.g., manual_iso[ae_results->exposures[0].exposure_index] = 100; */
     ia_aiq_ae_manual_limits manual_limits[MAX_NUM_EXPOSURE];    /*!< Optional. Manual limits which override limits defined in AEC tunings. */
+    uint32_t manual_total_target_exposure[MAX_NUM_EXPOSURE];    /*!< Optional. Manual total target exposure. */
     ia_aiq_ae_exposure_distribution_priority exposure_distribution_priority; /*!< Mandatory. AEC exposure distribution priority mode. */
     float32_t manual_convergence_time;                              /*!< Mandatory. Manual AEC convergence speed in seconds.
                                                                      -1.0 if NA (uses tunings).
@@ -646,6 +647,29 @@ struct cca_init_params{
             IA_MEMSET(&gdcConfig, 0, sizeof(gdcConfig));
         }
 };
+/*!
+*  \brief paramters of Multi CCA Flow.
+*/
+typedef enum {
+    front = 0,
+    right,
+    back,
+    left,
+} ccd_sv_id;
+
+typedef struct
+{
+    uint8_t cam_idx;     /*!< multiple camera index. */
+    bool main_cam_flag;   /*!< current camera is main camera or not. */
+    ccd_sv_id sv_idx;     /*!< surround view camera index. */
+}cca_multi_id;
+
+typedef struct
+{
+    uint8_t cam_num;    /*!< maximum multiple camera number. */
+    uint8_t group_type; /*!< 0, 1:X 1, X:X. */
+    cca_init_params* init_params;
+}cca_multi_cam;
 
 }//cca
 #endif //INTELCCA_TYPES_H_

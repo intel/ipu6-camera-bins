@@ -27,6 +27,7 @@ namespace cca {
  * platforms or products, because the below defintions should depend on
  * sensor, IPU, etc.
  */
+const uint32_t MAX_CAM_NUM = 4U;
 const uint32_t MAX_CPF_LEN = 1024 * 1024 * 4;
 const uint32_t MAX_NVM_LEN = 1024 * 16;
 const uint32_t MAX_AIQD_LEN = 1024 * 1024;
