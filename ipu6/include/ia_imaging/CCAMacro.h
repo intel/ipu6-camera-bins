@@ -76,6 +76,10 @@ const uint32_t MAX_KERNEL_NUM_IN_PG = 128;
 const uint32_t MAX_PG_NUM = 5;
 const uint32_t MAX_PG_TERMINAL_NUM = 16;
 
+const uint32_t PDAF_STATS_GRID_WIDTH = 16;
+const uint32_t PDAF_STATS_GRID_HEIGHT = 12;
+const uint32_t PDAF_STATS_NUM_NONSVE = 1;
+
 const uint64_t INVALID_FRAME_ID = static_cast<uint64_t>(-1);
 }//cca
 #endif //CCAMACRO_H_

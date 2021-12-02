@@ -145,7 +145,8 @@ enum CCAStatsType
     CCA_STATS_AF = 1 << 2,
     CCA_STATS_YV = 1 << 3,
     CCA_STATS_LTM = 1 << 4,
-    CCA_STATS_DVS = 1 << 5
+    CCA_STATS_DVS = 1 << 5,
+    CCA_STATS_PDAF = 1 << 6
 };
 
 /*!
