@@ -182,6 +182,7 @@ typedef struct
     ia_aiq_sa_results_v1 sa_results;                                         /*!< Optional. */
     ia_aiq_awb_results awb_results;                                          /*!< Optional. */
     ia_aiq_af_results af_results;                                            /*!< Optional. */
+    bool bAssitLightOn;                                                      /*!< True if the af assist light is on, false otherwise .*/
 #ifdef IA_CCAT_FACE_ANALYSIS_ENABLED
     ia_face_roi faces[IA_CCAT_FACES_MAX_NUM];                                /*!< Optional. Face coordinates from external face detector. NULL if not available. */
     bool updated;                                                            /*!< The update status of face. true is the real statistics, and false is the false statistics that have not been updated.*/

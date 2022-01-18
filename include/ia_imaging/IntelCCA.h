@@ -151,11 +151,9 @@ public:
      *
      * \param[in] params                Mandatory.\n
      *                                  Input parameters containing statistics information about a frame.
-     * \param[out] outStats             Optional.\n
-     *                                  Output the aiq statistics data.
      * \return                          Error code for status. zero on success, non-zero on failure
      */
-    ia_err setStatsParams(const cca_stats_params& params, cca_out_stats *outStats = nullptr);
+    ia_err setStatsParams(const cca_stats_params& params);
 
     /*!
      * \brief AEC calculation based on input parameters and frame statistics.
@@ -269,6 +267,26 @@ public:
      * \return                          Error code for status. zero on success, non-zero on failure
      */
     ia_err updateTuning(uint8_t tag, const ia_lard_input_params &lardParams, const cca_nvm &nvm);
+
+    /*!
+     * \brief Update tuning data in run time.
+     *  Update the tuning data to CCA flow, the new tuning data will be taken effect immediately.
+     *  For different use cases, the tuning data should be different, the function is used for the scenario.
+     *
+     * \param[in] tag                   Mandatory.\n
+     *                                  the tag for updated group in tuning file.
+     * \param[in] lardParams            Mandatory.\n
+     *                                  lard data.
+     * \param[in] nvm                   Mandatory.\n
+     *                                  sensor nvm data.
+     * \param[out] pLardResults         Mandatory.\n
+     *                                  lard results
+     * \param[out] bSupportLard         Mandatory.\n
+     *                                  indicate if lard is supported
+     * \return                          Error code for status. zero on success, non-zero on failure
+    */
+    ia_err updateTuning(uint8_t tag, const ia_lard_input_params &lardParams, const cca_nvm &nvm, ia_lard_results **pLardResults);
+
     /*!
      * \brief De-initialize CCA Flow and its submodules.
      * All memory allocated by algoriths are freed. CCA Flow handle can no longer be used.
@@ -277,7 +295,7 @@ public:
      */
     ia_err deinit();
 
-	/*!
+    /*!
      * \brief query the current CCA Flow version.
      *
      * \return                          version.
@@ -356,10 +374,11 @@ public:
     * \param [in]  stats        statistics binary from HW
     * \param [in]  bitmap       select RGBS, HIST, AF ... if needed to decode
     * \param [out] results      statistics type after parsing statistics
+    * \param [out] outStats     output stats
     *
     * \return                   Error code for status. zero on success, non-zero on failure
     */
-    ia_err decodeStats(const cca_stats_bin &stats, uint32_t bitmap, ia_isp_bxt_statistics_query_results_t *results);
+    ia_err decodeStats(const cca_stats_bin &stats, uint32_t bitmap, ia_isp_bxt_statistics_query_results_t *results, cca_out_stats *outStats = nullptr);
 
     /*!
     *
@@ -370,10 +389,11 @@ public:
     * \param [in]  statsSize    statistics size
     * \param [in]  bitmap       select RGBS, HIST, AF ... if needed to decode
     * \param [out] results      statistics type after parsing statistics
+    * \param [out] outStats     output stats
     *
     * \return                   Error code for status. zero on success, non-zero on failure
     */
-    ia_err decodeStats(uint64_t statsPointer, uint32_t statsSize, uint32_t bitmap, ia_isp_bxt_statistics_query_results_t *results);
+    ia_err decodeStats(uint64_t statsPointer, uint32_t statsSize, uint32_t bitmap, ia_isp_bxt_statistics_query_results_t *results, cca_out_stats *outStats = nullptr);
 
     /*!
     *
@@ -442,11 +462,11 @@ private:
     * \param [in]  stats        binary to store the statistics binary from HW
     * \param [in]  bitmap       select RGBS, HIST, AF ... if needed to decode
     * \param [out] results      statistics type after parsing statistics
-    *
+    * \param [out] outStats     output stats
     *
     * return ia_err_none in success. Errorcode on failure
     */
-    ia_err decodeStats(const ia_binary_data &stats, uint32_t bitmap, ia_isp_bxt_statistics_query_results_t *results);
+    ia_err decodeStats(const ia_binary_data &stats, uint32_t bitmap, ia_isp_bxt_statistics_query_results_t *results, cca_out_stats *outStats);
 #endif
 
 private:
@@ -471,6 +491,7 @@ private:
     /*
      * AIQ structs and params
      */
+    bool mCCAIsEnabled;
     ia_aiq* mAiqHandle;
     uint8_t mAECFrameDelay;
     uint64_t mFrameTimestamp;

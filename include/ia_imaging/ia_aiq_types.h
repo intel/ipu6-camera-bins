@@ -304,6 +304,8 @@ typedef struct
     int iso;                                /*!< ISO value corresponding to the analog gain. -1 if N/A. */
     ia_aiq_gain gains[IA_CMC_GAINS_MAX_NUM];       /*!< Gain as multipliers (e.g. 1.0), -1.0f if N/A. */
     unsigned int num_gains;                 /*!< The number of gains. */
+    unsigned int low_limit_total_exposure;  /*!< Low limit of total exposure by tuning and sensor*/
+    unsigned int up_limit_total_exposure;   /*!< Up limit of total exposure by tuning and sensor*/
 } ia_aiq_exposure_parameters;
 
 /*!
@@ -694,7 +696,10 @@ typedef struct {
     unsigned int gamma_lut_size;    /*!< Number of elements in each gamma LUT. */
     float* tone_map_lut;            /*!< Tone Mapping Gain LUT. Range [0.0 FLT_MAX] */
     unsigned int tone_map_lut_size; /*!< Number of elements in tone mapping LUT. */
-    float base_gamma;
+    float base_gamma;               /*!< gamma */
+    float btm;                      /*!< bottom range border */
+    float rng;                      /*!< dynamic range  */
+    float top_short_border[10U];
 } ia_aiq_gbce_results;
 
 /*!

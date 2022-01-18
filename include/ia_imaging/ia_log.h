@@ -30,7 +30,10 @@ extern "C" {
 /*!
  * \brief Macro for not logging.
  */
-#define IA_NOLOG(...)           { /*LDRA_INSPECTED 57 S */ ((void)0);}
+#define IA_NOLOG(...)                  { \
+                /*LDRA_INSPECTED 58 S */ \
+                ((void)0);               \
+}
 
 /*!
  * \brief Macro wrapper for ia_log function.

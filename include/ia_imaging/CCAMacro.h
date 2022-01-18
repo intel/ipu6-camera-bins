@@ -27,6 +27,7 @@ namespace cca {
  * platforms or products, because the below defintions should depend on
  * sensor, IPU, etc.
  */
+const uint32_t MAX_CAM_NUM = 4U;
 const uint32_t MAX_CPF_LEN = 1024 * 1024 * 4;
 const uint32_t MAX_NVM_LEN = 1024 * 16;
 const uint32_t MAX_AIQD_LEN = 1024 * 1024;
@@ -74,6 +75,10 @@ const float GDC_CLIP_MAX_ANGLE = 3.5f;
 const uint32_t MAX_KERNEL_NUM_IN_PG = 128;
 const uint32_t MAX_PG_NUM = 5;
 const uint32_t MAX_PG_TERMINAL_NUM = 16;
+
+const uint32_t PDAF_STATS_GRID_WIDTH = 16;
+const uint32_t PDAF_STATS_GRID_HEIGHT = 12;
+const uint32_t PDAF_STATS_NUM_NONSVE = 1;
 
 const uint64_t INVALID_FRAME_ID = static_cast<uint64_t>(-1);
 }//cca

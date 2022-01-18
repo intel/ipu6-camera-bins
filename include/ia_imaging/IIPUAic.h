@@ -189,13 +189,10 @@ public:
      *                                       parameters for statistis.
      * \param[in] aiqResults                 Mandatory.\n
      *                                       last AIQ results for reference.
-     * \param[out] outStats                  Optional.\n
-     *                                       Output the AIQ statistics data.
      * \return                               Error code.
      */
     virtual ia_err setStatsParams(ia_aiq* aiqHandle, const cca_stats_params &params,
-                                  const cca_aiq_results_storage &aiqResults,
-                                  cca_out_stats *outStats = nullptr) = 0;
+                                  const cca_aiq_results_storage &aiqResults) = 0;
 
 #ifdef PAC_ENABLE
     /*!
@@ -266,9 +263,12 @@ public:
      *                                   statistics info from FW.
      * \param[out] results               Mandatory.\n
      *                                   results of parsing statistics from FW.
+     * \param[out] outStats              Optional.\n
+     *                                   Output the AIQ statistics data.
      * \return                           Error code.
      */
-    virtual ia_err decodeStats(const cca_dec_stats_input &decParams, ia_isp_bxt_statistics_query_results_t *results) = 0;
+    virtual ia_err decodeStats(const cca_dec_stats_input &decParams, ia_isp_bxt_statistics_query_results_t *results,
+                               cca_out_stats *outStats = nullptr) = 0;
 
     /*! Get PAL binary size
     *
