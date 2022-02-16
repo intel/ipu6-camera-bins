@@ -1,5 +1,5 @@
 /*
- * Copyright 2021 Intel Corporation
+ * Copyright 2022 Intel Corporation
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -197,8 +197,9 @@ typedef enum
     cmc_name_id_multi_gain_conversions,                  /*!< 34 */
     cmc_name_id_pipe_comp_decomp,                        /*!< 35 */
     cmc_name_id_sensor_decomp,                           /*!< 36 */
-    cmc_name_id_media_format,                            /*!< 37 */
-    cmc_name_id_cbd                                      /*!< 38 */
+    cmc_name_id_media_format,//preview/video             /*!< 37 */
+    cmc_name_id_cbd,                                     /*!< 38 */
+    cmc_name_id_media_format_stills                      /*!< 39 */
 } cmc_name_id;
 
 /*!

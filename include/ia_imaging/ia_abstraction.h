@@ -1,5 +1,5 @@
 /*
- * Copyright 2012-2021 Intel Corporation
+ * Copyright 2012-2022 Intel Corporation
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -109,9 +109,9 @@ typedef uint16_t half;
 #define IA_CALLOC(x)             calloc(1, x)
 #define IA_REALLOC(x, y)         realloc(x, y)
 #define IA_FREEZ(x)              { free(x); x = NULL;}
-#define IA_MEMSET(_Dst, _Val, _Size)       ((void) memset(_Dst, _Val, _Size))
+#define IA_MEMSET(_Dst, _Val, _Size)      (CAST_TO_TYPE(void, memset(_Dst, _Val, _Size)))
 #define IA_MEMCOMPARE(_Buf1,_Buf2,_Size)     memcmp(_Buf1, _Buf2, _Size)
-#define IA_ABS(a)                abs((int)(a))
+#define IA_ABS(a)                abs(CAST_TO_TYPE(int,(a)))
 // In ARM build in Windows we will use the double builtin fabs
 // So it woun't be needed to link with ARM libs of fabsf
 #if (defined WIN32 && defined __cplusplus && defined BUILD_FOR_ARM)
@@ -152,70 +152,70 @@ typedef uint16_t half;
 
 
 
-#define IA_MAX_FIXEDPOINT(integer_bits, frac_bits) ((float64_t)((((integer_bits) > 0)?(2<<((integer_bits)-1)):1)) - (1.0/((float64_t)(((frac_bits) > 0)?((unsigned long)2<<((frac_bits)-1)):0))))
+#define IA_MAX_FIXEDPOINT(integer_bits, frac_bits) (CAST_TO_TYPE(float64_t,((((integer_bits) > 0)?(2U<<(CAST_TO_TYPE(uint32_t,integer_bits)-1U)):1))) - (1.0/(CAST_TO_TYPE(float64_t,(((frac_bits) > 0)?(2U<<(CAST_TO_TYPE(uint32_t,frac_bits)-1U)):0)))))
 #define IA_MIN_FIXEDPOINT(integer_bits, frac_bits) (-IA_MAX_FIXEDPOINT((integer_bits), frac_bits))
-#define IA_MAX_Q0_FIXEDPOINT(frac_bits) (1.0 - (1.0f/((float64_t)(frac_bits?((unsigned long)2<<(frac_bits-1)):0))))
+#define IA_MAX_Q0_FIXEDPOINT(frac_bits) (1.0 - (1.0F/((float64_t)(frac_bits?((unsigned long)2<<(frac_bits-1)):0))))
 
 /* Q0_31 means: total 31 bits =  0 int bits + 31 fractional bits*/
 #define IA_QX_31_FRAC_BITS  (31U)
 #define IA_Q0_31_MIN    (0)
 #define IA_Q0_31_MAX    IA_MAX_Q0_FIXEDPOINT(IA_QX_31_FRAC_BITS)
-#define IA_FLOAT_TO_Q0_31(val) CAST_TO_TYPE(uint32_t,(IA_ROUNDD((IA_LIMIT(val, IA_Q0_31_MIN, IA_Q0_31_MAX))*(CAST_TO_TYPE(uint64_t, 2U<<(IA_QX_31_FRAC_BITS-1))))))
+#define IA_FLOAT_TO_Q0_31(val) CAST_TO_TYPE(uint32_t,(IA_ROUNDD((IA_LIMIT(val, IA_Q0_31_MIN, IA_Q0_31_MAX))*(CAST_TO_TYPE(uint64_t, 2U<<(IA_QX_31_FRAC_BITS-1U))))))
 
 #define IA_QX_26_FRAC_BITS  (26U)
 #define IA_Q0_26_MIN    (0)
 #define IA_Q0_26_MAX    IA_MAX_Q0_FIXEDPOINT(IA_QX_26_FRAC_BITS)
-#define IA_FLOAT_TO_Q0_26(val) CAST_TO_TYPE(uint32_t,(IA_ROUND((IA_LIMIT(val, IA_Q0_26_MIN, IA_Q0_26_MAX)*(CAST_TO_TYPE(uint64_t, 2U<<(IA_QX_26_FRAC_BITS-1)))))))
+#define IA_FLOAT_TO_Q0_26(val) CAST_TO_TYPE(uint32_t,(IA_ROUND((IA_LIMIT(val, IA_Q0_26_MIN, IA_Q0_26_MAX)*(CAST_TO_TYPE(uint64_t, 2U<<(IA_QX_26_FRAC_BITS-1U)))))))
 
 #define IA_QX_16_FRAC_BITS  (16U)
 #define IA_Q14_16_MIN    (0)
 #define IA_Q14_16_MAX    IA_MAX_FIXEDPOINT(14U, IA_QX_16_FRAC_BITS)
-#define IA_FLOAT_TO_Q14_16(val) CAST_TO_TYPE(uint32_t,(IA_ROUND((IA_LIMIT(val, IA_Q14_16_MIN, IA_Q14_16_MAX)*(CAST_TO_TYPE(uint64_t,2U<<(IA_QX_16_FRAC_BITS-1)))))))
+#define IA_FLOAT_TO_Q14_16(val) CAST_TO_TYPE(uint32_t,(IA_ROUND((IA_LIMIT(val, IA_Q14_16_MIN, IA_Q14_16_MAX)*(CAST_TO_TYPE(uint64_t,2U<<(IA_QX_16_FRAC_BITS-1U)))))))
 
 #define IA_QX_5_FRAC_BITS  (5U)
 #define IA_Q14_5_MIN       (0)
 #define IA_Q14_5_MAX    IA_MAX_FIXEDPOINT(14U, IA_QX_5_FRAC_BITS)
-#define IA_FLOAT_TO_Q14_5(val) CAST_TO_TYPE(uint32_t,(IA_ROUND((IA_LIMIT(val, IA_Q14_5_MIN, IA_Q14_5_MAX)*(CAST_TO_TYPE(uint64_t,2U<<(IA_QX_5_FRAC_BITS-1)))))))
+#define IA_FLOAT_TO_Q14_5(val) CAST_TO_TYPE(uint32_t,(IA_ROUND((IA_LIMIT(val, IA_Q14_5_MIN, IA_Q14_5_MAX)*(CAST_TO_TYPE(uint64_t,2U<<(IA_QX_5_FRAC_BITS-1U)))))))
 
 #define IA_Q3_16_MIN    (0)
 #define IA_Q3_16_MAX    IA_MAX_FIXEDPOINT(3U, IA_QX_16_FRAC_BITS)
-#define IA_FLOAT_TO_Q3_16(val) CAST_TO_TYPE(uint32_t,(IA_ROUND((IA_LIMIT(val, IA_Q3_16_MIN, IA_Q3_16_MAX)*(CAST_TO_TYPE(uint64_t,2U<<(IA_QX_16_FRAC_BITS-1)))))))
+#define IA_FLOAT_TO_Q3_16(val) CAST_TO_TYPE(uint32_t,(IA_ROUND((IA_LIMIT(val, IA_Q3_16_MIN, IA_Q3_16_MAX)*(CAST_TO_TYPE(uint64_t,2U<<(IA_QX_16_FRAC_BITS-1U)))))))
 
 /* S4.15 means: total 20 bits =  1 sign bit + 4 int bits + 15 fractional bits*/
 #define IA_SX_15_FRAC_BITS  (15U)
 #define IA_S4_15_MIN IA_MIN_FIXEDPOINT(4U, IA_SX_15_FRAC_BITS)
 #define IA_S4_15_MAX IA_MAX_FIXEDPOINT(4U, IA_SX_15_FRAC_BITS)
-#define IA_FLOAT_TO_S4_15(val) CAST_TO_TYPE(int32_t,(IA_ROUND((IA_LIMIT(val, IA_S4_15_MIN, IA_S4_15_MAX))*(CAST_TO_TYPE(uint64_t,2U<<(IA_SX_15_FRAC_BITS-1))))))
+#define IA_FLOAT_TO_S4_15(val) CAST_TO_TYPE(int32_t,(IA_ROUND((IA_LIMIT(val, IA_S4_15_MIN, IA_S4_15_MAX))*(CAST_TO_TYPE(uint64_t,2U<<(IA_SX_15_FRAC_BITS-1U))))))
 
 /* S4.14 means: total 20 bits =  1 sign bit + 4 int bits + 14 fractional bits*/
 #define IA_SX_14_FRAC_BITS  (14U)
 #define IA_S4_14_MIN IA_MIN_FIXEDPOINT(4U, IA_SX_14_FRAC_BITS)
 #define IA_S4_14_MAX IA_MAX_FIXEDPOINT(4U, IA_SX_14_FRAC_BITS)
-#define IA_FLOAT_TO_S4_14(val) CAST_TO_TYPE(int32_t,(IA_ROUND((IA_LIMIT(val, IA_S4_14_MIN, IA_S4_14_MAX))*(CAST_TO_TYPE(uint64_t,2U<<(IA_SX_14_FRAC_BITS-1))))))
+#define IA_FLOAT_TO_S4_14(val) CAST_TO_TYPE(int32_t,(IA_ROUND((IA_LIMIT(val, IA_S4_14_MIN, IA_S4_14_MAX))*(CAST_TO_TYPE(uint64_t,2U<<(IA_SX_14_FRAC_BITS-1U))))))
 
 /* S4.19 means: =  1 sign bit + 4 int bits + 19 fractional bits*/
 #define IA_SX_19_FRAC_BITS  (19U)
 #define IA_S4_19_MIN IA_MIN_FIXEDPOINT(4U, IA_SX_19_FRAC_BITS)
 #define IA_S4_19_MAX IA_MAX_FIXEDPOINT(4U, IA_SX_19_FRAC_BITS)
-#define IA_FLOAT_TO_S4_19(val) CAST_TO_TYPE(int32_t,(IA_ROUND((IA_LIMIT(val, IA_S4_19_MIN, IA_S4_19_MAX))*(CAST_TO_TYPE(uint64_t,2U<<(IA_SX_19_FRAC_BITS-1))))))
+#define IA_FLOAT_TO_S4_19(val) CAST_TO_TYPE(int32_t,(IA_ROUND((IA_LIMIT(val, IA_S4_19_MIN, IA_S4_19_MAX))*(CAST_TO_TYPE(uint64_t,2U<<(IA_SX_19_FRAC_BITS-1U))))))
 
 #define IA_SX_20_FRAC_BITS  (20U)
 #define IA_S1_20_MIN IA_MIN_FIXEDPOINT(1U, IA_SX_20_FRAC_BITS)
 #define IA_S1_20_MAX IA_MAX_FIXEDPOINT(1U, IA_SX_20_FRAC_BITS)
-#define IA_FLOAT_TO_S1_20(val) CAST_TO_TYPE(int32_t,(IA_ROUND((IA_LIMIT(val, IA_S1_20_MIN, IA_S1_20_MAX))*(CAST_TO_TYPE(uint64_t,2U<<(IA_SX_20_FRAC_BITS-1))))))
+#define IA_FLOAT_TO_S1_20(val) CAST_TO_TYPE(int32_t,(IA_ROUND((IA_LIMIT(val, IA_S1_20_MIN, IA_S1_20_MAX))*(CAST_TO_TYPE(uint64_t,2U<<(IA_SX_20_FRAC_BITS-1U))))))
 
 #define IA_S4_20_MIN IA_MIN_FIXEDPOINT(4U, IA_SX_20_FRAC_BITS)
 #define IA_S4_20_MAX IA_MAX_FIXEDPOINT(4U, IA_SX_20_FRAC_BITS)
-#define IA_FLOAT_TO_S4_20(val) CAST_TO_TYPE(int32_t,(IA_ROUNDD((IA_LIMIT(val, IA_S4_20_MIN, IA_S4_20_MAX))*(CAST_TO_TYPE(uint64_t,2U<<(IA_SX_20_FRAC_BITS-1))))))
+#define IA_FLOAT_TO_S4_20(val) CAST_TO_TYPE(int32_t,(IA_ROUNDD((IA_LIMIT(val, IA_S4_20_MIN, IA_S4_20_MAX))*(CAST_TO_TYPE(uint64_t,2U<<(IA_SX_20_FRAC_BITS-1U))))))
 
 #define IA_SX_8_FRAC_BITS  (8U)
 #define IA_S14_8_MIN IA_MIN_FIXEDPOINT(14U, IA_SX_8_FRAC_BITS)
 #define IA_S14_8_MAX IA_MAX_FIXEDPOINT(14U, IA_SX_8_FRAC_BITS)
-#define IA_FLOAT_TO_S14_8(val) CAST_TO_TYPE(int32_t,(IA_ROUNDD((IA_LIMIT(val, IA_S14_8_MIN, IA_S14_8_MAX))*(CAST_TO_TYPE(uint64_t,2U<<(IA_SX_8_FRAC_BITS-1))))))
+#define IA_FLOAT_TO_S14_8(val) CAST_TO_TYPE(int32_t,(IA_ROUNDD((IA_LIMIT(val, IA_S14_8_MIN, IA_S14_8_MAX))*(CAST_TO_TYPE(uint64_t,2U<<(IA_SX_8_FRAC_BITS-1U))))))
 
 #define IA_S18_8_MIN IA_MIN_FIXEDPOINT(18U, IA_SX_8_FRAC_BITS)
 #define IA_S18_8_MAX IA_MAX_FIXEDPOINT(18U, IA_SX_8_FRAC_BITS)
-#define IA_FLOAT_TO_S18_8(val) CAST_TO_TYPE(int32_t,(IA_ROUNDD((IA_LIMIT(val, IA_S18_8_MIN, IA_S18_8_MAX))*(CAST_TO_TYPE(uint64_t,2U<<(IA_SX_8_FRAC_BITS-1))))))
+#define IA_FLOAT_TO_S18_8(val) CAST_TO_TYPE(int32_t,(IA_ROUNDD((IA_LIMIT(val, IA_S18_8_MIN, IA_S18_8_MAX))*(CAST_TO_TYPE(uint64_t,2U<<(IA_SX_8_FRAC_BITS-1U))))))
 
 #if ((!defined _WIN32) && (!defined WIN32) && (!defined _WINDOWS) && (!defined WINDOWS) && (!defined __STDC_LIB_EXT1__) && (!defined memcpy_s))
 
@@ -278,8 +278,8 @@ inline static int memcpy_s(void *dest, size_t destsz, const void *src, size_t co
 }
 #endif
 
-#define IA_MEMCOPY(_Dst, _Src, _MaxCount)      ((void)memcpy_s(_Dst, _MaxCount, _Src, _MaxCount))
-#define IA_MEMCOPYS(_Dst, _DstSize, _Src, _MaxCount) ((void) memcpy_s(_Dst, _DstSize, _Src, _MaxCount))
+#define IA_MEMCOPY(_Dst, _Src, _MaxCount)      (CAST_TO_TYPE(void,memcpy_s(_Dst, _MaxCount, _Src, _MaxCount)))
+#define IA_MEMCOPYS(_Dst, _DstSize, _Src, _MaxCount) (CAST_TO_TYPE(void, memcpy_s(_Dst, _DstSize, _Src, _MaxCount)))
 
 #if (defined(__STDC_LIB_EXT1__) || defined(_WIN32) || defined(WIN32) || defined(memmove_s))
 #define IA_MEMMOVE(_Dst, _Src, _MaxCount)      memmove_s(_Dst, _MaxCount, _Src, _MaxCount)

@@ -1,5 +1,5 @@
 /*
- * Copyright 2012-2021 Intel Corporation
+ * Copyright 2012-2022 Intel Corporation
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -242,6 +242,7 @@ typedef struct {
     void (*vdebug)(const char *fmt, va_list ap);
     void (*verror)(const char *fmt, va_list ap);
     void (*vinfo)(const char *fmt, va_list ap);
+    void (*vperf)(const char *fmt, va_list ap);
 } ia_env;
 
 typedef struct {
@@ -256,6 +257,7 @@ typedef struct {
 typedef enum
 {
     media_format_legacy                = 0x00,    //ipu4 default
+    media_format_legacy_narrow         = 0x02,
     media_format_bt601_8b              = 0x20,    //bt601
     media_format_bt601_8b_narrow       = 0x22,    //bt601
     media_format_bt709_8b              = 0x30,    //bt709

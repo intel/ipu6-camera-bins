@@ -12043,7 +12043,7 @@ typedef struct
 } ia_pal_isp_rgbs_grid_1_0_t;
 
 /*! \isp struct rgbs_grid_1_1
-RGBS grid (AWB statistics)
+
 */
 typedef struct
 {
@@ -16810,7 +16810,7 @@ typedef struct
 } ia_pal_system_api_rgbs_grid_1_0_t;
 
 /*! \system api struct rgbs_grid_1_1
-RGBS grid (AWB statistics)
+
 */
 typedef struct
 {

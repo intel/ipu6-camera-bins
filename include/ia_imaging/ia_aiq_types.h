@@ -699,6 +699,7 @@ typedef struct {
     float base_gamma;               /*!< gamma */
     float btm;                      /*!< bottom range border */
     float rng;                      /*!< dynamic range  */
+    float top_short_border[10U];
 } ia_aiq_gbce_results;
 
 /*!
