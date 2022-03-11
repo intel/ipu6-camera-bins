@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2021 Intel Corporation.
+ * Copyright (C) 2022 Intel Corporation.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -79,6 +79,7 @@ const uint32_t MAX_PG_TERMINAL_NUM = 16;
 const uint32_t PDAF_STATS_GRID_WIDTH = 16;
 const uint32_t PDAF_STATS_GRID_HEIGHT = 12;
 const uint32_t PDAF_STATS_NUM_NONSVE = 1;
+const uint32_t MAX_STREAM_NUM = 5;
 
 const uint64_t INVALID_FRAME_ID = static_cast<uint64_t>(-1);
 }//cca

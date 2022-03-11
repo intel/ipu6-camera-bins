@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2019-2021 Intel Corporation.
+ * Copyright (C) 2019-2022 Intel Corporation.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -151,11 +151,9 @@ public:
      *
      * \param[in] params                Mandatory.\n
      *                                  Input parameters containing statistics information about a frame.
-     * \param[out] outStats             Optional.\n
-     *                                  Output the aiq statistics data.
      * \return                          Error code for status. zero on success, non-zero on failure
      */
-    ia_err setStatsParams(const cca_stats_params& params, cca_out_stats *outStats = nullptr);
+    ia_err setStatsParams(const cca_stats_params& params);
 
     /*!
      * \brief AEC calculation based on input parameters and frame statistics.
@@ -266,9 +264,29 @@ public:
      *                                  lard data.
      * \param[in] nvm                   Mandatory.\n
      *                                  sensor nvm data.
+     * \param[in] streamId              Optional.\n
+     *                                  the stream id for aic handle
      * \return                          Error code for status. zero on success, non-zero on failure
      */
-    ia_err updateTuning(uint8_t tag, const ia_lard_input_params &lardParams, const cca_nvm &nvm);
+    ia_err updateTuning(uint8_t tag, const ia_lard_input_params &lardParams, const cca_nvm &nvm, int32_t streamId = -1);
+
+    /*!
+     * \brief Update tuning data in run time.
+     *  Update the tuning data to CCA flow, the new tuning data will be taken effect immediately.
+     *  For different use cases, the tuning data should be different, the function is used for the scenario.
+     *
+     * \param[in] tag                   Mandatory.\n
+     *                                  the tag for updated group in tuning file.
+     * \param[in] lardParams            Mandatory.\n
+     *                                  lard data.
+     * \param[in] nvm                   Mandatory.\n
+     *                                  sensor nvm data.
+     * \param[out] pLardResults         Mandatory.\n
+     *                                  lard results
+     * \return                          Error code for status. zero on success, non-zero on failure
+    */
+    ia_err updateTuning(uint8_t tag, const ia_lard_input_params &lardParams, const cca_nvm &nvm, ia_lard_results **pLardResults);
+
     /*!
      * \brief De-initialize CCA Flow and its submodules.
      * All memory allocated by algoriths are freed. CCA Flow handle can no longer be used.
@@ -277,7 +295,7 @@ public:
      */
     ia_err deinit();
 
-	/*!
+    /*!
      * \brief query the current CCA Flow version.
      *
      * \return                          version.
@@ -410,9 +428,9 @@ private:
     ia_binary_data* getOthersData();
     ia_err initCpfParse();
     void initSaResults();
-    ia_err initIspAic();
+    ia_err initIspAic(const cca_stream_ids& aic_stream_ids);
     void deInitIspAic();
-    ia_err reInitIspAic();
+    ia_err reInitIspAic(const cca_stream_ids& aic_stream_ids);
     ia_err initAiq();
     void deinitAiq();
     void deleteSaResultsGrids();
@@ -473,6 +491,7 @@ private:
     /*
      * AIQ structs and params
      */
+    bool mCCAIsEnabled;
     ia_aiq* mAiqHandle;
     uint8_t mAECFrameDelay;
     uint64_t mFrameTimestamp;

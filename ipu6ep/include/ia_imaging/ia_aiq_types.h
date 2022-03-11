@@ -1,5 +1,5 @@
 /*
- * Copyright 2012-2021 Intel Corporation
+ * Copyright 2012-2022 Intel Corporation
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -304,6 +304,8 @@ typedef struct
     int iso;                                /*!< ISO value corresponding to the analog gain. -1 if N/A. */
     ia_aiq_gain gains[IA_CMC_GAINS_MAX_NUM];       /*!< Gain as multipliers (e.g. 1.0), -1.0f if N/A. */
     unsigned int num_gains;                 /*!< The number of gains. */
+    unsigned int low_limit_total_exposure;  /*!< Low limit of total exposure by tuning and sensor*/
+    unsigned int up_limit_total_exposure;   /*!< Up limit of total exposure by tuning and sensor*/
 } ia_aiq_exposure_parameters;
 
 /*!
@@ -335,7 +337,7 @@ typedef struct
     unsigned short fine_integration_time_max_margin;   /*!< fine_integration_time_max = pixel_periods_per_line - fine_integration_time_max_margin. */
     unsigned short coarse_integration_time_min;        /*!< The minimum allowed value for coarse_integration_time in AEC outputs. */
     unsigned short coarse_integration_time_max_margin; /*!< coarse_integration_time_max = line_periods_per_field - coarse_integration_time_max_margin */
-    bool is_mono_ir_sensor;                                /*!< Judge if it is IR sensor, 1: IR sensor, 0: others*/
+    unsigned short is_mono_ir_sensor;                  /*!< Judge if it is IR sensor, 1: IR sensor, 0: others*/
 } ia_aiq_exposure_sensor_descriptor;
 
 /*!
@@ -630,6 +632,8 @@ typedef struct
     ia_aiq_bracket_mode multiframe;                     /*!< AEC may propose to use multiframe for optimal results. */
     ia_aiq_ae_flicker_reduction flicker_reduction_mode; /*!< Flicker reduction mode proposed by the AEC algorithm */
     ia_aiq_aperture_control *aperture_control;          /*!< Aperture control parameters. */
+    bool plc_mode_used;                                 /*!< Indicates the PLC mode usage. */
+    unsigned int plc_reset_cntr;                        /*!< Counter for DZ reseted frames after PLC on*/
 } ia_aiq_ae_results;
 
 /*!
@@ -697,6 +701,8 @@ typedef struct {
     float base_gamma;               /*!< gamma */
     float btm;                      /*!< bottom range border */
     float rng;                      /*!< dynamic range  */
+    float top_short_border[10U];
+    unsigned int filtering_delay_number;
 } ia_aiq_gbce_results;
 
 /*!

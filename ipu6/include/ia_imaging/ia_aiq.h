@@ -1,5 +1,5 @@
 /*
- * Copyright 2012-2021 Intel Corporation
+ * Copyright 2012-2022 Intel Corporation
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -337,6 +337,22 @@ LIBEXPORT ia_err
 ia_aiq_af_run(ia_aiq *ia_aiq_ptr,
               const ia_aiq_af_input_params *af_input_params,
               ia_aiq_af_results **af_results);
+
+/*!
+ * \brief calcualte the object focus distance based on the lens position.
+ *
+ * \param[in] ia_aiq_ptr            Mandatory.\n
+ *                                  AIQ instance handle.
+ * \param[in] lens_position         Mandatory.\n
+ *                                  vcm position.
+ * \param[out] focus_distance       Mandatory.\n
+ *                                  pointer to calculated object focus distance Results from AF calculations.
+ * \return                          Error code.
+ */
+LIBEXPORT ia_err
+ia_aiq_calculate_focus_distance(ia_aiq *ia_aiq_ptr,
+                                int32_t lens_position,
+                                int32_t *focus_distance);
 
 /*!
  *  \brief Input parameter structure for AWB algorithm.

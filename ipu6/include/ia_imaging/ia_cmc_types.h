@@ -1499,8 +1499,8 @@ typedef struct
     ia_mkn_record_header header;    /*!< Record header with Format ID: UInt16 (See AIQB_DataID) Name ID: cmc_name_id_saturation_level. (enum cmc_name_id). */
     uint8_t enable;
     uint8_t number_of_points;
-    int32_t *x_coords;             /*Array of x coordinates for sensor decompand curve. Count of array is equal number_of_point*/
-    int32_t *y_coords;             /*Array of y coordinates for sensor decompand curve. Count of array is equal number_of_point*/
+    uint16_t *x_coords;             /*Array of x coordinates for sensor decompand curve. Count of array is equal number_of_point*/
+    uint32_t *y_coords;             /*Array of y coordinates for sensor decompand curve. Count of array is equal number_of_point*/
 } cmc_parsed_cbd_t;
 
 /*!

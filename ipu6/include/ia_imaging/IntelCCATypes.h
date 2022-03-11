@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2019-2021 Intel Corporation.
+ * Copyright (C) 2019-2022 Intel Corporation.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -90,6 +90,15 @@ typedef struct
     size_t size;                /*!< Mandatory. size of statistics bin. */
     uint8_t buf[MAX_STATS_LEN]; /*!< Mandatory. buffer of statistics data. */
 } cca_stats_bin;
+
+/*!
+ *  \brief stream id struct.
+ */
+typedef struct
+{
+    size_t count;
+    int32_t ids[MAX_STREAM_NUM];
+} cca_stream_ids;
 
 /*!
  * \brief bitmap to enable CCA modules in running.
@@ -259,6 +268,7 @@ typedef struct
 {
     ia_aiq_af_status status;                           /*!< Focus status */
     uint32_t next_lens_position;                       /*!< Next lens position */
+    int32_t next_focus_distance;                      /*!< Next focusing distance [mm] between the lens and object plane */
     uint16_t current_focus_distance;                   /*!< Current focusing distance [mm] between the lens and object plane */
     bool final_lens_position_reached;                  /*!< Lens has reached the final lens position */
 } cca_af_results;
@@ -627,6 +637,7 @@ struct cca_init_params{
     cca_gdc_configuration gdcConfig; /*!< Mandatory. GDC resolution configuration */
     uint8_t aiqStorageLen;           /*!< Mandatory. lehgth of history to store algo results */
     uint8_t aecFrameDelay;           /*!< Mandatory. frame delay for auto exposure take effect */
+    cca_stream_ids aic_stream_ids;    /*!< Optional. the stream id for aic handle*/
     cca_init_params() :
         frameUse(ia_aiq_frame_use_preview),
         conversionGainRatio(1),
@@ -646,6 +657,7 @@ struct cca_init_params{
             IA_MEMSET(&aiq_nvm, 0, sizeof(aiq_nvm));
             IA_MEMSET(&aiq_aiqd, 0, sizeof(aiq_aiqd));
             IA_MEMSET(&gdcConfig, 0, sizeof(gdcConfig));
+            IA_MEMSET(&aic_stream_ids, 0, sizeof(aic_stream_ids));
         }
 };
 /*!
