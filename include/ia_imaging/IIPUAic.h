@@ -247,14 +247,11 @@ public:
      *                                   AIQ plus parameters and manual settings.
      * \param[in] aaaResults             Mandatory.\n
      *                                   AIQ plus results.
-     *  \param[in] bitmap                Mandatory.\n
-     *                                   Bitmap to decide which CB will be run.
      * \param[out] pal                   Mandatory.\n
      *                                   AIC results for each CB.
      * \return                           Error code.
      */
-    virtual ia_err run(const cca_pal_input_params& params, cca_3a_plus_results& aaaResults,
-                       cca_multi_pal_output& output, uint8_t bitmap) = 0;
+    virtual ia_err run(const cca_pal_input_params& params, cca_3a_plus_results& aaaResults, cca_multi_pal_output& output) = 0;
 
 #else
     /*!

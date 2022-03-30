@@ -360,13 +360,11 @@ public:
     *
     * \param [in]  frameId      indicate PAL results for specia frame
     * \param [in]  params       manual settings for IPU pipeline
-    * \param [in]  bitmap       bitmap to decide which CB will be run
     * \param [out] output       binary array of IPU parameters for each CB
     *
     * \return                   Error code for status. zero on success, non-zero on failure
     */
-    ia_err runAIC (uint64_t frameId, const cca_pal_input_params& params,
-                   cca_multi_pal_output& output, uint8_t bitmap = UINT8_MAX);
+    ia_err runAIC (uint64_t frameId, const cca_pal_input_params& params, cca_multi_pal_output& output);
 #else
     /*!
     *

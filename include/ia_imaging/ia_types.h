@@ -1,5 +1,5 @@
 /*
- * Copyright 2012-2022 Intel Corporation
+ * Copyright 2012-2021 Intel Corporation
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -242,7 +242,6 @@ typedef struct {
     void (*vdebug)(const char *fmt, va_list ap);
     void (*verror)(const char *fmt, va_list ap);
     void (*vinfo)(const char *fmt, va_list ap);
-    void (*vperf)(const char *fmt, va_list ap);
 } ia_env;
 
 typedef struct {

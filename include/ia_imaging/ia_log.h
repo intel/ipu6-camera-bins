@@ -1,5 +1,5 @@
 /*
- * Copyright 2021-2022 Intel Corporation
+ * Copyright 2021 Intel Corporation
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -30,15 +30,12 @@ extern "C" {
 /*!
  * \brief Macro for not logging.
  */
-#define IA_NOLOG(...)                  { \
-                /*LDRA_INSPECTED 58 S */ \
-                (CAST_TO_TYPE(void, 0));               \
-}
+#define IA_NOLOG(...)           { /*LDRA_INSPECTED 57 S */ ((void)0);}
 
 /*!
  * \brief Macro wrapper for ia_log function.
  */
-#define IA_LOG(level, fmt, ...) (CAST_TO_TYPE(void, ia_log((level), (fmt), ## __VA_ARGS__)))
+#define IA_LOG(level, fmt, ...) ((void)ia_log((level), (fmt), ## __VA_ARGS__))
 
 /*!
  * \brief Logging levels.
@@ -48,7 +45,6 @@ typedef enum
     ia_log_error,
     ia_log_debug,
     ia_log_info,
-    ia_log_perf,
 } ia_log_level;
 
 /*!

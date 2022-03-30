@@ -4922,48 +4922,6 @@ typedef struct
 
 } ia_pal_isp_dol_2_0_t;
 
-/*! \isp struct dol_lite_1_0
-
-*/
-typedef struct
-{
-    /*!< log_downscale_ratio log2 of downscale ratio*/
-    int32_t log_downscale_ratio;
-    /*!< etr_slope[4] estimated ETR coefficient*/
-    int32_t etr_slope[4];
-    /*!< etr_bias[4] estimated ETR bias*/
-    int32_t etr_bias[4];
-    /*!< snr_dip luma transition-region width*/
-    int32_t snr_dip;
-    /*!< deghost_bias deghost indicator constant*/
-    int32_t deghost_bias;
-    /*!< deghost_coeff deghost indicator coefficient*/
-    int32_t deghost_coeff;
-    /*!< blend_bias luma blend constant*/
-    int32_t blend_bias;
-    /*!< blend_coeff luma blend coefficient*/
-    int32_t blend_coeff;
-    /*!< update_limit Limit of S&R parameter update mechanism*/
-    int32_t update_limit;
-    /*!< update_coeff S&R parameter update coefficient*/
-    int32_t update_coeff;
-    /*!< d_ml[32] Maximum-likelihood of distance distribution*/
-    int32_t d_ml[32];
-    /*!< inv_expected_dist_eff[32] Inverse of d_ml*/
-    int32_t inv_expected_dist_eff[32];
-    /*!< outofbounds[32] is ML value out of histogram bounds?*/
-    int32_t outofbounds[32];
-    /*!< d_ml_user[32] Maximum-likelihood of distance distribution*/
-    int32_t d_ml_user[32];
-    /*!< inv_expected_dist_eff_user[32] Inverse of d_ml*/
-    int32_t inv_expected_dist_eff_user[32];
-    /*!< is_first_frame If first frame, ignore input rec-sim*/
-    int32_t is_first_frame;
-    /*!< enable block enable*/
-    int32_t enable;
-
-} ia_pal_isp_dol_lite_1_0_t;
-
 /*! \isp struct dol_mapper
 DOL color ID mapper
 */
@@ -9083,16 +9041,6 @@ typedef struct
     int32_t input_width_msb;
     /*!< output_width_msb provides bits [19:16] to the output width resolution*/
     int32_t output_width_msb;
-    /*!< snoop 0 - non-snoopable, 1 - snoopable*/
-    int32_t snoop;
-    /*!< traffic_class Traffic class the request belongs to and be stored at the XFER queue ccordingly*/
-    int32_t traffic_class;
-    /*!< allocate used for streaming cache: 0-don’t cache, 1-reserved, 2-cache only to non-reserved ways, 3-cache use reserved space for this device*/
-    int32_t allocate;
-    /*!< buffer_user_info_reserved_0 Reserved for future use*/
-    int32_t buffer_user_info_reserved_0;
-    /*!< buffer_user_info_reserved_1 Reserved for future use*/
-    int32_t buffer_user_info_reserved_1;
 
 } ia_pal_isp_io_buffer_1_1_t;
 
@@ -12041,80 +11989,6 @@ typedef struct
     uint32_t copy_out_components;
 
 } ia_pal_isp_rgbs_grid_1_0_t;
-
-/*! \isp struct rgbs_grid_1_1
-
-*/
-typedef struct
-{
-    /*!< grid_height represents number of vertical grid cells*/
-    int32_t grid_height;
-    /*!< grid_width represents number of horizontal grid cells*/
-    int32_t grid_width;
-    /*!< block_width Log2 the width of each grid cell (8,16,32,64,128)*/
-    int32_t block_width;
-    /*!< block_height Log2 the height of each grid cell (8,16,32,64,128)*/
-    int32_t block_height;
-    /*!< min_out_bytes_per_cell Minimum bytes per grid cell in output buffer (pad with '0's in MSB side if not met otherwise)*/
-    int32_t min_out_bytes_per_cell;
-    /*!< rgbs_en 0: FF will not write to the RGBS array; 1: FF will write*/
-    int32_t rgbs_en;
-    /*!< rgbs_incl_sat 0: do not include saturated quads in the average; 1: include saturated quads in the average*/
-    int32_t rgbs_incl_sat;
-    /*!< x_start X top left corner of the grid. 0 <= x_start <= (frame_width - 1)*/
-    int32_t x_start;
-    /*!< y_start Y top left corner of the grid. 0 <= y_start <= (frame_height - 1)*/
-    int32_t y_start;
-    /*!< x_end X bottom right corner of the grid. x_end = x_start + (grid_width << block_width) - 1*/
-    int32_t x_end;
-    /*!< y_end Y bottom right corner of the grid. y_end = y_start + (grid_height << block_height) - 1*/
-    int32_t y_end;
-    /*!< sensor_mode 0: 1x1 CFA (array sensor); 1: 2 x 2 CFA; 2: 4 x 4 CFA*/
-    int32_t sensor_mode;
-    /*!< pat_00 defines the color ID of the pixel in the CFA pattern; Pat_ij: i - row, j - column*/
-    int32_t pat_00;
-    /*!< pat_01 defines the color ID of the pixel in the CFA pattern; Pat_ij: i - row, j - column*/
-    int32_t pat_01;
-    /*!< pat_02 defines the color ID of the pixel in the CFA pattern; Pat_ij: i - row, j - column*/
-    int32_t pat_02;
-    /*!< pat_03 defines the color ID of the pixel in the CFA pattern; Pat_ij: i - row, j - column*/
-    int32_t pat_03;
-    /*!< pat_10 defines the color ID of the pixel in the CFA pattern; Pat_ij: i - row, j - column*/
-    int32_t pat_10;
-    /*!< pat_11 defines the color ID of the pixel in the CFA pattern; Pat_ij: i - row, j - column*/
-    int32_t pat_11;
-    /*!< pat_12 defines the color ID of the pixel in the CFA pattern; Pat_ij: i - row, j - column*/
-    int32_t pat_12;
-    /*!< pat_13 defines the color ID of the pixel in the CFA pattern; Pat_ij: i - row, j - column*/
-    int32_t pat_13;
-    /*!< pat_20 defines the color ID of the pixel in the CFA pattern; Pat_ij: i - row, j - column*/
-    int32_t pat_20;
-    /*!< pat_21 defines the color ID of the pixel in the CFA pattern; Pat_ij: i - row, j - column*/
-    int32_t pat_21;
-    /*!< pat_22 defines the color ID of the pixel in the CFA pattern; Pat_ij: i - row, j - column*/
-    int32_t pat_22;
-    /*!< pat_23 defines the color ID of the pixel in the CFA pattern; Pat_ij: i - row, j - column*/
-    int32_t pat_23;
-    /*!< pat_30 defines the color ID of the pixel in the CFA pattern; Pat_ij: i - row, j - column*/
-    int32_t pat_30;
-    /*!< pat_31 defines the color ID of the pixel in the CFA pattern; Pat_ij: i - row, j - column*/
-    int32_t pat_31;
-    /*!< pat_32 defines the color ID of the pixel in the CFA pattern; Pat_ij: i - row, j - column*/
-    int32_t pat_32;
-    /*!< pat_33 defines the color ID of the pixel in the CFA pattern; Pat_ij: i - row, j - column*/
-    int32_t pat_33;
-    /*!< rgbs_thr_cx[8] RGBS threshold value (C0, C1, C2, C3, C4, C5, C6, C7)*/
-    int32_t rgbs_thr_cx[8];
-    /*!< shftr_val_cx[8] ShiftVal is derived from log2(number of pixels from C0-C7 color channel in a cell)*/
-    int32_t shftr_val_cx[8];
-    /*!< shftr_sat represents log2(num of pixels in cell)*/
-    int32_t shftr_sat;
-    /*!< output_packed Enabling Output packing. Use 0 if ColorID [0 3] are used, Use 1 if all ColorIDs i.e. [0 7] are used (i.e. multi-exposure (e.g. SVE) use-cases)*/
-    int32_t output_packed;
-    /*!< copy_out_components bit0: copy_enable_colorid0, bit1..3: copy_src_colorid, bit4: copy_enable_colorid1, bit5..7: copy_src_colorid, ... , bit28: copy_enable_colorid7, bit29..31: copy_src_colorid*/
-    uint32_t copy_out_components;
-
-} ia_pal_isp_rgbs_grid_1_1_t;
 
 /*! \isp struct rgbs_statistics_1_0
 
@@ -16654,8 +16528,6 @@ typedef struct
 {
     /*!< aligner_data_size amount of valid bits per valid cycle to be accumulate and use the aligner (valid when dpa_bypass is set). LSB represent 2b resolution (meaning value can be 2, 4, 6, 8, … up to 72 which is the size bus)*/
     int32_t aligner_data_size;
-    /*!< allocate used for streaming cache: 0-don’t cache, 1-reserved, 2-cache only to non-reserved ways, 3-cache use reserved space for this device*/
-    uint8_t allocate;
     /*!< arbiter_pin MIPI CSI arbiter pin location of the stream*/
     int32_t arbiter_pin;
     /*!< block_height buffer block height configuration in lines*/
@@ -16664,10 +16536,6 @@ typedef struct
     uint16_t block_width;
     /*!< buffer_1d_enable Valid only for 1 plane and 1 queue streams. 0-the buffer is described as 2D; 1-the buffer is described as 1D (continues from start to end w/o stride ignoring lines)*/
     uint8_t buffer_1d_enable;
-    /*!< buffer_user_info_reserved_0 Reserved for future use*/
-    uint8_t buffer_user_info_reserved_0;
-    /*!< buffer_user_info_reserved_1 Reserved for future use*/
-    uint8_t buffer_user_info_reserved_1;
     /*!< chroma_base_conversion chroma converted from zero-based to half-based or vice versa*/
     uint8_t chroma_base_conversion;
     /*!< chroma_duplication Valid when format 420 is configured to provide 422 (2P2Q with SIF count of 4 or 2). when reset - duplicate the chroma and provide the same value each two Y lines, when set - send the chroma components only with the even Y (at odd Y lines doesn’t send any chroma)*/
@@ -16750,8 +16618,6 @@ typedef struct
     uint8_t proc_ff_bypass;
     /*!< progress_message_line Provides the line number that when is done generate progress message (IFD - last byte of the line arrive, ODR - last byte of the line acked by nbuf)*/
     uint16_t progress_message_line;
-    /*!< snoop 0 - non-snoopable, 1 - snoopable*/
-    uint8_t snoop;
     /*!< stream_dt stream data type as need to be used by the MIPI*/
     uint8_t stream_dt;
     /*!< stream_dt_for_mipi_packet stream data type as need to be used in the header of mipi packet - not affect the proc*/
@@ -16772,8 +16638,6 @@ typedef struct
     uint8_t tile_mode;
     /*!< tiling_type Tiling Type: 0 - internal tiling; 1 - external tiling (Tile-4)*/
     uint8_t tiling_type;
-    /*!< traffic_class Traffic class the request belongs to and be stored at the XFER queue ccordingly*/
-    uint8_t traffic_class;
     /*!< unpack_alignment Valid for unpacked vectors: 0-element located at LSB and MSB is zero; 1-element located at MSB and LSB is zero*/
     uint8_t unpack_alignment;
     /*!< use_attributes This capability impact the ODR. When set, ODR should use the EOL/EOF attributes to detect frame dimensions. In general, this capability is used when the height or width or both are not known or cannot be expressed. Using this capability disable the option using crop/pad mechanism and force SW to provide the same dimension in input/output region (if known) and zero the offset values.*/
@@ -16808,16 +16672,6 @@ typedef struct
     uint8_t is_fragmentation;
 
 } ia_pal_system_api_rgbs_grid_1_0_t;
-
-/*! \system api struct rgbs_grid_1_1
-
-*/
-typedef struct
-{
-    /*!< is_fragmentation If no - min_out_bytes=0. Otherwise - calculate to fit grid to CL.*/
-    uint8_t is_fragmentation;
-
-} ia_pal_system_api_rgbs_grid_1_1_t;
 
 /*! \system api struct tnr7_blend_1_0
 
