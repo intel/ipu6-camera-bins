@@ -80,6 +80,7 @@ const uint32_t PDAF_STATS_GRID_WIDTH = 16;
 const uint32_t PDAF_STATS_GRID_HEIGHT = 12;
 const uint32_t PDAF_STATS_NUM_NONSVE = 1;
 const uint32_t MAX_STREAM_NUM = 5;
+const uint32_t MAX_RGBIR_MODELS = 3;
 
 const uint64_t INVALID_FRAME_ID = static_cast<uint64_t>(-1);
 }//cca

@@ -16673,6 +16673,18 @@ typedef struct
 
 } ia_pal_system_api_rgbs_grid_1_0_t;
 
+/*! \system api struct tnr7_blend_1_0
+
+*/
+typedef struct
+{
+    /*!< enable_main_output Enable blend main output*/
+    uint8_t enable_main_output;
+    /*!< enable_vision_output Enable blend computer vision output*/
+    uint8_t enable_vision_output;
+
+} ia_pal_system_api_tnr7_blend_1_0_t;
+
 /*! \system api struct tvs_1_0
 Trainable visual scaler
 */

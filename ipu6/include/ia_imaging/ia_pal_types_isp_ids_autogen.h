@@ -427,6 +427,7 @@ typedef enum
     ia_pal_uuid_system_api_io_buffer_1_1 = 56474,
     ia_pal_uuid_system_api_lsc_1_2 = 19967,
     ia_pal_uuid_system_api_rgbs_grid_1_0 = 35673,
+    ia_pal_uuid_system_api_tnr7_blend_1_0 = 53161,
     ia_pal_uuid_system_api_tvs_1_0 = 29571,
 
 } ia_system_api_uuid;
