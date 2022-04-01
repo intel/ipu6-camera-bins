@@ -895,8 +895,7 @@ ia_binary_data* output_data);
  * \param[out] depth_statistics            Mandatory. Converted PAF statistics. Output can be directly used as input in function ia_statistics_set.
  * \return                                 Error code.
  */
-LIBEXPORT ia_err
-ia_isp_bxt_statistics_convert_paf_from_binary(
+ia_err ia_isp_bxt_statistics_convert_paf_from_binary(
         ia_isp_bxt *ia_isp_bxt,
         const ia_binary_data *bxt_paf_statistics,
         unsigned int paf_statistics_input_width,

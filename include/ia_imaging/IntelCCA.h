@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2019-2021 Intel Corporation.
+ * Copyright (C) 2019-2022 Intel Corporation.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -264,9 +264,11 @@ public:
      *                                  lard data.
      * \param[in] nvm                   Mandatory.\n
      *                                  sensor nvm data.
+     * \param[in] streamId              Optional.\n
+     *                                  the stream id for aic handle
      * \return                          Error code for status. zero on success, non-zero on failure
      */
-    ia_err updateTuning(uint8_t tag, const ia_lard_input_params &lardParams, const cca_nvm &nvm);
+    ia_err updateTuning(uint8_t tag, const ia_lard_input_params &lardParams, const cca_nvm &nvm, int32_t streamId = -1);
 
     /*!
      * \brief Update tuning data in run time.
@@ -281,8 +283,6 @@ public:
      *                                  sensor nvm data.
      * \param[out] pLardResults         Mandatory.\n
      *                                  lard results
-     * \param[out] bSupportLard         Mandatory.\n
-     *                                  indicate if lard is supported
      * \return                          Error code for status. zero on success, non-zero on failure
     */
     ia_err updateTuning(uint8_t tag, const ia_lard_input_params &lardParams, const cca_nvm &nvm, ia_lard_results **pLardResults);
@@ -428,9 +428,9 @@ private:
     ia_binary_data* getOthersData();
     ia_err initCpfParse();
     void initSaResults();
-    ia_err initIspAic();
+    ia_err initIspAic(const cca_stream_ids& aic_stream_ids);
     void deInitIspAic();
-    ia_err reInitIspAic();
+    ia_err reInitIspAic(const cca_stream_ids& aic_stream_ids);
     ia_err initAiq();
     void deinitAiq();
     void deleteSaResultsGrids();

@@ -61,18 +61,18 @@ typedef uint16_t half;
 #define IA_EPSILON 0.0001F
 
 #define FLOAT_TO_Q16_16(n) (CAST_TO_TYPE(uint32_t, ((CAST_TO_TYPE(float32_t,(n)))*65536.0F)))
-#define INT_TO_Q16_16(n)   CAST_TO_TYPE(int32_t,(CAST_TO_TYPE(uint32_t,(n))<<16U))
+#define INT_TO_Q16_16(n)   ((n)<<16)
 #define Q16_16_TO_FLOAT(n) ((CAST_TO_TYPE(float32_t,(n)))*0.0000152587890625F)
-#define Q16_16_TO_INT(n)   CAST_TO_TYPE(int32_t,(CAST_TO_TYPE(uint32_t,(n))>>16U))
+#define Q16_16_TO_INT(n)   ((n)>>16)
 
 #define FLOAT_TO_Q1_15(n)  (CAST_TO_TYPE(uint16_t,((CAST_TO_TYPE(float32_t,(n)))*32768.0F)))
 #define Q1_15_TO_FLOAT(n)  ((CAST_TO_TYPE(float32_t,(n)))*0.000030518F)
 #define QX_15_TO_FLOAT(n)  ((CAST_TO_TYPE(float32_t,(n)))*0.000030517578125F)
 
 #define FLOAT_TO_Q8_8(n)   (CAST_TO_TYPE(uint16_t, ((CAST_TO_TYPE(float32_t,(n)))*256.0F)))
-#define INT_TO_Q8_8(n)     CAST_TO_TYPE(int32_t,(CAST_TO_TYPE(uint32_t,(n))<<8U))
+#define INT_TO_Q8_8(n)     ((n)<<8)
 #define Q8_8_TO_FLOAT(n)   ((CAST_TO_TYPE(float32_t,(n)))*0.00390625F)
-#define Q8_8_TO_INT(n)     CAST_TO_TYPE(int32_t,(CAST_TO_TYPE(uint32_t,(n))>>8U))
+#define Q8_8_TO_INT(n)     ((n)>>8)
 
 #define FLOAT_TO_QX_3(n)   (CAST_TO_TYPE(float32_t,(n))*8.0F)
 #define FLOAT_TO_QX_7(n)   (CAST_TO_TYPE(float32_t,(n))*128.0F)
@@ -83,14 +83,14 @@ typedef uint16_t half;
 #define FLOAT_TO_QX_13(n)  (CAST_TO_TYPE(float32_t,(n))*8192.0F)
 #define FLOAT_TO_QX_14(n)  (CAST_TO_TYPE(float32_t,(n))*16384.0F)
 #define FLOAT_TO_QX_15(n)  (CAST_TO_TYPE(float32_t,(n))*32768.0F)
-#define INT_TO_QX_10(n)    CAST_TO_TYPE(int32_t,(CAST_TO_TYPE(uint32_t,(n))<<10U))
+#define INT_TO_QX_10(n)    ((n)<<10)
 #define QX_7_TO_FLOAT(n)   ((CAST_TO_TYPE(float32_t,(n)))*0.0078125F)
 #define QX_10_TO_FLOAT(n)  ((CAST_TO_TYPE(float32_t,(n)))*0.0009765625F)
 #define QX_13_TO_FLOAT(n)  ((CAST_TO_TYPE(float32_t,(n)))*0.0001220703125F)
 #define QX_14_TO_FLOAT(n)  ((CAST_TO_TYPE(float32_t,(n)))*0.00006103515625F)
 #define QX_18_TO_FLOAT(n)  ((CAST_TO_TYPE(float32_t,(n)))*0.00000381469F)
 #define QX_20_TO_FLOAT(n)  ((CAST_TO_TYPE(float32_t,(n)))*0.00000095367431640625F)
-#define QX_10_TO_INT(n)    CAST_TO_TYPE(int32_t,(CAST_TO_TYPE(uint32_t,(n))>>10U))
+#define QX_10_TO_INT(n)    ((n)>>10)
 
 #define Q16_12_TO_FLOAT(n) ((CAST_TO_TYPE(float32_t,(n)))*0.000244141F)
 
@@ -147,7 +147,7 @@ typedef uint16_t half;
 #define IA_LOG2(x)               (logf(CAST_TO_TYPE(float32_t,(x))) / logf(2.0F))
 #define IA_LOG2D(x)              (log(x) / log(2.0))
 #define IA_LOG10(x)              log10f(CAST_TO_TYPE(float32_t,(x)))
-#define IA_ASSERT(x)             assert(x)
+#define IA_ASSERT                assert
 #define IA_SIGN(a)               (((a) > 0) - ((a) < 0))
 
 
@@ -157,65 +157,65 @@ typedef uint16_t half;
 #define IA_MAX_Q0_FIXEDPOINT(frac_bits) (1.0 - (1.0f/((float64_t)(frac_bits?((unsigned long)2<<(frac_bits-1)):0))))
 
 /* Q0_31 means: total 31 bits =  0 int bits + 31 fractional bits*/
-#define IA_QX_31_FRAC_BITS  (31U)
+#define IA_QX_31_FRAC_BITS  (31)
 #define IA_Q0_31_MIN    (0)
 #define IA_Q0_31_MAX    IA_MAX_Q0_FIXEDPOINT(IA_QX_31_FRAC_BITS)
-#define IA_FLOAT_TO_Q0_31(val) CAST_TO_TYPE(uint32_t,(IA_ROUNDD((IA_LIMIT(val, IA_Q0_31_MIN, IA_Q0_31_MAX))*(CAST_TO_TYPE(uint64_t, 2U<<(IA_QX_31_FRAC_BITS-1))))))
+#define IA_FLOAT_TO_Q0_31(val) CAST_TO_TYPE(uint32_t,(IA_ROUNDD((IA_LIMIT(val, IA_Q0_31_MIN, IA_Q0_31_MAX))*((unsigned long)2<<(IA_QX_31_FRAC_BITS-1)))))
 
-#define IA_QX_26_FRAC_BITS  (26U)
+#define IA_QX_26_FRAC_BITS  (26)
 #define IA_Q0_26_MIN    (0)
 #define IA_Q0_26_MAX    IA_MAX_Q0_FIXEDPOINT(IA_QX_26_FRAC_BITS)
-#define IA_FLOAT_TO_Q0_26(val) CAST_TO_TYPE(uint32_t,(IA_ROUND((IA_LIMIT(val, IA_Q0_26_MIN, IA_Q0_26_MAX)*(CAST_TO_TYPE(uint64_t, 2U<<(IA_QX_26_FRAC_BITS-1)))))))
+#define IA_FLOAT_TO_Q0_26(val) CAST_TO_TYPE(uint32_t,(IA_ROUND((IA_LIMIT(val, IA_Q0_26_MIN, IA_Q0_26_MAX)*((unsigned long)2<<(IA_QX_26_FRAC_BITS-1))))))
 
-#define IA_QX_16_FRAC_BITS  (16U)
+#define IA_QX_16_FRAC_BITS  (16)
 #define IA_Q14_16_MIN    (0)
-#define IA_Q14_16_MAX    IA_MAX_FIXEDPOINT(14U, IA_QX_16_FRAC_BITS)
-#define IA_FLOAT_TO_Q14_16(val) CAST_TO_TYPE(uint32_t,(IA_ROUND((IA_LIMIT(val, IA_Q14_16_MIN, IA_Q14_16_MAX)*(CAST_TO_TYPE(uint64_t,2U<<(IA_QX_16_FRAC_BITS-1)))))))
+#define IA_Q14_16_MAX    IA_MAX_FIXEDPOINT(14, IA_QX_16_FRAC_BITS)
+#define IA_FLOAT_TO_Q14_16(val) CAST_TO_TYPE(uint32_t,(IA_ROUND((IA_LIMIT(val, IA_Q14_16_MIN, IA_Q14_16_MAX)*((unsigned long)2<<(IA_QX_16_FRAC_BITS-1))))))
 
-#define IA_QX_5_FRAC_BITS  (5U)
+#define IA_QX_5_FRAC_BITS  (5)
 #define IA_Q14_5_MIN       (0)
-#define IA_Q14_5_MAX    IA_MAX_FIXEDPOINT(14U, IA_QX_5_FRAC_BITS)
-#define IA_FLOAT_TO_Q14_5(val) CAST_TO_TYPE(uint32_t,(IA_ROUND((IA_LIMIT(val, IA_Q14_5_MIN, IA_Q14_5_MAX)*(CAST_TO_TYPE(uint64_t,2U<<(IA_QX_5_FRAC_BITS-1)))))))
+#define IA_Q14_5_MAX    IA_MAX_FIXEDPOINT(14, IA_QX_5_FRAC_BITS)
+#define IA_FLOAT_TO_Q14_5(val) CAST_TO_TYPE(uint32_t,(IA_ROUND((IA_LIMIT(val, IA_Q14_5_MIN, IA_Q14_5_MAX)*((unsigned long)2<<(IA_QX_5_FRAC_BITS-1))))))
 
 #define IA_Q3_16_MIN    (0)
-#define IA_Q3_16_MAX    IA_MAX_FIXEDPOINT(3U, IA_QX_16_FRAC_BITS)
-#define IA_FLOAT_TO_Q3_16(val) CAST_TO_TYPE(uint32_t,(IA_ROUND((IA_LIMIT(val, IA_Q3_16_MIN, IA_Q3_16_MAX)*(CAST_TO_TYPE(uint64_t,2U<<(IA_QX_16_FRAC_BITS-1)))))))
+#define IA_Q3_16_MAX    IA_MAX_FIXEDPOINT(3, IA_QX_16_FRAC_BITS)
+#define IA_FLOAT_TO_Q3_16(val) CAST_TO_TYPE(uint32_t,(IA_ROUND((IA_LIMIT(val, IA_Q3_16_MIN, IA_Q3_16_MAX)*((unsigned long)2<<(IA_QX_16_FRAC_BITS-1))))))
 
 /* S4.15 means: total 20 bits =  1 sign bit + 4 int bits + 15 fractional bits*/
-#define IA_SX_15_FRAC_BITS  (15U)
-#define IA_S4_15_MIN IA_MIN_FIXEDPOINT(4U, IA_SX_15_FRAC_BITS)
-#define IA_S4_15_MAX IA_MAX_FIXEDPOINT(4U, IA_SX_15_FRAC_BITS)
-#define IA_FLOAT_TO_S4_15(val) CAST_TO_TYPE(int32_t,(IA_ROUND((IA_LIMIT(val, IA_S4_15_MIN, IA_S4_15_MAX))*(CAST_TO_TYPE(uint64_t,2U<<(IA_SX_15_FRAC_BITS-1))))))
+#define IA_SX_15_FRAC_BITS  (15)
+#define IA_S4_15_MIN IA_MIN_FIXEDPOINT(4, IA_SX_15_FRAC_BITS)
+#define IA_S4_15_MAX IA_MAX_FIXEDPOINT(4, IA_SX_15_FRAC_BITS)
+#define IA_FLOAT_TO_S4_15(val) CAST_TO_TYPE(int32_t,(IA_ROUND((IA_LIMIT(val, IA_S4_15_MIN, IA_S4_15_MAX))*((unsigned long)2<<(IA_SX_15_FRAC_BITS-1)))))
 
 /* S4.14 means: total 20 bits =  1 sign bit + 4 int bits + 14 fractional bits*/
-#define IA_SX_14_FRAC_BITS  (14U)
-#define IA_S4_14_MIN IA_MIN_FIXEDPOINT(4U, IA_SX_14_FRAC_BITS)
-#define IA_S4_14_MAX IA_MAX_FIXEDPOINT(4U, IA_SX_14_FRAC_BITS)
-#define IA_FLOAT_TO_S4_14(val) CAST_TO_TYPE(int32_t,(IA_ROUND((IA_LIMIT(val, IA_S4_14_MIN, IA_S4_14_MAX))*(CAST_TO_TYPE(uint64_t,2U<<(IA_SX_14_FRAC_BITS-1))))))
+#define IA_SX_14_FRAC_BITS  (14)
+#define IA_S4_14_MIN IA_MIN_FIXEDPOINT(4, IA_SX_14_FRAC_BITS)
+#define IA_S4_14_MAX IA_MAX_FIXEDPOINT(4, IA_SX_14_FRAC_BITS)
+#define IA_FLOAT_TO_S4_14(val) CAST_TO_TYPE(int32_t,(IA_ROUND((IA_LIMIT(val, IA_S4_14_MIN, IA_S4_14_MAX))*((unsigned long)2<<(IA_SX_14_FRAC_BITS-1)))))
 
 /* S4.19 means: =  1 sign bit + 4 int bits + 19 fractional bits*/
-#define IA_SX_19_FRAC_BITS  (19U)
-#define IA_S4_19_MIN IA_MIN_FIXEDPOINT(4U, IA_SX_19_FRAC_BITS)
-#define IA_S4_19_MAX IA_MAX_FIXEDPOINT(4U, IA_SX_19_FRAC_BITS)
-#define IA_FLOAT_TO_S4_19(val) CAST_TO_TYPE(int32_t,(IA_ROUND((IA_LIMIT(val, IA_S4_19_MIN, IA_S4_19_MAX))*(CAST_TO_TYPE(uint64_t,2U<<(IA_SX_19_FRAC_BITS-1))))))
+#define IA_SX_19_FRAC_BITS  (19)
+#define IA_S4_19_MIN IA_MIN_FIXEDPOINT(4, IA_SX_19_FRAC_BITS)
+#define IA_S4_19_MAX IA_MAX_FIXEDPOINT(4, IA_SX_19_FRAC_BITS)
+#define IA_FLOAT_TO_S4_19(val) CAST_TO_TYPE(int32_t,(IA_ROUND((IA_LIMIT(val, IA_S4_19_MIN, IA_S4_19_MAX))*((unsigned long)2<<(IA_SX_19_FRAC_BITS-1)))))
 
-#define IA_SX_20_FRAC_BITS  (20U)
-#define IA_S1_20_MIN IA_MIN_FIXEDPOINT(1U, IA_SX_20_FRAC_BITS)
-#define IA_S1_20_MAX IA_MAX_FIXEDPOINT(1U, IA_SX_20_FRAC_BITS)
-#define IA_FLOAT_TO_S1_20(val) CAST_TO_TYPE(int32_t,(IA_ROUND((IA_LIMIT(val, IA_S1_20_MIN, IA_S1_20_MAX))*(CAST_TO_TYPE(uint64_t,2U<<(IA_SX_20_FRAC_BITS-1))))))
+#define IA_SX_20_FRAC_BITS  (20)
+#define IA_S1_20_MIN IA_MIN_FIXEDPOINT(1, IA_SX_20_FRAC_BITS)
+#define IA_S1_20_MAX IA_MAX_FIXEDPOINT(1, IA_SX_20_FRAC_BITS)
+#define IA_FLOAT_TO_S1_20(val) CAST_TO_TYPE(int32_t,(IA_ROUND((IA_LIMIT(val, IA_S1_20_MIN, IA_S1_20_MAX))*((unsigned long)2<<(IA_SX_20_FRAC_BITS-1)))))
 
-#define IA_S4_20_MIN IA_MIN_FIXEDPOINT(4U, IA_SX_20_FRAC_BITS)
-#define IA_S4_20_MAX IA_MAX_FIXEDPOINT(4U, IA_SX_20_FRAC_BITS)
-#define IA_FLOAT_TO_S4_20(val) CAST_TO_TYPE(int32_t,(IA_ROUNDD((IA_LIMIT(val, IA_S4_20_MIN, IA_S4_20_MAX))*(CAST_TO_TYPE(uint64_t,2U<<(IA_SX_20_FRAC_BITS-1))))))
+#define IA_S4_20_MIN IA_MIN_FIXEDPOINT(4, IA_SX_20_FRAC_BITS)
+#define IA_S4_20_MAX IA_MAX_FIXEDPOINT(4, IA_SX_20_FRAC_BITS)
+#define IA_FLOAT_TO_S4_20(val) CAST_TO_TYPE(int32_t,(IA_ROUNDD((IA_LIMIT(val, IA_S4_20_MIN, IA_S4_20_MAX))*((unsigned long)2<<(IA_SX_20_FRAC_BITS-1)))))
 
-#define IA_SX_8_FRAC_BITS  (8U)
-#define IA_S14_8_MIN IA_MIN_FIXEDPOINT(14U, IA_SX_8_FRAC_BITS)
-#define IA_S14_8_MAX IA_MAX_FIXEDPOINT(14U, IA_SX_8_FRAC_BITS)
-#define IA_FLOAT_TO_S14_8(val) CAST_TO_TYPE(int32_t,(IA_ROUNDD((IA_LIMIT(val, IA_S14_8_MIN, IA_S14_8_MAX))*(CAST_TO_TYPE(uint64_t,2U<<(IA_SX_8_FRAC_BITS-1))))))
+#define IA_SX_8_FRAC_BITS  (8)
+#define IA_S14_8_MIN IA_MIN_FIXEDPOINT(14, IA_SX_8_FRAC_BITS)
+#define IA_S14_8_MAX IA_MAX_FIXEDPOINT(14, IA_SX_8_FRAC_BITS)
+#define IA_FLOAT_TO_S14_8(val) CAST_TO_TYPE(int32_t,(IA_ROUNDD((IA_LIMIT(val, IA_S14_8_MIN, IA_S14_8_MAX))*((unsigned long)2<<(IA_SX_8_FRAC_BITS-1)))))
 
-#define IA_S18_8_MIN IA_MIN_FIXEDPOINT(18U, IA_SX_8_FRAC_BITS)
-#define IA_S18_8_MAX IA_MAX_FIXEDPOINT(18U, IA_SX_8_FRAC_BITS)
-#define IA_FLOAT_TO_S18_8(val) CAST_TO_TYPE(int32_t,(IA_ROUNDD((IA_LIMIT(val, IA_S18_8_MIN, IA_S18_8_MAX))*(CAST_TO_TYPE(uint64_t,2U<<(IA_SX_8_FRAC_BITS-1))))))
+#define IA_S18_8_MIN IA_MIN_FIXEDPOINT(18, IA_SX_8_FRAC_BITS)
+#define IA_S18_8_MAX IA_MAX_FIXEDPOINT(18, IA_SX_8_FRAC_BITS)
+#define IA_FLOAT_TO_S18_8(val) CAST_TO_TYPE(int32_t,(IA_ROUNDD((IA_LIMIT(val, IA_S18_8_MIN, IA_S18_8_MAX))*((unsigned long)2<<(IA_SX_8_FRAC_BITS-1)))))
 
 #if ((!defined _WIN32) && (!defined WIN32) && (!defined _WINDOWS) && (!defined WINDOWS) && (!defined __STDC_LIB_EXT1__) && (!defined memcpy_s))
 
@@ -352,7 +352,7 @@ inline static int memcpy_s(void *dest, size_t destsz, const void *src, size_t co
   #define IA_MUTEX_CREATE(m)       (m) = CreateMutex(NULL, false, NULL)
   #define IA_MUTEX_DELETE(m)       CloseHandle(m)
   #define IA_MUTEX_LOCK(m)         WaitForSingleObject(m, INFINITE)
-  #define IA_MUTEX_UNLOCK(m)       {if (ReleaseMutex(m) == 0) {IA_ASSERT(false);}}
+  #define IA_MUTEX_UNLOCK(m)       (ReleaseMutex(m) != 0) ? IA_ASSERT(true) : ((void)0)
   #define IA_RWLOCK_CREATE(l)      InitializeSRWLock(&l)
   #define IA_RWLOCK_DELETE(l)      ((void)0)
   #define IA_RWLOCK_WRLOCK(l)      AcquireSRWLockExclusive(&l)
@@ -391,27 +391,27 @@ inline static int memcpy_s(void *dest, size_t destsz, const void *src, size_t co
     #include <pthread.h> /* defined POSIX thread model */
     typedef pthread_mutex_t mutex_t;
 
-    #define IA_MUTEX_CREATE(m)       {if (pthread_mutex_init(&m, NULL) != 0) {IA_ASSERT(false);}}
-    #define IA_MUTEX_DELETE(m)       {if (pthread_mutex_destroy(&m) != 0) {IA_ASSERT(false);}}
-    #define IA_MUTEX_LOCK(m)         {if (pthread_mutex_lock(&m) != 0) {IA_ASSERT(false);}}
-    #define IA_MUTEX_UNLOCK(m)       {if (pthread_mutex_unlock(&m) != 0) {IA_ASSERT(false);}}
+    #define IA_MUTEX_CREATE(m)       (pthread_mutex_init(&m, NULL) == 0) ? IA_ASSERT(true) : ((void)0)
+    #define IA_MUTEX_DELETE(m)       (pthread_mutex_destroy(&m) == 0) ? IA_ASSERT(true) : ((void)0)
+    #define IA_MUTEX_LOCK(m)         (pthread_mutex_lock(&m) == 0) ? IA_ASSERT(true) : ((void)0)
+    #define IA_MUTEX_UNLOCK(m)       (pthread_mutex_unlock(&m) == 0) ? IA_ASSERT(true) : ((void)0)
 
 #ifndef ENABLE_CUSTOMIZED_STD_LIB
     typedef pthread_rwlock_t rwlock_t;
-    #define IA_RWLOCK_CREATE(l)      {if (pthread_rwlock_init(&l, NULL) != 0) {IA_ASSERT(false);}}
-    #define IA_RWLOCK_DELETE(l)      {if (pthread_rwlock_destroy(&l) != 0) {IA_ASSERT(false);}}
-    #define IA_RWLOCK_WRLOCK(l)      {if (pthread_rwlock_wrlock(&l) != 0) {IA_ASSERT(false);}}
-    #define IA_RWLOCK_WRUNLOCK(l)    {if (pthread_rwlock_unlock(&l) != 0) {IA_ASSERT(false);}}
-    #define IA_RWLOCK_RDLOCK(l)      {if (pthread_rwlock_rdlock(&l) != 0) {IA_ASSERT(false);}}
-    #define IA_RWLOCK_RDUNLOCK(l)    {if (pthread_rwlock_unlock(&l) != 0) {IA_ASSERT(false);}}
+    #define IA_RWLOCK_CREATE(l)      (pthread_rwlock_init(&l, NULL) == 0) ? IA_ASSERT(true) : ((void)0)
+    #define IA_RWLOCK_DELETE(l)      (pthread_rwlock_destroy(&l) == 0) ? IA_ASSERT(true) : ((void)0)
+    #define IA_RWLOCK_WRLOCK(l)      (pthread_rwlock_wrlock(&l) == 0) ? IA_ASSERT(true) : ((void)0)
+    #define IA_RWLOCK_WRUNLOCK(l)    (pthread_rwlock_unlock(&l) == 0) ? IA_ASSERT(true) : ((void)0)
+    #define IA_RWLOCK_RDLOCK(l)      (pthread_rwlock_rdlock(&l) == 0) ? IA_ASSERT(true) : ((void)0)
+    #define IA_RWLOCK_RDUNLOCK(l)    (pthread_rwlock_unlock(&l) == 0) ? IA_ASSERT(true) : ((void)0)
 #else
     typedef pthread_mutex_t rwlock_t;
-    #define IA_RWLOCK_CREATE(l)      {if (pthread_mutex_init(&l, NULL) != 0) {IA_ASSERT(false);}}
-    #define IA_RWLOCK_DELETE(l)      {if (pthread_mutex_destroy(&l) != 0) {IA_ASSERT(false);}}
-    #define IA_RWLOCK_WRLOCK(l)      {if (pthread_mutex_lock(&l) != 0) {IA_ASSERT(false);}}
-    #define IA_RWLOCK_WRUNLOCK(l)    {if (pthread_mutex_unlock(&l) != 0) {IA_ASSERT(false);}}
-    #define IA_RWLOCK_RDLOCK(l)      {if (pthread_mutex_lock(&l) != 0) {IA_ASSERT(false);}}
-    #define IA_RWLOCK_RDUNLOCK(l)    {if (pthread_mutex_unlock(&l) != 0) {IA_ASSERT(false);}}
+    #define IA_RWLOCK_CREATE(l)      (pthread_mutex_init(&l, NULL) == 0) ? IA_ASSERT(true) : ((void)0)
+    #define IA_RWLOCK_DELETE(l)      (pthread_mutex_destroy(&l) == 0) ? IA_ASSERT(true) : ((void)0)
+    #define IA_RWLOCK_WRLOCK(l)      (pthread_mutex_lock(&l) == 0) ? IA_ASSERT(true) : ((void)0)
+    #define IA_RWLOCK_WRUNLOCK(l)    (pthread_mutex_unlock(&l) == 0) ? IA_ASSERT(true) : ((void)0)
+    #define IA_RWLOCK_RDLOCK(l)      (pthread_mutex_lock(&l) == 0) ? IA_ASSERT(true) : ((void)0)
+    #define IA_RWLOCK_RDUNLOCK(l)    (pthread_mutex_unlock(&l) == 0) ? IA_ASSERT(true) : ((void)0)
 #endif
 
 /* Use GNU-specific headers for SSE vector intrinsics */
@@ -445,9 +445,9 @@ inline static int memcpy_s(void *dest, size_t destsz, const void *src, size_t co
 #endif
 #endif
 
-#define IA_ABSTRACTION_ROUND_DOWN(input_size, step_size) ((input_size) & ~((step_size)-1))
-#define IA_ABSTRACTION_STEP_SIZE_4 4
-#define IA_ABSTRACTION_STEP_SIZE_2 2
+#define ROUND_DOWN(input_size, step_size) ((input_size) & ~((step_size)-1))
+#define STEP_SIZE_4 4
+#define STEP_SIZE_2 2
 
 #if defined(__ANDROID__)
     #define FILE_DEBUG_DUMP_PATH "/data/misc/cameraserver/"
