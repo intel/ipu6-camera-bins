@@ -3,9 +3,9 @@ exec_prefix=${prefix}
 libdir=${exec_prefix}/lib64
 includedir=${prefix}/include
 
-Name: libipu6ep
-Description: ipu6ep fw library
+Name: libipu6epmtl
+Description: libipu6epmtl fw library
 URL: http://www.intel.com
 Version: VERSION
-Libs: -L${libdir} -lipu6ep
+Libs: -L${libdir} -lipu6epmtl
 Cflags: -I${includedir}/libipu
