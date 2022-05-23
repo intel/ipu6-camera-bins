@@ -9,6 +9,6 @@ This repository provides the libraries and firmware of camera related for chrome
 ## Release Note:
 2022-05-20:
 OS:           Chrome 64 bits
-TGL FW tag:   None
+MTL FW tag:   None
 Test Build:   internal build(None)
 
