@@ -491,6 +491,12 @@ ia_aiq_sa_run_v2(ia_aiq *ia_aiq_ptr,
                const ia_aiq_sa_input_params_v1 *sa_input_params,
                ia_aiq_sa_results_v1 **sa_results);
 
+
+LIBEXPORT ia_err
+ia_aiq_scd_run(
+    ia_aiq* a_ia_aiq_ptr,
+    ia_aiq_scd_results** a_scd_results_ptr);
+
 /*!
  *  \brief Input parameter structure for setting the statistics.
  */
