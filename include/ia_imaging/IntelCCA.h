@@ -124,6 +124,8 @@
 
 namespace cca {
 
+class IntelDVS;
+
 /*!
  * \brief main entrance of CCA Flow lib.
  */
@@ -154,6 +156,15 @@ public:
      * \return                          Error code for status. zero on success, non-zero on failure
      */
     ia_err setStatsParams(const cca_stats_params& params);
+
+
+    /*!
+     * \brief Set Sensor frame parameters. Describe frame scaling/cropping done in sensor.
+     *
+     * \param[in] frameParams           Mandatory.\n
+     *
+     */
+    void   setAiqFrameParams(const ia_aiq_frame_params &frameParams);
 
     /*!
      * \brief AEC calculation based on input parameters and frame statistics.
@@ -202,21 +213,35 @@ public:
      * \brief update zoom factor/region/coordinate.
      * DVS algo supports to zoom the image. Set the zoom params before calling runDVS.
      *
+     * \param[in] StreamId              Mandatory.\n
      * \param[in] params                Mandatory.\n
      *                                  zoom related params.
      * \return                          Error code for status. zero on success, non-zero on failure
      */
-    ia_err updateZoom(const cca_dvs_zoom& params);
+    ia_err updateZoom(uint32_t DvsId, const cca_dvs_zoom& params);
     /*!
      * \brief DVS Algorithm calculation based on dvs statistics.
      * DVS uses frameId to search the DVS statistic that decoded and stored in CCA Flow,
      * then calculates the morph table or image transformation for whole image that used by GDC.
      *
+     * \param[in] streamsId             Mandatory.\n
      * \param[in] frameId               Mandatory.\n
      *                                  frame sequence Id.
      * \return                          Error code for status. zero on success, non-zero on failure
      */
-    ia_err runDVS(uint64_t frameId) const;
+    ia_err runDVS(uint32_t DvsId, uint64_t frameId, bool enable_video_stablization = false);
+    /*!
+     * \need reconfigDvs params with usecase(zoom/digitial zoom/video stablization) changing.
+     * driver update all related paramter, then call the interface.
+     *
+     *
+     * \param[in] DvsId                 Mandatory.\n
+     * \param[in] dvs_config            Mandatory.\n
+     * \param[in] zoom_factor           Mandatory.\n
+     *                                  dvs config params.
+     * \return                          Error code for status. zero on success, non-zero on failure
+     */
+    ia_err ConfigDvs(uint32_t DvsId, ia_dvs_configuration_v1* dvs_config, float32_t zoom_factor);
 #endif
 #endif
     /*!
@@ -437,9 +462,7 @@ private:
     void copySaResults(const ia_aiq_sa_results_v1* saResult);
 #ifndef PAC_ENABLE
 #ifdef ENABLE_DVS
-    ia_err getDVSCfgFromGDCParam(const cca_gdc_configuration& GdcInputConfig,
-                                 ia_dvs_configuration_v1& DVSConfig) const;
-    ia_err initDVS(const cca_gdc_configuration& gdcConfig);
+    ia_err initDVS(const cca_init_params& initParams);
     void deInitDvs();
 #endif
 #ifdef ENABLE_LTM
@@ -536,18 +559,6 @@ private:
     ia_ltm* mLtm;
 
     /*
-    * DVS structs
-    */
-    ia_dvs_state *mDVSState;
-    ia_dvs_morph_table* mDVSMorphingTableOutput;
-    ia_dvs_image_transformation* mDVSImageTransformationOutput;
-    ia_dvs_configuration_v1 mDVSConfig;
-    bool mEnableVideoStablization;
-    bool mEnableDVS;
-    float32_t mDvsZoomRatio;
-    CCADVSOutputType mDvsOutputType;
-
-    /*
     * Bcomp structs
     */
     ia_bcomp* mBcompState;
@@ -564,6 +575,9 @@ private:
     */
     ia_lard_results* mLardResult;
 
+#ifdef ENABLE_DVS
+    IntelDVS* mIntelDVSHandles;
+#endif
     /*
     * mEnableUsingLardResultToInitCCA - whether using lard result to init cca
     */
