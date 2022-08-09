@@ -8,4 +8,4 @@ Description: ia_imaging libraries
 URL: http://www.intel.com
 Version: VERSION
 Libs: -L${libdir}
-Cflags: -I${includedir}/ia_imaging
+Cflags: -I${includedir}
