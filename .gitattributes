@@ -1,2 +1,0 @@
-ipu6_binary/lib/libia_p2p_ipu6ep.a filter=lfs diff=lfs merge=lfs -text
-ipu6_binary/lib/libbroxton_ia_pal.so filter=lfs diff=lfs merge=lfs -text

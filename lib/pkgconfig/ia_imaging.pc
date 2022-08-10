@@ -1,0 +1,11 @@
+prefix=/usr
+exec_prefix=/usr
+libdir=/usr/lib
+includedir=/usr/include/ia_imaging
+
+Name: libia_imaging
+Description: ia_imaging libraries
+URL: http://www.intel.com
+Version: VERSION
+Libs: -L${libdir}
+Cflags: -I${includedir}
