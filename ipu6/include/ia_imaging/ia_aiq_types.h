@@ -37,6 +37,8 @@ extern "C" {
  */
 #define IA_AIQ_MAX_NUMBER_OF_SENSOR_EVENTS 20
 
+#define USE_SCD //temporary flag until SCD is fully enabled
+
 typedef struct _ia_aiq_t ia_aiq;
 
 /*!
@@ -649,6 +651,27 @@ typedef struct
     bool use_af_assist;                                /*!< True if the af assist light is to be used at half press, false otherwise */
     bool final_lens_position_reached;                  /*!< Lens has reached the final lens position */
 } ia_aiq_af_results;
+
+/*!
+*  \brief enum to list scd users
+*/
+typedef enum
+{
+    scd_tnr_6_0,        /*!< TNR_6_0. */
+    num_scd_users       /*!< always keep last, tracks the number of entities using SCD */
+} scd_users_t;
+
+/*!
+ * \brief Results from SCD.
+ */
+typedef struct
+{
+    float scd_score[num_scd_users];             /*!<scd score ranges from 0 to 1 */
+    float filtered_scd_score[num_scd_users];    /*!<filtered scd score ranges from 0 to 1 */
+    float ssim;                                 /*!<structural similarity result */
+    float global_SAD;                           /*!<global SAD (sum of absolute differences) */
+    unsigned long long frame_id;                /*!<frame ID - consider removing */
+} ia_aiq_scd_results;
 
 /*!
  * \brief Results from AWB.
