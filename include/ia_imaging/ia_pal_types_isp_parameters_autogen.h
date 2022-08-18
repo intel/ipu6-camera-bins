@@ -4922,6 +4922,116 @@ typedef struct
 
 } ia_pal_isp_dol_2_0_t;
 
+/*! \isp struct dol_lite_1_0
+
+*/
+typedef struct
+{
+    /*!< log_downscale_ratio log2 of downscale ratio*/
+    int32_t log_downscale_ratio;
+    /*!< etr_slope[4] estimated ETR coefficient*/
+    int32_t etr_slope[4];
+    /*!< etr_bias[4] estimated ETR bias*/
+    int32_t etr_bias[4];
+    /*!< deghost_bias deghost indicator constant*/
+    int32_t deghost_bias;
+    /*!< deghost_coeff deghost indicator coefficient*/
+    int32_t deghost_coeff;
+    /*!< update_limit Limit of S&R parameter update mechanism*/
+    int32_t update_limit;
+    /*!< update_coeff S&R parameter update coefficient*/
+    int32_t update_coeff;
+    /*!< d_ml[32] Maximum-likelihood of distance distribution*/
+    int32_t d_ml[32];
+    /*!< outofbounds[32] is ML value out of histogram bounds?*/
+    int32_t outofbounds[32];
+    /*!< d_ml_user[32] Maximum-likelihood of distance distribution*/
+    int32_t d_ml_user[32];
+    /*!< is_first_frame If first frame, ignore input rec-sim*/
+    int32_t is_first_frame;
+    /*!< long_saturation_bias saturation indicator constant*/
+    int32_t long_saturation_bias;
+    /*!< long_saturation_coeff saturation indicator coefficient*/
+    int32_t long_saturation_coeff;
+    /*!< etr_estim_enable enable online ETR estimation*/
+    int32_t etr_estim_enable;
+    /*!< wb_gains[4] white-balance gains for curr frame*/
+    int32_t wb_gains[4];
+    /*!< wb_gains_prev[4] white-balance gains from prev frame*/
+    int32_t wb_gains_prev[4];
+    /*!< pedestal_out output pedestal level*/
+    int32_t pedestal_out;
+    /*!< bpp_sensor sensor BPP*/
+    int32_t bpp_sensor;
+    /*!< black_level[4] black level*/
+    int32_t black_level[4];
+    /*!< enable block enable*/
+    int32_t enable;
+
+} ia_pal_isp_dol_lite_1_0_t;
+
+/*! \isp struct dol_lite_1_1
+
+*/
+typedef struct
+{
+    /*!< etr_slope[4] estimated ETR coefficient*/
+    int32_t etr_slope[4];
+    /*!< etr_bias[4] estimated ETR bias*/
+    int32_t etr_bias[4];
+    /*!< deghost_bias deghost indicator constant*/
+    int32_t deghost_bias;
+    /*!< deghost_coeff deghost indicator coefficient*/
+    int32_t deghost_coeff;
+    /*!< update_limit Limit of S&R parameter update mechanism*/
+    int32_t update_limit;
+    /*!< update_coeff S&R parameter update coefficient*/
+    int32_t update_coeff;
+    /*!< d_ml[32] Maximum-likelihood of distance distribution*/
+    int32_t d_ml[32];
+    /*!< outofbounds[32] is ML value out of histogram bounds?*/
+    int32_t outofbounds[32];
+    /*!< d_ml_user[32] Maximum-likelihood of distance distribution*/
+    int32_t d_ml_user[32];
+    /*!< is_first_stripe If first stripe in frame*/
+    int32_t is_first_stripe;
+    /*!< is_last_stripe Iflast stripe in frame*/
+    int32_t is_last_stripe;
+    /*!< is_first_frame If first frame*/
+    int32_t is_first_frame;
+    /*!< long_saturation_bias saturation indicator constant*/
+    int32_t long_saturation_bias;
+    /*!< long_saturation_coeff saturation indicator coefficient*/
+    int32_t long_saturation_coeff;
+    /*!< etr_estim_enable enable online ETR estimation*/
+    int32_t etr_estim_enable;
+    /*!< wb_gains[4] white-balance gains for curr frame*/
+    int32_t wb_gains[4];
+    /*!< wb_gains_prev[4] white-balance gains from prev frame*/
+    int32_t wb_gains_prev[4];
+    /*!< pedestal_out output pedestal level*/
+    int32_t pedestal_out;
+    /*!< bpp_sensor sensor BPP*/
+    int32_t bpp_sensor;
+    /*!< black_level[4] black level*/
+    int32_t black_level[4];
+    /*!< acc_histogram[512] accumulators for APU noise estimation histogram*/
+    int32_t acc_histogram[512];
+    /*!< acc_in[8] accumulators for ETR estimation - input pixels*/
+    int32_t acc_in[8];
+    /*!< acc_out[8] accumulators for ETR estimation - output pixels*/
+    int32_t acc_out[8];
+    /*!< acc_in_sq[8] accumulators for ETR estimation - input pixels squared*/
+    int32_t acc_in_sq[8];
+    /*!< acc_inout[8] accumulators for ETR estimation - input x output pixels*/
+    int32_t acc_inout[8];
+    /*!< acc_sow[8] accumulators for ETR estimation - sum of weights*/
+    int32_t acc_sow[8];
+    /*!< enable block enable*/
+    int32_t enable;
+
+} ia_pal_isp_dol_lite_1_1_t;
+
 /*! \isp struct dol_mapper
 DOL color ID mapper
 */
@@ -7545,16 +7655,6 @@ typedef struct
     int32_t y11_blending_weight;
 
 } ia_pal_isp_fr_grid_1_0_t;
-
-/*! \isp struct fusion_1_0
-No input from Algo API for now
-*/
-typedef struct
-{
-    /*!< enable Enabling fusion*/
-    uint32_t enable;
-
-} ia_pal_isp_fusion_1_0_t;
 
 /*! \isp struct gammastar_1
 Initial Gamma* filter
