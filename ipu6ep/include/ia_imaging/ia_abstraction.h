@@ -1,5 +1,5 @@
 /*
- * Copyright 2012-2021 Intel Corporation
+ * Copyright 2012-2022 Intel Corporation
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -59,6 +59,7 @@ typedef uint16_t half;
 
 /* Float Epsilon for divide by zero checks */
 #define IA_EPSILON 0.0001F
+#define IA_EPSILON_2 0.00000001F
 
 #define FLOAT_TO_Q16_16(n) (CAST_TO_TYPE(uint32_t, ((CAST_TO_TYPE(float32_t,(n)))*65536.0F)))
 #define INT_TO_Q16_16(n)   ((n)<<16)
