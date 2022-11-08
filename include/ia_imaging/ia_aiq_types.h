@@ -1,5 +1,5 @@
 /*
- * Copyright 2012-2021 Intel Corporation
+ * Copyright 2012-2022 Intel Corporation
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -36,6 +36,8 @@ extern "C" {
  * \brief Maximum number of sensor events supported by AIQ lib.
  */
 #define IA_AIQ_MAX_NUMBER_OF_SENSOR_EVENTS 20
+
+#define USE_SCD //temporary flag until SCD is fully enabled
 
 typedef struct _ia_aiq_t ia_aiq;
 
@@ -107,6 +109,17 @@ typedef enum {
     ia_aiq_ae_priority_mode_highlight, /*!< Highlights must be preserved even if it means that dark parts become very dark. */
     ia_aiq_ae_priority_mode_shadow,    /*!< Shadow areas are more important. */
 } ia_aiq_ae_priority_mode;
+
+/*!
+ * \brief sensor stream type.
+ */
+typedef enum
+{
+    ia_aiq_sensor_rgb_stream = 0,            /*!< RGB sensor stream or RGBIR sensor RGB only stream. */
+    ia_aiq_sensor_monoir_stream = 1,         /*!< MONOIR sensor stream. */
+    ia_aiq_sensor_OG0VA1B_ir_stream = 2,     /*!< WA for OG sensor. */
+    ia_aiq_sensor_rgbir_stream = 4,          /*!< RGBIR sensor IR only stream or RGB+IR stream. */
+} ia_aiq_sensor_stream_type;
 
 /*!
  * \brief Manual AEC limit parameters.
@@ -304,6 +317,8 @@ typedef struct
     int iso;                                /*!< ISO value corresponding to the analog gain. -1 if N/A. */
     ia_aiq_gain gains[IA_CMC_GAINS_MAX_NUM];       /*!< Gain as multipliers (e.g. 1.0), -1.0f if N/A. */
     unsigned int num_gains;                 /*!< The number of gains. */
+    unsigned int low_limit_total_exposure;  /*!< Low limit of total exposure by tuning and sensor*/
+    unsigned int up_limit_total_exposure;   /*!< Up limit of total exposure by tuning and sensor*/
 } ia_aiq_exposure_parameters;
 
 /*!
@@ -335,7 +350,7 @@ typedef struct
     unsigned short fine_integration_time_max_margin;   /*!< fine_integration_time_max = pixel_periods_per_line - fine_integration_time_max_margin. */
     unsigned short coarse_integration_time_min;        /*!< The minimum allowed value for coarse_integration_time in AEC outputs. */
     unsigned short coarse_integration_time_max_margin; /*!< coarse_integration_time_max = line_periods_per_field - coarse_integration_time_max_margin */
-    bool is_mono_ir_sensor;                                /*!< Judge if it is IR sensor, 1: IR sensor, 0: others*/
+    ia_aiq_sensor_stream_type sensor_stream_type;      /*!< Sensor stream type, 0: RGB, others: IR stream */
 } ia_aiq_exposure_sensor_descriptor;
 
 /*!
@@ -630,6 +645,8 @@ typedef struct
     ia_aiq_bracket_mode multiframe;                     /*!< AEC may propose to use multiframe for optimal results. */
     ia_aiq_ae_flicker_reduction flicker_reduction_mode; /*!< Flicker reduction mode proposed by the AEC algorithm */
     ia_aiq_aperture_control *aperture_control;          /*!< Aperture control parameters. */
+    bool plc_mode_used;                                 /*!< Indicates the PLC mode usage. */
+    unsigned int plc_reset_cntr;                        /*!< Counter for DZ reseted frames after PLC on*/
 } ia_aiq_ae_results;
 
 /*!
@@ -645,6 +662,27 @@ typedef struct
     bool use_af_assist;                                /*!< True if the af assist light is to be used at half press, false otherwise */
     bool final_lens_position_reached;                  /*!< Lens has reached the final lens position */
 } ia_aiq_af_results;
+
+/*!
+*  \brief enum to list scd users
+*/
+typedef enum
+{
+    scd_tnr_6_0,        /*!< TNR_6_0. */
+    num_scd_users       /*!< always keep last, tracks the number of entities using SCD */
+} scd_users_t;
+
+/*!
+ * \brief Results from SCD.
+ */
+typedef struct
+{
+    float scd_score[num_scd_users];             /*!<scd score ranges from 0 to 1 */
+    float filtered_scd_score[num_scd_users];    /*!<filtered scd score ranges from 0 to 1 */
+    float ssim;                                 /*!<structural similarity result */
+    float global_SAD;                           /*!<global SAD (sum of absolute differences) */
+    unsigned long long frame_id;                /*!<frame ID - consider removing */
+} ia_aiq_scd_results;
 
 /*!
  * \brief Results from AWB.
@@ -697,6 +735,8 @@ typedef struct {
     float base_gamma;               /*!< gamma */
     float btm;                      /*!< bottom range border */
     float rng;                      /*!< dynamic range  */
+    float top_short_border[10U];
+    unsigned int filtering_delay_number;
 } ia_aiq_gbce_results;
 
 /*!

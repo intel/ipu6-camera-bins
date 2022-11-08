@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2019-2021 Intel Corporation.
+ * Copyright (C) 2019-2022 Intel Corporation.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -92,6 +92,15 @@ typedef struct
 } cca_stats_bin;
 
 /*!
+ *  \brief stream id struct.
+ */
+typedef struct
+{
+    size_t count;
+    int32_t ids[MAX_STREAM_NUM];
+} cca_stream_ids;
+
+/*!
  * \brief bitmap to enable CCA modules in running.
  */
 enum CCAModuleBitMap
@@ -145,7 +154,8 @@ enum CCAStatsType
     CCA_STATS_AF = 1 << 2,
     CCA_STATS_YV = 1 << 3,
     CCA_STATS_LTM = 1 << 4,
-    CCA_STATS_DVS = 1 << 5
+    CCA_STATS_DVS = 1 << 5,
+    CCA_STATS_PDAF = 1 << 6
 };
 
 /*!
@@ -158,6 +168,15 @@ enum CCADVSOutputType
 };
 
 /*!
+ * \brief aec_features input parameters.
+ */
+typedef struct
+{
+    bool aec_features_enabled;
+    ia_aiq_ae_features aec_features;
+}cca_ae_features;
+
+/*!
  * \brief exposure algo input parameters.
  */
 typedef struct
@@ -168,12 +187,14 @@ typedef struct
     ia_aiq_flash_mode flash_mode;                               /*!< Mandatory. Manual flash mode. If AEC should make flash decision, set mode to ia_aiq_flash_mode_auto. */
     ia_aiq_ae_metering_mode metering_mode;                      /*!< Mandatory. AEC metering mode. */
     ia_aiq_ae_priority_mode priority_mode;                      /*!< Mandatory. AEC priority mode. */
+    ia_aiq_ae_operation_mode operation_mode;                    /*!< Mandatory. AEC operation mode. */
     ia_aiq_ae_flicker_reduction flicker_reduction_mode;         /*!< Mandatory. AEC flicker reduction mode. */
     ia_aiq_exposure_sensor_descriptor sensor_descriptor[MAX_SENSOR];       /*!< Mandatory although function will not return error, if not given.
                                                                      Sensor specific descriptor and limits of the used sensor mode for target frame use.
                                                                      AEC will not limit and calculate sensor specific parameters, if not given */
     uint32_t num_sensor_descriptors;                            /*!< Mandatory. The number of sensor descriptors given in the above pointer.
                                                                      Used to specify different sensor descriptors for each exposure. */
+    cca_ae_features aec_features;                               /*!< Optional. AEC features in use when calculating new exposure parameters. */
     ia_rectangle exposure_window;                               /*!< Optional. Rectangle of area which AEC uses to to calculate new exposure parameters. */
     ia_coordinate exposure_coordinate;                          /*!< Optional. Coordinate for a point in which the exposure should be prioritized.
                                                                      AEC increases weight of given point in final AEC results. */
@@ -231,6 +252,7 @@ typedef struct
     ia_aiq_bracket_mode multiframe;                     /*!< AEC may propose to use multiframe for optimal results. */
     ia_aiq_aperture_control aperture_control;          /*!< Aperture control parameters. */
     cca_hist_weight_grid weight_grid;   /*!< AEC weight wap used by next frame. */
+    ia_aiq_ae_flicker_reduction flicker_reduction_mode; /*!< Flicker reduction mode proposed by the AEC algorithm */
 } cca_ae_results;
 
 /*!
@@ -244,6 +266,8 @@ typedef struct
                                                                      statistics timestamp
                                                                      to determine if lens was moving during statistics collection. */
     ia_aiq_af_operation_mode focus_mode;                        /*!< Mandatory. Focusing mode. */
+    ia_aiq_af_range focus_range;                                /*!< Mandatory. Focusing range. Only valid when focus_mode is ia_aiq_af_operation_mode_auto. */
+    ia_aiq_af_metering_mode focus_metering_mode;                /*!< Mandatory. Metering mode (multispot, touch). */
     ia_aiq_flash_mode flash_mode;                               /*!< Mandatory. User setting for flash. */
     ia_rectangle focus_rect;                                    /*!< Optional. */
     ia_aiq_manual_focus_parameters manual_focus_parameters;     /*!< Optional. Manual focus parameters (manual lens position, manual focusing distance).
@@ -258,7 +282,10 @@ typedef struct
 {
     ia_aiq_af_status status;                           /*!< Focus status */
     uint32_t next_lens_position;                       /*!< Next lens position */
+    int32_t next_focus_distance;                      /*!< Next focusing distance [mm] between the lens and object plane */
     uint16_t current_focus_distance;                   /*!< Current focusing distance [mm] between the lens and object plane */
+    ia_aiq_lens_driver_action lens_driver_action;      /*!< Lens driver action*/
+    bool use_af_assist;                                /*!< True if the af assist light is to be used at half press, false otherwise */
     bool final_lens_position_reached;                  /*!< Lens has reached the final lens position */
 } cca_af_results;
 
@@ -286,6 +313,7 @@ typedef struct
     float32_t accurate_r_per_g;           /*!< Accurate White Point for the image. */
     float32_t accurate_b_per_g;           /*!< Accurate White Point for the image. */
     float32_t distance_from_convergence;  /*!< Range [0.0f, 1.0f]. Distance from convergence. Value 0.0f means converged. */
+    unsigned int cct_estimate;        /*!< Correlated Color Temperature estimate calculated from the accurate WP. */
 } cca_awb_results;
 
 /*!
@@ -368,6 +396,7 @@ typedef struct
     uint16_t dvs_stats_width;                 /*!< width of dvs statistics */
     ia_rectangle statistics_crop_area;  /*!< Mandatory for IPU7. RGBS and AF grid area crop with respect to full field of view of sensor output using (relative)ranges from ia_coordinate.h. */
     bool using_rgbs_for_aec;            /*!< use rgbs to generate the AE histogram */
+    bool bAssitLightOn;                 /*!< True if the af assist light is on, false otherwise .*/
 } cca_stats_params;
 
 typedef struct
@@ -568,6 +597,7 @@ typedef struct
     uint32_t stream_id;                        /*!< Optional. If program_group is not given, stream_id is used to fetch all the tunings for all the kernels
                                                     associated with the stream_id. */
     uint32_t seq_id;                           /*!< Optional. sequence number for aic run */
+    uint32_t dvs_id;                           /*!< Optinal. sequence number for DVS */
     ia_isp_feature_setting nr_setting;         /*!< Mandatory. Feature setting for noise reduction algorithms. */
     ia_isp_feature_setting ee_setting;         /*!< Mandatory. Feature setting for edge enhancement algorithms. */
     int8_t manual_brightness;                  /*!< Optional. Manual brightness value range [-128,127]. Value 0 means no change. */
@@ -626,6 +656,8 @@ struct cca_init_params{
     cca_gdc_configuration gdcConfig; /*!< Mandatory. GDC resolution configuration */
     uint8_t aiqStorageLen;           /*!< Mandatory. lehgth of history to store algo results */
     uint8_t aecFrameDelay;           /*!< Mandatory. frame delay for auto exposure take effect */
+    cca_stream_ids aic_stream_ids;   /*!< Optional. the stream id for aic handle*/
+    cca_stream_ids dvs_ids;          /*!< Optional. the DVS handle number */
     cca_init_params() :
         frameUse(ia_aiq_frame_use_preview),
         conversionGainRatio(1),
@@ -645,6 +677,8 @@ struct cca_init_params{
             IA_MEMSET(&aiq_nvm, 0, sizeof(aiq_nvm));
             IA_MEMSET(&aiq_aiqd, 0, sizeof(aiq_aiqd));
             IA_MEMSET(&gdcConfig, 0, sizeof(gdcConfig));
+            IA_MEMSET(&aic_stream_ids, 0, sizeof(aic_stream_ids));
+            IA_MEMSET(&dvs_ids, 0, sizeof(dvs_ids));
         }
 };
 /*!

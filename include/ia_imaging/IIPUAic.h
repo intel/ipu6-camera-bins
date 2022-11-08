@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2020-2021 Intel Corporation.
+ * Copyright (C) 2020-2022 Intel Corporation.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -166,10 +166,13 @@ public:
      *                                   max number of stats related to hdr/multi-sensor.
      * \param[in] mkn                    Mandatory.\n
      *                                   maker note buffer.
+     * \param[in] aic_stream_ids         Optional.\n
+     *                                   stream id info for aic handle.
      * \return                           Error code.
      */
     virtual ia_err init(const ia_binary_data *aiqb, const ia_cmc_t *cmc, uint32_t max_stats_width,
-                        uint32_t max_stats_height, uint32_t max_num_stats_in, const ia_mkn *mkn) = 0;
+                        uint32_t max_stats_height, uint32_t max_num_stats_in, const ia_mkn *mkn,
+                        const cca_stream_ids& aic_stream_ids) = 0;
 
     /*!
      * \brief update tuning file aiqb.
@@ -178,9 +181,12 @@ public:
      *                                       Tuning file.
      * \param[in] cmc                        Mandatory.\n
      *                                       Parsed cmc data.
+     * \param[in] streamId                   Optional.\n
+     *                                       The stream id for aic handle.
      * \return                               Error code.
      */
-    virtual ia_err updateTuning(const ia_binary_data *aiqb, const ia_cmc_t *cmc) const = 0;
+    virtual ia_err updateTuning(const ia_binary_data *aiqb, const ia_cmc_t *cmc,
+                                int32_t streamId = -1) = 0;
 
     /*!
      * \brief pass parameters for statistic analysis.
@@ -189,13 +195,10 @@ public:
      *                                       parameters for statistis.
      * \param[in] aiqResults                 Mandatory.\n
      *                                       last AIQ results for reference.
-     * \param[out] outStats                  Optional.\n
-     *                                       Output the AIQ statistics data.
      * \return                               Error code.
      */
     virtual ia_err setStatsParams(ia_aiq* aiqHandle, const cca_stats_params &params,
-                                  const cca_aiq_results_storage &aiqResults,
-                                  cca_out_stats *outStats = nullptr) = 0;
+                                  const cca_aiq_results_storage &aiqResults) = 0;
 
 #ifdef PAC_ENABLE
     /*!
@@ -266,9 +269,12 @@ public:
      *                                   statistics info from FW.
      * \param[out] results               Mandatory.\n
      *                                   results of parsing statistics from FW.
+     * \param[out] outStats              Optional.\n
+     *                                   Output the AIQ statistics data.
      * \return                           Error code.
      */
-    virtual ia_err decodeStats(const cca_dec_stats_input &decParams, ia_isp_bxt_statistics_query_results_t *results) = 0;
+    virtual ia_err decodeStats(const cca_dec_stats_input &decParams, ia_isp_bxt_statistics_query_results_t *results,
+                               cca_out_stats *outStats = nullptr) = 0;
 
     /*! Get PAL binary size
     *
@@ -307,11 +313,13 @@ public:
     virtual const char* getVersion() const = 0;
 
     /*!
-     * \brief get the IPU Handle.
+     * \brief get the aic Handle.
      *
-     * \return                       IPU handle.
+     * \param[in] streamId           Optional.\n
+     *                               the stream id for aic handle.
+     * \return                       AIC handle.
      */
-    virtual void* getIspHandle() const = 0;
+    virtual void* getIspHandle(int32_t streamId = -1) = 0;
 
 };
 }//cca

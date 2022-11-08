@@ -1,5 +1,5 @@
 /*
- * Copyright 2012-2021 Intel Corporation
+ * Copyright 2012-2022 Intel Corporation
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -59,6 +59,7 @@ typedef uint16_t half;
 
 /* Float Epsilon for divide by zero checks */
 #define IA_EPSILON 0.0001F
+#define IA_EPSILON_2 0.00000001F
 
 #define FLOAT_TO_Q16_16(n) (CAST_TO_TYPE(uint32_t, ((CAST_TO_TYPE(float32_t,(n)))*65536.0F)))
 #define INT_TO_Q16_16(n)   ((n)<<16)
@@ -147,7 +148,7 @@ typedef uint16_t half;
 #define IA_LOG2(x)               (logf(CAST_TO_TYPE(float32_t,(x))) / logf(2.0F))
 #define IA_LOG2D(x)              (log(x) / log(2.0))
 #define IA_LOG10(x)              log10f(CAST_TO_TYPE(float32_t,(x)))
-#define IA_ASSERT(x)             assert(x)
+#define IA_ASSERT                assert
 #define IA_SIGN(a)               (((a) > 0) - ((a) < 0))
 
 
@@ -352,7 +353,7 @@ inline static int memcpy_s(void *dest, size_t destsz, const void *src, size_t co
   #define IA_MUTEX_CREATE(m)       (m) = CreateMutex(NULL, false, NULL)
   #define IA_MUTEX_DELETE(m)       CloseHandle(m)
   #define IA_MUTEX_LOCK(m)         WaitForSingleObject(m, INFINITE)
-  #define IA_MUTEX_UNLOCK(m)       {if (ReleaseMutex(m) == 0) {IA_ASSERT(false);}}
+  #define IA_MUTEX_UNLOCK(m)       (ReleaseMutex(m) != 0) ? IA_ASSERT(true) : ((void)0)
   #define IA_RWLOCK_CREATE(l)      InitializeSRWLock(&l)
   #define IA_RWLOCK_DELETE(l)      ((void)0)
   #define IA_RWLOCK_WRLOCK(l)      AcquireSRWLockExclusive(&l)
@@ -391,27 +392,27 @@ inline static int memcpy_s(void *dest, size_t destsz, const void *src, size_t co
     #include <pthread.h> /* defined POSIX thread model */
     typedef pthread_mutex_t mutex_t;
 
-    #define IA_MUTEX_CREATE(m)       {if (pthread_mutex_init(&m, NULL) != 0) {IA_ASSERT(false);}}
-    #define IA_MUTEX_DELETE(m)       {if (pthread_mutex_destroy(&m) != 0) {IA_ASSERT(false);}}
-    #define IA_MUTEX_LOCK(m)         {if (pthread_mutex_lock(&m) != 0) {IA_ASSERT(false);}}
-    #define IA_MUTEX_UNLOCK(m)       {if (pthread_mutex_unlock(&m) != 0) {IA_ASSERT(false);}}
+    #define IA_MUTEX_CREATE(m)       (pthread_mutex_init(&m, NULL) == 0) ? IA_ASSERT(true) : ((void)0)
+    #define IA_MUTEX_DELETE(m)       (pthread_mutex_destroy(&m) == 0) ? IA_ASSERT(true) : ((void)0)
+    #define IA_MUTEX_LOCK(m)         (pthread_mutex_lock(&m) == 0) ? IA_ASSERT(true) : ((void)0)
+    #define IA_MUTEX_UNLOCK(m)       (pthread_mutex_unlock(&m) == 0) ? IA_ASSERT(true) : ((void)0)
 
 #ifndef ENABLE_CUSTOMIZED_STD_LIB
     typedef pthread_rwlock_t rwlock_t;
-    #define IA_RWLOCK_CREATE(l)      {if (pthread_rwlock_init(&l, NULL) != 0) {IA_ASSERT(false);}}
-    #define IA_RWLOCK_DELETE(l)      {if (pthread_rwlock_destroy(&l) != 0) {IA_ASSERT(false);}}
-    #define IA_RWLOCK_WRLOCK(l)      {if (pthread_rwlock_wrlock(&l) != 0) {IA_ASSERT(false);}}
-    #define IA_RWLOCK_WRUNLOCK(l)    {if (pthread_rwlock_unlock(&l) != 0) {IA_ASSERT(false);}}
-    #define IA_RWLOCK_RDLOCK(l)      {if (pthread_rwlock_rdlock(&l) != 0) {IA_ASSERT(false);}}
-    #define IA_RWLOCK_RDUNLOCK(l)    {if (pthread_rwlock_unlock(&l) != 0) {IA_ASSERT(false);}}
+    #define IA_RWLOCK_CREATE(l)      (pthread_rwlock_init(&l, NULL) == 0) ? IA_ASSERT(true) : ((void)0)
+    #define IA_RWLOCK_DELETE(l)      (pthread_rwlock_destroy(&l) == 0) ? IA_ASSERT(true) : ((void)0)
+    #define IA_RWLOCK_WRLOCK(l)      (pthread_rwlock_wrlock(&l) == 0) ? IA_ASSERT(true) : ((void)0)
+    #define IA_RWLOCK_WRUNLOCK(l)    (pthread_rwlock_unlock(&l) == 0) ? IA_ASSERT(true) : ((void)0)
+    #define IA_RWLOCK_RDLOCK(l)      (pthread_rwlock_rdlock(&l) == 0) ? IA_ASSERT(true) : ((void)0)
+    #define IA_RWLOCK_RDUNLOCK(l)    (pthread_rwlock_unlock(&l) == 0) ? IA_ASSERT(true) : ((void)0)
 #else
     typedef pthread_mutex_t rwlock_t;
-    #define IA_RWLOCK_CREATE(l)      {if (pthread_mutex_init(&l, NULL) != 0) {IA_ASSERT(false);}}
-    #define IA_RWLOCK_DELETE(l)      {if (pthread_mutex_destroy(&l) != 0) {IA_ASSERT(false);}}
-    #define IA_RWLOCK_WRLOCK(l)      {if (pthread_mutex_lock(&l) != 0) {IA_ASSERT(false);}}
-    #define IA_RWLOCK_WRUNLOCK(l)    {if (pthread_mutex_unlock(&l) != 0) {IA_ASSERT(false);}}
-    #define IA_RWLOCK_RDLOCK(l)      {if (pthread_mutex_lock(&l) != 0) {IA_ASSERT(false);}}
-    #define IA_RWLOCK_RDUNLOCK(l)    {if (pthread_mutex_unlock(&l) != 0) {IA_ASSERT(false);}}
+    #define IA_RWLOCK_CREATE(l)      (pthread_mutex_init(&l, NULL) == 0) ? IA_ASSERT(true) : ((void)0)
+    #define IA_RWLOCK_DELETE(l)      (pthread_mutex_destroy(&l) == 0) ? IA_ASSERT(true) : ((void)0)
+    #define IA_RWLOCK_WRLOCK(l)      (pthread_mutex_lock(&l) == 0) ? IA_ASSERT(true) : ((void)0)
+    #define IA_RWLOCK_WRUNLOCK(l)    (pthread_mutex_unlock(&l) == 0) ? IA_ASSERT(true) : ((void)0)
+    #define IA_RWLOCK_RDLOCK(l)      (pthread_mutex_lock(&l) == 0) ? IA_ASSERT(true) : ((void)0)
+    #define IA_RWLOCK_RDUNLOCK(l)    (pthread_mutex_unlock(&l) == 0) ? IA_ASSERT(true) : ((void)0)
 #endif
 
 /* Use GNU-specific headers for SSE vector intrinsics */
