@@ -1,0 +1,53 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "intel-ipu-fw-info"
+description = ''
+readme = "README.md"
+requires-python = ">=3.11"
+keywords = []
+authors = [
+  { name = "Johann Chang", email = "mr.changyuheng@gmail.com" },
+]
+classifiers = [
+  "Development Status :: 4 - Beta",
+  "Programming Language :: Python",
+  "Programming Language :: Python :: 3.11",
+  "Programming Language :: Python :: Implementation :: CPython",
+]
+dependencies = []
+dynamic = ["version"]
+
+[project.scripts]
+intel-ipu-fw-info = "intel_ipu_fw_info.cli:main"
+
+[tool.hatch.version]
+path = "intel_ipu_fw_info/__about__.py"
+
+[tool.hatch.envs.default]
+dependencies = [
+  "pytest",
+  "pytest-cov",
+]
+[tool.hatch.envs.default.scripts]
+cov = "pytest --cov-report=term-missing --cov-config=pyproject.toml --cov=intel_ipu_fw_info --cov=tests {args}"
+no-cov = "cov --no-cov {args}"
+
+[[tool.hatch.envs.test.matrix]]
+python = ["311"]
+
+[tool.coverage.run]
+branch = true
+parallel = true
+omit = [
+  "intel_ipu_fw_info/__about__.py",
+]
+
+[tool.coverage.report]
+exclude_lines = [
+  "no cov",
+  "if __name__ == .__main__.:",
+  "if TYPE_CHECKING:",
+]
