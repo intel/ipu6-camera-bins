@@ -4929,8 +4929,12 @@ typedef struct
 {
     /*!< log_downscale_ratio log2 of downscale ratio*/
     int32_t log_downscale_ratio;
+    /*!< smthnrm_slope[4] estimated short-smoothed normalization coefficient*/
+    int32_t smthnrm_slope[4];
     /*!< etr_slope[4] estimated ETR coefficient*/
     int32_t etr_slope[4];
+    /*!< smthnrm_bias[4] estimated short-smoothed normalization bias*/
+    int32_t smthnrm_bias[4];
     /*!< etr_bias[4] estimated ETR bias*/
     int32_t etr_bias[4];
     /*!< deghost_bias deghost indicator constant*/
@@ -4963,8 +4967,22 @@ typedef struct
     int32_t pedestal_out;
     /*!< bpp_sensor sensor BPP*/
     int32_t bpp_sensor;
+    /*!< bayer_order bayer-pattern (for shrt-smooth remosaic)*/
+    int32_t bayer_order;
+    /*!< yuv2rgb[9] YUV to RGB conversion*/
+    int32_t yuv2rgb[9];
+    /*!< shrt_smth_bpp shrt-smth bpp*/
+    int32_t shrt_smth_bpp;
+    /*!< shrt_smth_padding_top shrt-smth padding on top*/
+    int32_t shrt_smth_padding_top;
+    /*!< shrt_smth_padding_lft shrt-smth padding on left*/
+    int32_t shrt_smth_padding_lft;
     /*!< black_level[4] black level*/
     int32_t black_level[4];
+    /*!< short_denoise_power use of denoised short-exposure in blend*/
+    int32_t short_denoise_power;
+    /*!< use_shrt_smth_for_dist use short-smoothed for calculating distance*/
+    int32_t use_shrt_smth_for_dist;
     /*!< enable block enable*/
     int32_t enable;
 
@@ -13433,6 +13451,36 @@ typedef struct
     int32_t four_cell_pattern[16];
 
 } ia_pal_isp_sve_1_1_t;
+
+/*! \isp struct tm_app
+
+*/
+typedef struct
+{
+    /*!< Bypass bypass for the filter*/
+    int32_t Bypass;
+    /*!< tm_lut[2049] generalized lut for tone mapping lut*/
+    int32_t tm_lut[2049];
+    /*!< gtm4_a polynomial chromaticity model degree*/
+    int32_t gtm4_a;
+    /*!< gtm4_b color saturation in highlights*/
+    int32_t gtm4_b;
+    /*!< gtm4_c overall color desaturation*/
+    int32_t gtm4_c;
+    /*!< gammaType type of Gamma used to get to RGB and back (currently out of use)*/
+    int32_t gammaType;
+    /*!< gtm4_offset_yuv2rgb[3] yuv2rgb offset*/
+    int32_t gtm4_offset_yuv2rgb[3];
+    /*!< gtm4_yuv2rgb[9] yuv2rgb calibration*/
+    int32_t gtm4_yuv2rgb[9];
+    /*!< gtm4_offset_rgb2yuv[3] rgb2yuv offset*/
+    int32_t gtm4_offset_rgb2yuv[3];
+    /*!< gtm4_rgb2yuv[9] rgb2yuv calibration*/
+    int32_t gtm4_rgb2yuv[9];
+    /*!< Bit_Precision input bit precision*/
+    int32_t Bit_Precision;
+
+} ia_pal_isp_tm_app_t;
 
 /*! \isp struct tnr_6_0
 Hardware fixed-function temporal noise reduction
