@@ -1,5 +1,5 @@
 /*
- * Copyright 2012-2022 Intel Corporation
+ * Copyright 2012-2021 Intel Corporation
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -261,7 +261,6 @@ typedef struct
                                                                      e.g., manual_iso[ae_results->exposures[0].exposure_index] = 100; */
     ia_aiq_ae_features *aec_features;                           /*!< Optional. AEC features in use when calculating new exposure parameters. */
     ia_aiq_ae_manual_limits *manual_limits;                     /*!< Optional. Manual limits which override limits defined in AEC tunings. */
-    uint32_t *manual_total_target_expsure;                      /*!< Optional. Manual total target exposure. */
     float manual_aperture_fn;                                   /*!< Optional. Manual f-number of aperture (e.g. 2.8), -1.0 for N/A. Used only with P iris. */
     ia_aiq_aperture_control_dc_iris_command manual_dc_iris_command; /*!< Optional. Used only with DC iris. 0 (auto) for N/A. */
     ia_aiq_ae_exposure_distribution_priority exposure_distribution_priority; /*!< Mandatory. AEC exposure distribution priority mode. */
@@ -337,22 +336,6 @@ LIBEXPORT ia_err
 ia_aiq_af_run(ia_aiq *ia_aiq_ptr,
               const ia_aiq_af_input_params *af_input_params,
               ia_aiq_af_results **af_results);
-
-/*!
- * \brief calcualte the object focus distance based on the lens position.
- *
- * \param[in] ia_aiq_ptr            Mandatory.\n
- *                                  AIQ instance handle.
- * \param[in] lens_position         Mandatory.\n
- *                                  vcm position.
- * \param[out] focus_distance       Mandatory.\n
- *                                  pointer to calculated object focus distance Results from AF calculations.
- * \return                          Error code.
- */
-LIBEXPORT ia_err
-ia_aiq_calculate_focus_distance(ia_aiq *ia_aiq_ptr,
-                                int32_t lens_position,
-                                int32_t *focus_distance);
 
 /*!
  *  \brief Input parameter structure for AWB algorithm.
@@ -490,12 +473,6 @@ LIBEXPORT ia_err
 ia_aiq_sa_run_v2(ia_aiq *ia_aiq_ptr,
                const ia_aiq_sa_input_params_v1 *sa_input_params,
                ia_aiq_sa_results_v1 **sa_results);
-
-
-LIBEXPORT ia_err
-ia_aiq_scd_run(
-    ia_aiq* a_ia_aiq_ptr,
-    ia_aiq_scd_results** a_scd_results_ptr);
 
 /*!
  *  \brief Input parameter structure for setting the statistics.

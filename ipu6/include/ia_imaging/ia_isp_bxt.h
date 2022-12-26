@@ -1,5 +1,5 @@
 /*
- * Copyright 2017-2022 Intel Corporation
+ * Copyright 2017-2021 Intel Corporation
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -232,9 +232,6 @@ typedef struct ia_isp_bxt_input_params_v2
                                                                      Can be set as null if it is not used. */
 
     ia_isp_call_rate_control call_rate_control;
-#ifdef USE_SCD
-    ia_aiq_scd_results* scd_results;                 /*!< Mandatory. SCD results which are to be used to calculate scene change magnitude. */
-#endif
 } ia_isp_bxt_input_params_v2;
 
 /*!
@@ -898,8 +895,7 @@ ia_binary_data* output_data);
  * \param[out] depth_statistics            Mandatory. Converted PAF statistics. Output can be directly used as input in function ia_statistics_set.
  * \return                                 Error code.
  */
-LIBEXPORT ia_err
-ia_isp_bxt_statistics_convert_paf_from_binary(
+ia_err ia_isp_bxt_statistics_convert_paf_from_binary(
         ia_isp_bxt *ia_isp_bxt,
         const ia_binary_data *bxt_paf_statistics,
         unsigned int paf_statistics_input_width,

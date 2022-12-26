@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2019-2022 Intel Corporation.
+ * Copyright (C) 2019-2021 Intel Corporation.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -124,8 +124,6 @@
 
 namespace cca {
 
-class IntelDVS;
-
 /*!
  * \brief main entrance of CCA Flow lib.
  */
@@ -153,18 +151,11 @@ public:
      *
      * \param[in] params                Mandatory.\n
      *                                  Input parameters containing statistics information about a frame.
+     * \param[out] outStats             Optional.\n
+     *                                  Output the aiq statistics data.
      * \return                          Error code for status. zero on success, non-zero on failure
      */
-    ia_err setStatsParams(const cca_stats_params& params);
-
-
-    /*!
-     * \brief Set Sensor frame parameters. Describe frame scaling/cropping done in sensor.
-     *
-     * \param[in] frameParams           Mandatory.\n
-     *
-     */
-    void   setAiqFrameParams(const ia_aiq_frame_params &frameParams);
+    ia_err setStatsParams(const cca_stats_params& params, cca_out_stats *outStats = nullptr);
 
     /*!
      * \brief AEC calculation based on input parameters and frame statistics.
@@ -213,35 +204,21 @@ public:
      * \brief update zoom factor/region/coordinate.
      * DVS algo supports to zoom the image. Set the zoom params before calling runDVS.
      *
-     * \param[in] StreamId              Mandatory.\n
      * \param[in] params                Mandatory.\n
      *                                  zoom related params.
      * \return                          Error code for status. zero on success, non-zero on failure
      */
-    ia_err updateZoom(uint32_t DvsId, const cca_dvs_zoom& params);
+    ia_err updateZoom(const cca_dvs_zoom& params);
     /*!
      * \brief DVS Algorithm calculation based on dvs statistics.
      * DVS uses frameId to search the DVS statistic that decoded and stored in CCA Flow,
      * then calculates the morph table or image transformation for whole image that used by GDC.
      *
-     * \param[in] streamsId             Mandatory.\n
      * \param[in] frameId               Mandatory.\n
      *                                  frame sequence Id.
      * \return                          Error code for status. zero on success, non-zero on failure
      */
-    ia_err runDVS(uint32_t DvsId, uint64_t frameId, bool enable_video_stablization = false);
-    /*!
-     * \need reconfigDvs params with usecase(zoom/digitial zoom/video stablization) changing.
-     * driver update all related paramter, then call the interface.
-     *
-     *
-     * \param[in] DvsId                 Mandatory.\n
-     * \param[in] dvs_config            Mandatory.\n
-     * \param[in] zoom_factor           Mandatory.\n
-     *                                  dvs config params.
-     * \return                          Error code for status. zero on success, non-zero on failure
-     */
-    ia_err ConfigDvs(uint32_t DvsId, ia_dvs_configuration_v1* dvs_config, float32_t zoom_factor);
+    ia_err runDVS(uint64_t frameId) const;
 #endif
 #endif
     /*!
@@ -289,29 +266,9 @@ public:
      *                                  lard data.
      * \param[in] nvm                   Mandatory.\n
      *                                  sensor nvm data.
-     * \param[in] streamId              Optional.\n
-     *                                  the stream id for aic handle
      * \return                          Error code for status. zero on success, non-zero on failure
      */
-    ia_err updateTuning(uint8_t tag, const ia_lard_input_params &lardParams, const cca_nvm &nvm, int32_t streamId = -1);
-
-    /*!
-     * \brief Update tuning data in run time.
-     *  Update the tuning data to CCA flow, the new tuning data will be taken effect immediately.
-     *  For different use cases, the tuning data should be different, the function is used for the scenario.
-     *
-     * \param[in] tag                   Mandatory.\n
-     *                                  the tag for updated group in tuning file.
-     * \param[in] lardParams            Mandatory.\n
-     *                                  lard data.
-     * \param[in] nvm                   Mandatory.\n
-     *                                  sensor nvm data.
-     * \param[out] pLardResults         Mandatory.\n
-     *                                  lard results
-     * \return                          Error code for status. zero on success, non-zero on failure
-    */
-    ia_err updateTuning(uint8_t tag, const ia_lard_input_params &lardParams, const cca_nvm &nvm, ia_lard_results **pLardResults);
-
+    ia_err updateTuning(uint8_t tag, const ia_lard_input_params &lardParams, const cca_nvm &nvm);
     /*!
      * \brief De-initialize CCA Flow and its submodules.
      * All memory allocated by algoriths are freed. CCA Flow handle can no longer be used.
@@ -320,7 +277,7 @@ public:
      */
     ia_err deinit();
 
-    /*!
+	/*!
      * \brief query the current CCA Flow version.
      *
      * \return                          version.
@@ -399,11 +356,10 @@ public:
     * \param [in]  stats        statistics binary from HW
     * \param [in]  bitmap       select RGBS, HIST, AF ... if needed to decode
     * \param [out] results      statistics type after parsing statistics
-    * \param [out] outStats     output stats
     *
     * \return                   Error code for status. zero on success, non-zero on failure
     */
-    ia_err decodeStats(const cca_stats_bin &stats, uint32_t bitmap, ia_isp_bxt_statistics_query_results_t *results, cca_out_stats *outStats = nullptr);
+    ia_err decodeStats(const cca_stats_bin &stats, uint32_t bitmap, ia_isp_bxt_statistics_query_results_t *results);
 
     /*!
     *
@@ -414,11 +370,10 @@ public:
     * \param [in]  statsSize    statistics size
     * \param [in]  bitmap       select RGBS, HIST, AF ... if needed to decode
     * \param [out] results      statistics type after parsing statistics
-    * \param [out] outStats     output stats
     *
     * \return                   Error code for status. zero on success, non-zero on failure
     */
-    ia_err decodeStats(uint64_t statsPointer, uint32_t statsSize, uint32_t bitmap, ia_isp_bxt_statistics_query_results_t *results, cca_out_stats *outStats = nullptr);
+    ia_err decodeStats(uint64_t statsPointer, uint32_t statsSize, uint32_t bitmap, ia_isp_bxt_statistics_query_results_t *results);
 
     /*!
     *
@@ -453,16 +408,18 @@ private:
     ia_binary_data* getOthersData();
     ia_err initCpfParse();
     void initSaResults();
-    ia_err initIspAic(const cca_stream_ids& aic_stream_ids);
+    ia_err initIspAic();
     void deInitIspAic();
-    ia_err reInitIspAic(const cca_stream_ids& aic_stream_ids);
+    ia_err reInitIspAic();
     ia_err initAiq();
     void deinitAiq();
     void deleteSaResultsGrids();
     void copySaResults(const ia_aiq_sa_results_v1* saResult);
 #ifndef PAC_ENABLE
 #ifdef ENABLE_DVS
-    ia_err initDVS(const cca_init_params& initParams);
+    ia_err getDVSCfgFromGDCParam(const cca_gdc_configuration& GdcInputConfig,
+                                 ia_dvs_configuration_v1& DVSConfig) const;
+    ia_err initDVS(const cca_gdc_configuration& gdcConfig);
     void deInitDvs();
 #endif
 #ifdef ENABLE_LTM
@@ -485,11 +442,11 @@ private:
     * \param [in]  stats        binary to store the statistics binary from HW
     * \param [in]  bitmap       select RGBS, HIST, AF ... if needed to decode
     * \param [out] results      statistics type after parsing statistics
-    * \param [out] outStats     output stats
+    *
     *
     * return ia_err_none in success. Errorcode on failure
     */
-    ia_err decodeStats(const ia_binary_data &stats, uint32_t bitmap, ia_isp_bxt_statistics_query_results_t *results, cca_out_stats *outStats);
+    ia_err decodeStats(const ia_binary_data &stats, uint32_t bitmap, ia_isp_bxt_statistics_query_results_t *results);
 #endif
 
 private:
@@ -514,7 +471,6 @@ private:
     /*
      * AIQ structs and params
      */
-    bool mCCAIsEnabled;
     ia_aiq* mAiqHandle;
     uint8_t mAECFrameDelay;
     uint64_t mFrameTimestamp;
@@ -559,6 +515,18 @@ private:
     ia_ltm* mLtm;
 
     /*
+    * DVS structs
+    */
+    ia_dvs_state *mDVSState;
+    ia_dvs_morph_table* mDVSMorphingTableOutput;
+    ia_dvs_image_transformation* mDVSImageTransformationOutput;
+    ia_dvs_configuration_v1 mDVSConfig;
+    bool mEnableVideoStablization;
+    bool mEnableDVS;
+    float32_t mDvsZoomRatio;
+    CCADVSOutputType mDvsOutputType;
+
+    /*
     * Bcomp structs
     */
     ia_bcomp* mBcompState;
@@ -575,9 +543,6 @@ private:
     */
     ia_lard_results* mLardResult;
 
-#ifdef ENABLE_DVS
-    IntelDVS* mIntelDVSHandles;
-#endif
     /*
     * mEnableUsingLardResultToInitCCA - whether using lard result to init cca
     */

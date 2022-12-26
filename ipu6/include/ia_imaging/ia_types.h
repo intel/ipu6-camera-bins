@@ -256,7 +256,6 @@ typedef struct {
 typedef enum
 {
     media_format_legacy                = 0x00,    //ipu4 default
-    media_format_legacy_narrow         = 0x02,
     media_format_bt601_8b              = 0x20,    //bt601
     media_format_bt601_8b_narrow       = 0x22,    //bt601
     media_format_bt709_8b              = 0x30,    //bt709

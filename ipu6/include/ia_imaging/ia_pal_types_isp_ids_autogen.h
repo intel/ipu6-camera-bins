@@ -133,8 +133,6 @@ typedef enum
     ia_pal_uuid_isp_dma_cropper_ppp = 49162,
     ia_pal_uuid_isp_dol_1_0 = 11842,
     ia_pal_uuid_isp_dol_2_0 = 11890,
-    ia_pal_uuid_isp_dol_lite_1_0 = 47151,
-    ia_pal_uuid_isp_dol_lite_1_1 = 51710,
     ia_pal_uuid_isp_dol_mapper = 17361,
     ia_pal_uuid_isp_dol_parser = 44843,
     ia_pal_uuid_isp_dpc_1_1 = 51918,
