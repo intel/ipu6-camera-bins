@@ -43,6 +43,7 @@
 #endif
 #include "ia_abstraction.h"
 #include "CCAMacro.h"
+#include "ia_emd_decoder.h"
 
 namespace cca {
 
@@ -115,7 +116,8 @@ enum CCAModuleBitMap
     CCA_MODULE_DVS = 1 << 7,
     CCA_MODULE_OB = 1 << 8,
     CCA_MODULE_BCOM = 1 << 9,
-    CCA_MODULE_LARD = 1 << 10
+    CCA_MODULE_LARD = 1 << 10,
+    CCA_MODULE_EMDED = 1 << 11
 };
 
 /*!
@@ -155,7 +157,8 @@ enum CCAStatsType
     CCA_STATS_YV = 1 << 3,
     CCA_STATS_LTM = 1 << 4,
     CCA_STATS_DVS = 1 << 5,
-    CCA_STATS_PDAF = 1 << 6
+    CCA_STATS_PDAF = 1 << 6,
+    CCA_STATS_RGBIR_IR = 1 << 7
 };
 
 /*!
@@ -217,6 +220,7 @@ typedef struct
                                                                      0.0  means convergence filters are bypassed, this is similar behavior as in previous
                                                                           API when using frame_use still
                                                                      > 0.0  Overrides convergence speed from tunings. */
+    bool is_bypass_result;                                       /*!< Optional. True if AE result need save to IntelCCA*/
 } cca_ae_input_params;
 
 /*!
@@ -273,6 +277,7 @@ typedef struct
     ia_aiq_manual_focus_parameters manual_focus_parameters;     /*!< Optional. Manual focus parameters (manual lens position, manual focusing distance).
                                                                      Used only if focus mode 'ia_aiq_af_operation_mode_manual' is used. */
     bool trigger_new_search;                                    /*!< TRUE if new AF search is needed, FALSE otherwise. Host is responsible for flag cleaning. */
+    bool exit_success_state;                                    /*!< TRUE if AF need exit success state and if trigger_new_search is true.*/
 } cca_af_input_params;
 
 /*!
@@ -397,6 +402,8 @@ typedef struct
     ia_rectangle statistics_crop_area;  /*!< Mandatory for IPU7. RGBS and AF grid area crop with respect to full field of view of sensor output using (relative)ranges from ia_coordinate.h. */
     bool using_rgbs_for_aec;            /*!< use rgbs to generate the AE histogram */
     bool bAssitLightOn;                 /*!< True if the af assist light is on, false otherwise .*/
+    uint8_t AECFrameDelay;              /*!< Optional.frame delay for auto exposure to take effect*/
+    bool hasEmbeddedData;               /*!< Optional. TRUE if embedded data is available*/
 } cca_stats_params;
 
 typedef struct
@@ -633,6 +640,7 @@ typedef struct
     uint16_t base_iso;
     cmc_optomechanics_t optics;
     uint16_t lut_apertures;
+    int32_t media_format;
     tnr7us_trigger_info_t tnr7us_trigger_info;
 } cca_cmc;
 
@@ -676,6 +684,7 @@ struct cca_init_params{
             IA_MEMSET(&aiq_cpf, 0, sizeof(aiq_cpf));
             IA_MEMSET(&aiq_nvm, 0, sizeof(aiq_nvm));
             IA_MEMSET(&aiq_aiqd, 0, sizeof(aiq_aiqd));
+            IA_MEMSET(&frameParams, 0, sizeof(frameParams));
             IA_MEMSET(&gdcConfig, 0, sizeof(gdcConfig));
             IA_MEMSET(&aic_stream_ids, 0, sizeof(aic_stream_ids));
             IA_MEMSET(&dvs_ids, 0, sizeof(dvs_ids));

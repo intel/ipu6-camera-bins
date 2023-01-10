@@ -1,5 +1,5 @@
 /*
- * Copyright 2018-2021 Intel Corporation
+ * Copyright 2018-2022 Intel Corporation
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -84,6 +84,8 @@ typedef struct
     bool           eye_validity;              /*!< Indicates whether a face was processed to get eye positions */
     float          skin_type_dark_likelihood; /*!< Likelihood of skin type being dark. Bright skin likelihood = 100 - dark_skin_type_likelihood */
     bool           skin_type_validity;        /*!< Validity of the Skin Likelihood */
+    int32_t        rip_angle;                /**< RIP (rotation in plane) angle in degrees. */
+    int32_t        rop_angle;                /**< ROP (rotation out of plane) angle in degrees. */
 } ia_face_roi;
 
 #define IA_DEPTH_GRID_SIZE (IA_DEPTH_GRID_WIDTH * IA_DEPTH_GRID_HEIGHT)
