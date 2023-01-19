@@ -310,6 +310,16 @@ LIBEXPORT int
 ia_isp_bxt_get_output_size(ia_isp_bxt_program_group *program_group);
 
 /*!
+ * \brief Calculates statistics resolution for given program group.
+ * This function can be used by AIC client to query the resolution of AWB statistics for particular program group
+ *
+ * \param[in] program_group        Mandatory. List of kernels associated with this program group
+ * \return                         AWB statistics resolution
+ */
+LIBEXPORT
+ia_isp_bxt_resolution_info_t ia_isp_bxt_get_statistic_resolution(ia_isp_bxt_program_group *program_group);
+
+/*!
  * \brief Gets a pointer of HDR YV statistics inside the given binary statistics buffer.
  * Note! Output hdr_yv_grid always points inside the given statistics buffer.
  * \param[in]  statistics        Mandatory. Statistics in ISP specific format.
@@ -366,6 +376,17 @@ ia_isp_bxt_statistics_convert_awb_from_binary_v4(
     const ia_bcomp_results *bcomp_results,
     ia_aiq_rgbs_grid **out_rgbs_grid,
     ia_aiq_grid **out_ir_grid);
+
+LIBEXPORT ia_err
+ia_isp_statistics_convert_awb_from_binary(
+    ia_isp_bxt *ia_isp_bxt_ptr,
+    const ia_binary_data *statistics_ptr,
+    const ia_aiq_ir_weight_t *ir_weight,
+    const ia_aiq_ae_results *ae_results,
+    const ia_aiq_color_channels *wb_color_gains,
+    const ia_bcomp_results *bcomp_results,
+    bool is_rgbir_ir_pipe,
+    ia_ccat_frame_statistics *out_ccat_stats);
 
 /*!
 * \brief Converts awb statistics to ccat format (<=IPU6).
@@ -599,6 +620,32 @@ ia_isp_bxt_statistics_convert_awb_v4(
     ia_aiq_rgbs_grid **out_rgbs_grid,
     ia_aiq_grid **out_ir_grid);
 
+LIBEXPORT ia_err
+ia_isp_statistics_convert_awb(
+    ia_isp_bxt *ia_isp_bxt,
+    unsigned int stats_width,
+    unsigned int stats_height,
+    void *c0_avg,
+    void *c1_avg,
+    void *c2_avg,
+    void *c3_avg,
+    void *c4_avg,
+    void *c5_avg,
+    void *c6_avg,
+    void *c7_avg,
+    void *sat_ratio_0,
+    void *sat_ratio_1,
+    void *sat_ratio_2,
+    void *sat_ratio_3,
+    const ia_aiq_ir_weight_t *ir_weight,
+    const ia_aiq_ae_results *ae_results,
+    const ia_aiq_color_channels *wb_color_gains,
+    const ia_bcomp_results *bcomp_results,
+    bool is_rgbir_ir_pipe,
+    bool *out_is_shading_corrected,
+    ia_rgbs_grid *out_rgbs_grid,
+    ia_ccat_ir_grid *out_ir_grid);
+
 /*!
 * \brief Converts BXT ISP specific statistics (MSB aligned) to IA_AIQ format.
 * ISP generated statistics may not be in the format in which AIQ algorithms expect. Statistics need to be converted
@@ -694,6 +741,12 @@ ia_isp_bxt_statistics_convert_af_from_binary(
     const ia_binary_data *statistics,
     ia_aiq_af_grid **out_af_grid);
 
+LIBEXPORT ia_err
+ia_isp_statistics_convert_af_from_binary(
+    ia_isp_bxt *ia_isp_bxt,
+    const ia_binary_data *statistics_ptr,
+    ia_ccat_frame_statistics *out_ccat_stats);
+
 /*!
  * \brief Converts BXT ISP specific statistics to IA_AIQ format.
  * ISP generated statistics may not be in the format in which AIQ algorithms expect. Statistics need to be converted
@@ -722,6 +775,17 @@ ia_isp_bxt_statistics_convert_af(
     void *y10_avg,
     void *y11_avg,
     ia_aiq_af_grid **out_af_grid);
+
+LIBEXPORT ia_err
+ia_isp_statistics_convert_af(
+    ia_isp_bxt *ia_isp_bxt,
+    unsigned int stats_width,
+    unsigned int stats_height,
+    void *y00_avg,
+    void *y01_avg,
+    void *y10_avg,
+    void *y11_avg,
+    ia_filter_response_grid *out_af_grid);
 
 /*!
 * \brief Converts ISP specific statistics to ccat format.
@@ -763,6 +827,12 @@ ia_isp_bxt_statistics_convert_ae_from_binary(
     const ia_binary_data *statistics,
     ia_aiq_histogram **out_aiq_histogram);
 
+LIBEXPORT ia_err
+ia_isp_statistics_convert_ae_from_binary(
+    ia_isp_bxt *ia_isp_bxt,
+    const ia_binary_data *statistics_ptr,
+    ia_ccat_frame_statistics *out_ccat_stats);
+
 /*!
  * \brief Converts BXT ISP specific statistics to IA_AIQ format.
  * ISP generated statistics may not be in the format in which AIQ algorithms expect. Statistics need to be converted
@@ -795,6 +865,21 @@ ia_isp_bxt_statistics_convert_ae(
     void *c7_histogram,
     unsigned int num_bins,
     ia_aiq_histogram **out_aiq_histogram);
+
+LIBEXPORT ia_err
+ia_isp_statistics_convert_ae(
+    ia_isp_bxt *ia_isp_bxt,
+    void *c0_histogram,
+    void *c1_histogram,
+    void *c2_histogram,
+    void *c3_histogram,
+    void *c4_histogram,
+    void *c5_histogram,
+    void *c6_histogram,
+    void *c7_histogram,
+    unsigned int num_bins,
+    ia_ccat_histograms *out_rgb_histograms,
+    ia_histogram *out_y_histogram);
 
 /*!
  * \brief This function converts corner based statistics to generic DVS statistics.
@@ -905,6 +990,14 @@ ia_isp_bxt_statistics_convert_paf_from_binary(
         unsigned int paf_statistics_input_width,
         unsigned int paf_statistics_input_height,
         ia_aiq_depth_grid **depth_statistics);
+
+LIBEXPORT ia_err
+ia_isp_statistics_convert_paf_from_binary(
+        ia_isp_bxt *ia_isp_bxt,
+        const ia_binary_data *bxt_paf_statistics,
+        unsigned int paf_statistics_input_width,
+        unsigned int paf_statistics_input_height,
+        ia_ccat_frame_statistics *out_ccat_stats);
 
 /*!
 * \brief Converts uint16_t PAF statistics to IA_AIQ format.

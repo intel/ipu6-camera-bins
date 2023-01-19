@@ -198,7 +198,7 @@ typedef enum
     cmc_name_id_pipe_comp_decomp,                        /*!< 35 */
     cmc_name_id_sensor_decomp,                           /*!< 36 */
     cmc_name_id_media_format,                            /*!< 37 */
-    cmc_name_id_cbd                                      /*!< 38 */
+    cmc_name_id_cbd,                                     /*!< 38 */
 } cmc_name_id;
 
 /*!
@@ -1477,6 +1477,15 @@ typedef struct
     uint32_t *slopes;               /*Array of slopes for pipe decompand curve. Count of array is equal segments*/
 } cmc_parsed_pipe_decompand_t;
 
+/*!
+ * \brief CMC Module media format
+ */
+typedef struct cmc_media_format_info_t
+{
+    ia_mkn_record_header header; /*!< Record header with Format ID: ia_media_format, Name ID: cmc_name_id_media_format (See cmc_name_id). */
+    ia_media_format format;           /*!< media format for video/preview. */
+} cmc_media_format_info_t;
+
 typedef struct
 {
     float gain;
@@ -1543,6 +1552,7 @@ typedef struct
     cmc_parsed_pipe_compand_t *cmc_parsed_pipe_compand;
     cmc_parsed_pipe_decompand_t *cmc_parsed_pipe_decompand;
     cmc_parsed_sensor_decompand_t *cmc_parsed_sensor_decompand;
+    cmc_media_format_info_t* cmc_parsed_media_format;
     cmc_parsed_cbd_t *cmc_parsed_cbd;
     tnr7us_trigger_info_t *tnr7us_trigger_info;
     const ia_binary_data *a_aiqb_binary;
