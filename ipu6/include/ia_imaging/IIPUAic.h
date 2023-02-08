@@ -23,7 +23,12 @@
 #endif
 
 namespace cca {
-
+enum cfa_type_t
+{
+    type_1x1 = 0,
+    type_2x2 = 1,
+    type_4x4 = 2,
+};
 /*!
  * \brief decode stats input parameters
  */
@@ -174,6 +179,7 @@ public:
                         uint32_t max_stats_height, uint32_t max_num_stats_in, const ia_mkn *mkn,
                         const cca_stream_ids& aic_stream_ids) = 0;
 
+
     /*!
      * \brief update tuning file aiqb.
      *
@@ -200,6 +206,15 @@ public:
     virtual ia_err setStatsParams(ia_aiq* aiqHandle, const cca_stats_params &params,
                                   const cca_aiq_results_storage &aiqResults) = 0;
 
+    /*!
+    * \brief get the max bin index of non-zero element.
+    *
+    * \param[out] stats                 Mandatory.\n
+    *                                   output the max bin index.
+    * \return                           Error code.
+    */
+    virtual ia_err getBrightestIndex(uint32_t *outMaxBin) = 0;
+
 #ifdef PAC_ENABLE
     /*!
      * \brief configure cb including kernels group and kernels offset.
@@ -210,25 +225,32 @@ public:
      *                                          buffer offsets for all kernels.
      * \param[out] termConfig                   Mandatory.\n
      *                                          the memory needed by terminals of cb.
+     * \param[in] aicId                         Optional.\n
+     *                                          id for aic handle.
      * \return                                  Error code.
      */
-    virtual ia_err config(const cca_aic_config &conf, const cca_aic_kernel_offset &offset, cca_aic_terminal_config &termConfig) = 0;
+    virtual ia_err config(const cca_aic_config &conf, const cca_aic_kernel_offset &offset,
+                          cca_aic_terminal_config &termConfig, int32_t aicId = -1) = 0;
     /*!
      * \brief register terminal buffers.
      *
      * \param[in] termConfig                    Mandatory.\n
      *                                          the memory needed by terminals of cb.
+     * \param[in] aicId                         Optional.\n
+     *                                          id for aic handle.
      * \return                                  Error code.
      */
-    virtual ia_err registerBuf(const cca_aic_terminal_config &termConfig) = 0;
+    virtual ia_err registerBuf(const cca_aic_terminal_config &termConfig, int32_t aicId = -1) = 0;
     /*!
      * \brief get AIC buffers for FW input after runing PAL.
      *
      * \param[out] termConfig                   Mandatory.\n
      *                                          terminal memory of cb filled with IPU params.
+     * \param[in] aicId                         Optional.\n
+     *                                          id for aic handle.
      * \return                                  Error code.
      */
-    virtual ia_err getBuf(cca_aic_terminal_config &termConfig) = 0;
+    virtual ia_err getBuf(cca_aic_terminal_config &termConfig, int32_t aicId = -1) = 0;
     /*!
      * \brief decode statistics for a specific type(AIQ, LTM, DVS stats).
      *
@@ -236,9 +258,11 @@ public:
      *                                   group id of CB.
      * \param[in] seqId                  Mandatory.\n
      *                                   sequence id for streaming.
+     * \param[in] aicId                  Optional.\n
+     *                                   id for aic handle.
      * \return                           Error code.
      */
-    virtual ia_err decodeStats(int32_t groupId, int64_t seqId) = 0;
+    virtual ia_err decodeStats(int32_t groupId, int64_t seqId, int32_t aicId = -1) = 0;
 
     /*!
      * \brief run AIC parameters with graph config & Intel3A results.
@@ -247,11 +271,16 @@ public:
      *                                   AIQ plus parameters and manual settings.
      * \param[in] aaaResults             Mandatory.\n
      *                                   AIQ plus results.
+     *  \param[in] bitmap                Mandatory.\n
+     *                                   Bitmap to decide which CB will be run.
      * \param[out] pal                   Mandatory.\n
      *                                   AIC results for each CB.
      * \return                           Error code.
      */
-    virtual ia_err run(const cca_pal_input_params& params, cca_3a_plus_results& aaaResults, cca_multi_pal_output& output) = 0;
+    virtual ia_err run(const cca_pal_input_params& params, cca_3a_plus_results& aaaResults,
+                       cca_multi_pal_output& output, uint8_t bitmap) = 0;
+
+    virtual ia_err UpdateConfigurationResolutions(const cca_aic_config& conf, bool isKeyResolutionChanged, int32_t aicId) = 0;
 
 #else
     /*!
@@ -262,6 +291,7 @@ public:
      * \return                           Error code.
      */
     virtual ia_err getDvsStats(ia_dvs_statistics* stats) = 0;
+
     /*!
      * \brief decode statistics for a specific type(AIQ, LTM, DVS stats) <=IPU6.
      *
@@ -276,16 +306,7 @@ public:
     virtual ia_err decodeStats(const cca_dec_stats_input &decParams, ia_isp_bxt_statistics_query_results_t *results,
                                cca_out_stats *outStats = nullptr) = 0;
 
-    /*! Get PAL binary size
-    *
-    * Calculate the PAL size according to program group
-    *
-    * \param [in]  programGroup kernel info for special stream id
-    *
-    *
-    * return Pal size in success. zero on failure
-    */
-    virtual uint32_t getPalSize(const cca_program_group &programGroup) = 0;
+
     /*!
      * \brief run AIC parameters with graph config & Intel3A results.
      *
@@ -311,15 +332,6 @@ public:
      * \return                                  IPU HW version.
      */
     virtual const char* getVersion() const = 0;
-
-    /*!
-     * \brief get the aic Handle.
-     *
-     * \param[in] streamId           Optional.\n
-     *                               the stream id for aic handle.
-     * \return                       AIC handle.
-     */
-    virtual void* getIspHandle(int32_t streamId = -1) = 0;
 
 };
 }//cca
