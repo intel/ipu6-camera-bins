@@ -111,6 +111,17 @@ typedef enum {
 } ia_aiq_ae_priority_mode;
 
 /*!
+ * \brief sensor stream type.
+ */
+typedef enum
+{
+    ia_aiq_sensor_rgb_stream = 0,            /*!< RGB sensor stream or RGBIR sensor RGB only stream. */
+    ia_aiq_sensor_monoir_stream = 1,         /*!< MONOIR sensor stream. */
+    ia_aiq_sensor_OG0VA1B_ir_stream = 2,     /*!< WA for OG sensor. */
+    ia_aiq_sensor_rgbir_stream = 4,          /*!< RGBIR sensor IR only stream or RGB+IR stream. */
+} ia_aiq_sensor_stream_type;
+
+/*!
  * \brief Manual AEC limit parameters.
  */
 typedef struct
@@ -339,7 +350,7 @@ typedef struct
     unsigned short fine_integration_time_max_margin;   /*!< fine_integration_time_max = pixel_periods_per_line - fine_integration_time_max_margin. */
     unsigned short coarse_integration_time_min;        /*!< The minimum allowed value for coarse_integration_time in AEC outputs. */
     unsigned short coarse_integration_time_max_margin; /*!< coarse_integration_time_max = line_periods_per_field - coarse_integration_time_max_margin */
-    unsigned short is_mono_ir_sensor;                  /*!< Judge if it is IR sensor, 1: IR sensor, 0: others*/
+    ia_aiq_sensor_stream_type sensor_stream_type;      /*!< Sensor stream type, 0: RGB, others: IR stream */
 } ia_aiq_exposure_sensor_descriptor;
 
 /*!
@@ -465,6 +476,7 @@ typedef struct
     unsigned short grid_width;    /*!< Grid width. */
     unsigned short grid_height;   /*!< Grid height. */
     bool shading_correction;      /*!< Flag indicating if statistics was calculated using lens shading corrected data. */
+    bool stitched_stats;          /*!< RGBS stats for multi-exposures in stitched stats. */
 } ia_aiq_rgbs_grid;
 
 /*!

@@ -63,8 +63,10 @@ typedef uint16_t half;
 
 #define FLOAT_TO_Q16_16(n) (CAST_TO_TYPE(uint32_t, ((CAST_TO_TYPE(float32_t,(n)))*65536.0F)))
 #define INT_TO_Q16_16(n)   ((n)<<16)
+#define UINT_TO_Q16_16(n)   (CAST_TO_TYPE(uint32_t,(n))<<16U)
 #define Q16_16_TO_FLOAT(n) ((CAST_TO_TYPE(float32_t,(n)))*0.0000152587890625F)
 #define Q16_16_TO_INT(n)   ((n)>>16)
+#define Q16_16_TO_UINT(n)   (CAST_TO_TYPE(uint32_t,(n))>>16U)
 
 #define FLOAT_TO_Q1_15(n)  (CAST_TO_TYPE(uint16_t,((CAST_TO_TYPE(float32_t,(n)))*32768.0F)))
 #define Q1_15_TO_FLOAT(n)  ((CAST_TO_TYPE(float32_t,(n)))*0.000030518F)
