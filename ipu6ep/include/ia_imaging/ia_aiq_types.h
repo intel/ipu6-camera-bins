@@ -476,6 +476,7 @@ typedef struct
     unsigned short grid_width;    /*!< Grid width. */
     unsigned short grid_height;   /*!< Grid height. */
     bool shading_correction;      /*!< Flag indicating if statistics was calculated using lens shading corrected data. */
+    bool stitched_stats;          /*!< RGBS stats for multi-exposures in stitched stats. */
 } ia_aiq_rgbs_grid;
 
 /*!
