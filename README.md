@@ -16,6 +16,8 @@ This repository supports MIPI cameras through the IPU6EP on Intel Alderlake plat
 ## Deployment
 ipu6-camera-bins should be copied to build server and target
 ```
-cp -r ipu6-camera-bins/include/* /usr/include/
-cp -r ipu6-camera-bins/lib/* /usr/lib/
+# For ADL/RPL, IPU_VER=ipu6ep
+# For MTL, IPU_VER=ipu6epmtl
+cp -r ipu6-camera-bins/<IPU_VER>/include/* /usr/include/
+cp -r ipu6-camera-bins/<IPU_VER>/lib/* /usr/lib/
 ```
