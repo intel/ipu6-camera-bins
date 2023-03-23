@@ -1,5 +1,5 @@
 /*
- * Copyright 2012-2021 Intel Corporation
+ * Copyright 2012-2023 Intel Corporation
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -277,6 +277,7 @@ typedef enum
     media_format_bt2100_12b_cl_narrow  = 0x67,    //bt2100
     media_format_srgb_jpeg             = 0x80,    //srgb_jpeg
     media_format_linear_mono           = 0xE0,    //linear gamma with "mono-srgb" space for e.g. IR mode.
+    media_format_linear_mono_narrow    = 0xE2,    //linear gamma with "mono-srgb" space for e.g. IR mode.
     media_format_custom                = 0xF0     //custom
 } ia_media_format;
 
