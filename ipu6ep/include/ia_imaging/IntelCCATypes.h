@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2019-2022 Intel Corporation.
+ * Copyright (C) 2019-2023 Intel Corporation.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -639,6 +639,10 @@ typedef struct
 {
     uint16_t base_iso;
     cmc_optomechanics_t optics;
+    float32_t min_ag;
+    float32_t max_ag;
+    float32_t min_dg;
+    float32_t max_dg;
     uint16_t lut_apertures;
     int32_t media_format;
     tnr7us_trigger_info_t tnr7us_trigger_info;

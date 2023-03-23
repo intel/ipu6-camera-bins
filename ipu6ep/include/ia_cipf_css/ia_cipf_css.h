@@ -846,6 +846,12 @@
 #define veboxtnr_stage_id             101
 #define veboxtnr_stage_uid            ia_cipf_external_stage_uid(veboxtnr_stage_id)
 
+#define dol_stage_id                  104
+#define dol_stage_uid                 ia_cipf_external_stage_uid(dol_stage_id)
+
+#define gtm_stage_id                  105
+#define gtm_stage_uid                 ia_cipf_external_stage_uid(gtm_stage_id)
+
 #define psys_interleaved_code_uid     ia_fourcc('I','L','C','S')
 #define psys_interleaved_code_in_uid  psys_interleaved_code_uid + 1
 #define psys_interleaved_code_out_uid psys_interleaved_code_uid + 2
