@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2019-2022 Intel Corporation.
+ * Copyright (C) 2019-2023 Intel Corporation.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -252,7 +252,7 @@ public:
      *                                  CMC data.
      * \return                          Error code for status. zero on success, non-zero on failure
      */
-    ia_err getCMC(cca_cmc &cmc);
+    ia_err getCMC(cca_cmc &cmc, const cca_cpf *aiq_cpf = nullptr);
 
     /*!
      * \brief query the MKN data (maker notes).
@@ -502,6 +502,16 @@ public:
                ia_binary_data* pal);
 #endif
 
+    /*!
+    * \brief get the max bin index of non-zero element
+    *  from the AE histogram.
+    *
+    * \param[out] stats                 Mandatory.\n
+    *                                   output the max bin.
+    * \return                           Error code.
+    */
+    ia_err getBrightestIndex(uint32_t *outMaxBin);
+
 private:
     ia_binary_data* getAiqData();
     ia_binary_data* getIspData();
@@ -553,6 +563,7 @@ private:
      */
     ia_binary_data mAicb;
     ia_cmc_t* mParsedCMC;
+    bool mAicbInited;
 
     /*
      * NVM
@@ -589,6 +600,7 @@ private:
     ia_aiq_pa_input_params mPaInput;
 
     uint64_t mFrameIndex;
+    uint64_t mLastRunSaFrameIndex;
     uint32_t mMaxNumberOfStats;
     ia_mkn* mMknData;
     uint32_t mInitBitmap;
