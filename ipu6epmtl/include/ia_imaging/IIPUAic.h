@@ -206,6 +206,15 @@ public:
     virtual ia_err setStatsParams(ia_aiq* aiqHandle, const cca_stats_params &params,
                                   const cca_aiq_results_storage &aiqResults) = 0;
 
+    /*!
+    * \brief get the max bin index of non-zero element.
+    *
+    * \param[out] stats                 Mandatory.\n
+    *                                   output the max bin index.
+    * \return                           Error code.
+    */
+    virtual ia_err getBrightestIndex(uint32_t *outMaxBin) = 0;
+
 #ifdef PAC_ENABLE
     /*!
      * \brief configure cb including kernels group and kernels offset.
@@ -282,6 +291,7 @@ public:
      * \return                           Error code.
      */
     virtual ia_err getDvsStats(ia_dvs_statistics* stats) = 0;
+
     /*!
      * \brief decode statistics for a specific type(AIQ, LTM, DVS stats) <=IPU6.
      *
