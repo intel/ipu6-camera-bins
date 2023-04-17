@@ -1,5 +1,5 @@
 /*
- * Copyright 2018-2021 Intel Corporation
+ * Copyright 2018-2023 Intel Corporation
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -50,6 +50,8 @@ typedef enum
     ia_bcomp_dol_combined_very_short = 3,    /*!< UC3 - DOL DCG sensor - outputs combined image (long and medium exposure stitched in sensor) and very short exposure >*/
     ia_bcomp_dol_dcg_very_short = 4,         /*!< UC4 - DOL DCG sensor - outputs HCG (long), LCG(medium) with constant cg ratio and very short exposure frames >*/
     ia_bcomp_linear_hdr_mode = 5,            /*!< HDR type2 sensor: 16bit linear data for short/long exposure >*/
+    ia_bcomp_pipe_compand = 6,               /*!< IPU7 pipe compand curve >*/
+    ia_bcomp_staggered_hdr_mode = 7
 } ia_bcomp_dol_mode_t;
 
 /*!
