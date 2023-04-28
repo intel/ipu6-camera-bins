@@ -4949,14 +4949,20 @@ typedef struct
     int32_t d_ml[32];
     /*!< outofbounds[32] is ML value out of histogram bounds?*/
     int32_t outofbounds[32];
-    /*!< d_ml_user[32] Maximum-likelihood of distance distribution*/
-    int32_t d_ml_user[32];
     /*!< is_first_frame If first frame, ignore input rec-sim*/
     int32_t is_first_frame;
+    /*!< is_steady_state if change in S&R values is small, apply strong temporal smoothing*/
+    int32_t is_steady_state;
     /*!< long_saturation_bias saturation indicator constant*/
     int32_t long_saturation_bias;
+    /*!< long_saturation_full saturation indicator full value*/
+    int32_t long_saturation_full;
     /*!< long_saturation_coeff saturation indicator coefficient*/
     int32_t long_saturation_coeff;
+    /*!< long_saturation_transition relative width of transition between fully saturated and unsaturated*/
+    int32_t long_saturation_transition;
+    /*!< long_saturation_tracking enable tracking of long-exposure saturation based on noise model*/
+    int32_t long_saturation_tracking;
     /*!< etr_estim_enable enable online ETR estimation*/
     int32_t etr_estim_enable;
     /*!< wb_gains[4] white-balance gains for curr frame*/
@@ -4979,6 +4985,8 @@ typedef struct
     int32_t shrt_smth_padding_lft;
     /*!< black_level[4] black level*/
     int32_t black_level[4];
+    /*!< max_use_long Max use of long exposure in the output blend*/
+    int32_t max_use_long;
     /*!< short_denoise_power use of denoised short-exposure in blend*/
     int32_t short_denoise_power;
     /*!< use_shrt_smth_for_dist use short-smoothed for calculating distance*/
@@ -4993,14 +5001,20 @@ typedef struct
 */
 typedef struct
 {
+    /*!< smthnrm_slope[4] estimated short-smoothed normalization coefficient*/
+    int32_t smthnrm_slope[4];
     /*!< etr_slope[4] estimated ETR coefficient*/
     int32_t etr_slope[4];
+    /*!< smthnrm_bias[4] estimated short-smoothed normalization bias*/
+    int32_t smthnrm_bias[4];
     /*!< etr_bias[4] estimated ETR bias*/
     int32_t etr_bias[4];
     /*!< deghost_bias deghost indicator constant*/
     int32_t deghost_bias;
     /*!< deghost_coeff deghost indicator coefficient*/
     int32_t deghost_coeff;
+    /*!< max_use_long Max use of long exposure in the output blend*/
+    int32_t max_use_long;
     /*!< update_limit Limit of S&R parameter update mechanism*/
     int32_t update_limit;
     /*!< update_coeff S&R parameter update coefficient*/
@@ -5009,18 +5023,24 @@ typedef struct
     int32_t d_ml[32];
     /*!< outofbounds[32] is ML value out of histogram bounds?*/
     int32_t outofbounds[32];
-    /*!< d_ml_user[32] Maximum-likelihood of distance distribution*/
-    int32_t d_ml_user[32];
     /*!< is_first_stripe If first stripe in frame*/
     int32_t is_first_stripe;
     /*!< is_last_stripe Iflast stripe in frame*/
     int32_t is_last_stripe;
     /*!< is_first_frame If first frame*/
     int32_t is_first_frame;
+    /*!< is_steady_state if change in S&R values is small, apply strong temporal smoothing*/
+    int32_t is_steady_state;
     /*!< long_saturation_bias saturation indicator constant*/
     int32_t long_saturation_bias;
+    /*!< long_saturation_full saturation indicator full value*/
+    int32_t long_saturation_full;
     /*!< long_saturation_coeff saturation indicator coefficient*/
     int32_t long_saturation_coeff;
+    /*!< long_saturation_transition relative width of transition between fully saturated and unsaturated*/
+    int32_t long_saturation_transition;
+    /*!< long_saturation_tracking enable tracking of long-exposure saturation based on noise model*/
+    int32_t long_saturation_tracking;
     /*!< etr_estim_enable enable online ETR estimation*/
     int32_t etr_estim_enable;
     /*!< wb_gains[4] white-balance gains for curr frame*/
@@ -5031,20 +5051,28 @@ typedef struct
     int32_t pedestal_out;
     /*!< bpp_sensor sensor BPP*/
     int32_t bpp_sensor;
+    /*!< shrt_smth_padding_top shrt-smth padding on top*/
+    int32_t shrt_smth_padding_top;
+    /*!< shrt_smth_padding_lft shrt-smth padding on left*/
+    int32_t shrt_smth_padding_lft;
     /*!< black_level[4] black level*/
     int32_t black_level[4];
-    /*!< acc_histogram[512] accumulators for APU noise estimation histogram*/
-    int32_t acc_histogram[512];
-    /*!< acc_in[8] accumulators for ETR estimation - input pixels*/
-    int32_t acc_in[8];
-    /*!< acc_out[8] accumulators for ETR estimation - output pixels*/
-    int32_t acc_out[8];
-    /*!< acc_in_sq[8] accumulators for ETR estimation - input pixels squared*/
-    int32_t acc_in_sq[8];
-    /*!< acc_inout[8] accumulators for ETR estimation - input x output pixels*/
-    int32_t acc_inout[8];
-    /*!< acc_sow[8] accumulators for ETR estimation - sum of weights*/
-    int32_t acc_sow[8];
+    /*!< short_denoise_power use of denoised short-exposure in blend*/
+    int32_t short_denoise_power;
+    /*!< short_denoise_sensitivity denoise bilateral sensitivity*/
+    int32_t short_denoise_sensitivity;
+    /*!< three_input_mode enable third input (pre-processed short)*/
+    int32_t three_input_mode;
+    /*!< psve_gains_short[4] PSVE output - gains for short exposure*/
+    int32_t psve_gains_short[4];
+    /*!< psve_bias_short[4] PSVE output - black level for short exposure*/
+    int32_t psve_bias_short[4];
+    /*!< psve_gains_long[4] PSVE output - gains for long exposure*/
+    int32_t psve_gains_long[4];
+    /*!< psve_bias_long[4] PSVE output - black level for long exposure*/
+    int32_t psve_bias_long[4];
+    /*!< psve_long_max_val PSVE output - max-val for long exposure*/
+    int32_t psve_long_max_val;
     /*!< enable block enable*/
     int32_t enable;
 
@@ -13479,6 +13507,12 @@ typedef struct
     int32_t gtm4_rgb2yuv[9];
     /*!< Bit_Precision input bit precision*/
     int32_t Bit_Precision;
+    /*!< compression_gamma compression curve gamma*/
+    int32_t compression_gamma;
+    /*!< input_range_restricted input range is restricted flag*/
+    int32_t input_range_restricted;
+    /*!< output_range_restricted output range is restricted flag*/
+    int32_t output_range_restricted;
 
 } ia_pal_isp_tm_app_t;
 
