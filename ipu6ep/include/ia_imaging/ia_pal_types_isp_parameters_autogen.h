@@ -1,7 +1,7 @@
 
 /*
 * INTEL CONFIDENTIAL
-* Copyright (c) 2020 Intel Corporation
+* Copyright (c) 2023 Intel Corporation
 * All Rights Reserved.
 *
 * The source code contained or described herein and all documents related to
@@ -4273,6 +4273,50 @@ typedef struct
     int32_t conf_slope;
 
 } ia_pal_isp_cas_1_0_t;
+
+/*! \isp struct cas_lite_1_0
+
+*/
+typedef struct
+{
+    /*!< enable block enable*/
+    int32_t enable;
+    /*!< yuv420_format operate on YUV420*/
+    int32_t yuv420_format;
+    /*!< upscale150 toggle internal upscale by factor 1.5*/
+    int32_t upscale150;
+    /*!< nm_lut[16] noise model for luma. Save&restore register (will be ovveride in video mode)*/
+    int32_t nm_lut[16];
+    /*!< apu_alpha_limit update mechanism in apu - as limit increases, we need more measurements for the histogram bins to be considered as reliable.*/
+    int32_t apu_alpha_limit;
+    /*!< apu_alpha_power update mechanism in apu - as power increase, we count more on the new val calculated then the one from previous frame.*/
+    int32_t apu_alpha_power;
+    /*!< signal_metric_low_th low threshold for normalizing signal metric map*/
+    int32_t signal_metric_low_th;
+    /*!< signal_metric_slope slope for normalizing signal metric map*/
+    int32_t signal_metric_slope;
+    /*!< texture_noise_regulator detects less textures for higher values [0,0.2]*/
+    int32_t texture_noise_regulator;
+    /*!< texture_low_th low threshold for normalizing texture map. Values below this threshold will be consider as none texture.*/
+    int32_t texture_low_th;
+    /*!< texture_slope slope for normalizing texture map. This will be used to calculate the high threshold*/
+    int32_t texture_slope;
+    /*!< kernel1 Unsharp-mask filter center coefficient*/
+    int32_t kernel1;
+    /*!< kernel7[4] Unsharp-mask filter high-pass coefficients*/
+    int32_t kernel7[4];
+    /*!< sharpening_power_edges Power of unsharp-mask sharpening for edges regions*/
+    int32_t sharpening_power_edges;
+    /*!< alfa_os controls edged overshoot. 0 - no overshoot allowed, 63 - max overshoot allowed*/
+    int32_t alfa_os;
+    /*!< alfa_us controls edged undershoot. 0 - no undershoot allowed, 63 - max undershoot allowed*/
+    int32_t alfa_us;
+    /*!< os_us_delta_compression_threshold overshood/undershood delta which exceed threshold will be compressed. 0-no OS/US allowed. 511-no OS/US clipping.*/
+    int32_t os_us_delta_compression_threshold;
+    /*!< os_us_delta_compression_factor overshoot / undershoot compression factor*/
+    int32_t os_us_delta_compression_factor;
+
+} ia_pal_isp_cas_lite_1_0_t;
 
 /*! \isp struct ccm_3a_2_0
 AE color correction

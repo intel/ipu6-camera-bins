@@ -277,7 +277,7 @@ typedef enum
     media_format_bt2100_12b_cl_narrow  = 0x67,    //bt2100
     media_format_srgb_jpeg             = 0x80,    //srgb_jpeg
     media_format_linear_mono           = 0xE0,    //linear gamma with "mono-srgb" space for e.g. IR mode.
-    media_format_linear_mono_narrow    = 0xE2,    //linear gamma with "mono-srgb" space for e.g. IR mode
+    media_format_linear_mono_narrow    = 0xE2,    //linear gamma with "mono-srgb" space for e.g. IR mode.
     media_format_custom                = 0xF0     //custom
 } ia_media_format;
 
@@ -311,6 +311,19 @@ typedef struct {
     int32_t        skin_type_validity;       /**< Validity of the Skin Likelihood */
 } ia_atbx_face;
 
+typedef enum
+{
+    AUTO = 0,
+    VPG,
+    PVL,
+    BLAZE_FD,
+    SUBWAY_FD,
+    FACEBOXES_FD,
+    CENTERNET_FD,
+    OS_FD,
+    UNKNOWN_FD
+} FD_IMPL_TYPE;
+
 /** @brief Face state data.
  * This structure is used to hold inputs and outputs of functions and also works as a handle of the engine instance.
  */
@@ -319,6 +332,7 @@ typedef struct {
     ia_atbx_face  *faces;                    /**< Array of face information. */
     bool updated;                            /**< The update status of face. true is the real statistics, and false is the false statistics that have not been updated.*/
     bool is_video_conf;                      /**< video confenerce mode. */
+    FD_IMPL_TYPE fd_algo;                    /**< face detection algo type. */
 } ia_atbx_face_state;
 
 #ifdef __cplusplus

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2022 Intel Corporation.
+ * Copyright (C) 2022-2023 Intel Corporation.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -31,7 +31,7 @@ const uint32_t MAX_CAM_NUM = 4U;
 const uint32_t MAX_CPF_LEN = 1024 * 1024 * 4;
 const uint32_t MAX_NVM_LEN = 1024 * 16;
 const uint32_t MAX_AIQD_LEN = 1024 * 1024;
-const uint32_t MAX_MKN_LEN = 64 * 1024;
+const uint32_t MAX_MKN_LEN = 80 * 1024;
 const uint32_t MAX_MKN_SECTION_SIZE = 100000;
 const uint32_t MAX_CMC_LEN = 1024 * 1024;
 const uint32_t MAX_TAG_LIST_LEN = 8;
