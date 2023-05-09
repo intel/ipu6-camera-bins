@@ -383,6 +383,7 @@ typedef struct
     ia_atbx_face  faces[MAX_FACE_NUM];       /*!< Array of face information. */
     bool updated;                            /*!< The update status of face. true is the real statistics, and false is the false statistics that have not been updated. */
     bool is_video_conf;                      /*!< video confenerce mode. */
+    FD_IMPL_TYPE fd_algo;                    /*!< face detection algo type. */
 } cca_face_state;
 
 /*!
@@ -409,8 +410,8 @@ typedef struct
 typedef struct
 {
     bool get_rgbs_stats;                /*!< If get rgbs statistics back. */
-    ia_aiq_rgbs_grid rgbs_grid;
-    rgbs_grid_block rgbs_blocks[BXT_RGBS_GRID_MAX_NUM_ELEMENTS];
+    ia_aiq_rgbs_grid rgbs_grid[MAX_NUM_EXPOSURE];
+    rgbs_grid_block rgbs_blocks[MAX_NUM_EXPOSURE][BXT_RGBS_GRID_MAX_NUM_ELEMENTS];
 } cca_out_stats;
 
 /*!
