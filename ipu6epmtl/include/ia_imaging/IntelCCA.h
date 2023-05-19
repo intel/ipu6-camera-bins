@@ -512,6 +512,22 @@ public:
     */
     ia_err getBrightestIndex(uint32_t *outMaxBin);
 
+    /*!
+     * \brief calc the total pixel number in range [luminance_low, luminance_high]
+     *
+     * \param[in] luminance_low          Mandatory.\n
+     *                                   the low pixel value
+     *
+     * \param[in] luminance_high         Mandatory.\n
+     *                                   the high pixel value
+     *
+     * \param[out] outTotalPixels        Mandatory.\n
+     *                                   the total pixel number in range [luminance_low, luminance_high]
+     *
+     * \return                           Error code.
+     */
+    ia_err getPixelCount(uint32_t luminance_low, uint32_t luminance_high, uint32_t *outTotalPixels);
+
 private:
     ia_binary_data* getAiqData();
     ia_binary_data* getIspData();
