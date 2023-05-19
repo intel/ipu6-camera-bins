@@ -1,7 +1,7 @@
 
 /*
 * INTEL CONFIDENTIAL
-* Copyright (c) 2020 Intel Corporation
+* Copyright (c) 2023 Intel Corporation
 * All Rights Reserved.
 *
 * The source code contained or described herein and all documents related to
@@ -118,6 +118,7 @@ typedef enum
     ia_pal_uuid_isp_bxt_xnr4_mh = 47865,
     ia_pal_uuid_isp_call_info = 28030,
     ia_pal_uuid_isp_cas_1_0 = 22660,
+    ia_pal_uuid_isp_cas_lite_1_0 = 54982,
     ia_pal_uuid_isp_ccm_3a_2_0 = 62344,
     ia_pal_uuid_isp_comp_spliter = 35257,
     ia_pal_uuid_isp_compand_1_0 = 35311,

@@ -410,8 +410,8 @@ typedef struct
 typedef struct
 {
     bool get_rgbs_stats;                /*!< If get rgbs statistics back. */
-    ia_aiq_rgbs_grid rgbs_grid;
-    rgbs_grid_block rgbs_blocks[BXT_RGBS_GRID_MAX_NUM_ELEMENTS];
+    ia_aiq_rgbs_grid rgbs_grid[MAX_NUM_EXPOSURE];
+    rgbs_grid_block rgbs_blocks[MAX_NUM_EXPOSURE][BXT_RGBS_GRID_MAX_NUM_ELEMENTS];
 } cca_out_stats;
 
 /*!
