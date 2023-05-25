@@ -1,5 +1,5 @@
 /*
- * Copyright 2017-2022 Intel Corporation
+ * Copyright 2017-2023 Intel Corporation
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -642,6 +642,7 @@ ia_isp_statistics_convert_awb(
     const ia_aiq_color_channels *wb_color_gains,
     const ia_bcomp_results *bcomp_results,
     bool is_rgbir_ir_pipe,
+    bool *out_is_stitched_stats,
     bool *out_is_shading_corrected,
     ia_rgbs_grid *out_rgbs_grid,
     ia_ccat_ir_grid *out_ir_grid);
