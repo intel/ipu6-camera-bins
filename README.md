@@ -7,8 +7,8 @@ This repository provides the libraries and firmware of camera related for chrome
 * Library binary dependencies for IPU6EPMTL HAL.
 
 ## Release Note:
-2023-06-21:
+2023-07-19:
 OS:           Chrome 64 bits
 MTL FW tag:   None
-Test Build:   internal build(rex-258)
+Test Build:   internal build(rex-306)
 
