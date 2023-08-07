@@ -1,0 +1,12 @@
+prefix=/usr
+exec_prefix=${prefix}/ipu_adl
+libdir=${prefix}/lib/ipu_adl
+includedir=${prefix}/include/ipu_adl
+
+Name: libgcss
+Description: Graph Configuration Subsystem library
+URL:
+Version: 
+Libs: -L${libdir} -lgcss
+Cflags: -I${includedir} \
+        -I${includedir}/ia_camera

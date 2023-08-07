@@ -1,0 +1,11 @@
+prefix=/usr
+exec_prefix=${prefix}/ipu_mtl
+libdir=${prefix}/lib/ipu_mtl
+includedir=${prefix}/include/ipu_mtl
+
+Name: libia_imaging
+Description: ia_imaging libraries
+URL: http://www.intel.com
+Version: 
+Libs: -L${libdir}
+Cflags: -I${includedir}/ia_imaging
