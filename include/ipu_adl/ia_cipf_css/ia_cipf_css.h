@@ -852,6 +852,9 @@
 #define gtm_stage_id                  105
 #define gtm_stage_uid                 ia_cipf_external_stage_uid(gtm_stage_id)
 
+#define cas_stage_id                  106
+#define cas_stage_uid                 ia_cipf_external_stage_uid(cas_stage_id)
+
 #define psys_interleaved_code_uid     ia_fourcc('I','L','C','S')
 #define psys_interleaved_code_in_uid  psys_interleaved_code_uid + 1
 #define psys_interleaved_code_out_uid psys_interleaved_code_uid + 2

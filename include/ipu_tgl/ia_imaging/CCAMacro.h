@@ -28,7 +28,7 @@ namespace cca {
  * sensor, IPU, etc.
  */
 const uint32_t MAX_CAM_NUM = 4U;
-const uint32_t MAX_CPF_LEN = 1024 * 1024 * 4;
+const uint32_t MAX_CPF_LEN = 1024 * 1024 * 5;
 const uint32_t MAX_NVM_LEN = 1024 * 16;
 const uint32_t MAX_AIQD_LEN = 1024 * 1024;
 const uint32_t MAX_MKN_LEN = 80 * 1024;
@@ -75,6 +75,9 @@ const float GDC_CLIP_MAX_ANGLE = 3.5f;
 const uint32_t MAX_KERNEL_NUM_IN_PG = 128;
 const uint32_t MAX_PG_NUM = 5;
 const uint32_t MAX_PG_TERMINAL_NUM = 16;
+
+const float MIN_MANUAL_GAMMA = 0.4f;
+const float MAX_MANUAL_GAMMA = 2.6f;
 
 const uint32_t PDAF_STATS_GRID_WIDTH = 16;
 const uint32_t PDAF_STATS_GRID_HEIGHT = 12;

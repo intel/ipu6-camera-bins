@@ -210,10 +210,18 @@ public:
 
 #ifdef ENABLE_DVS
     /*!
+     * \brief reconfigure DVS configuration info when GDC configuration are changed.
+     *
+     * \param[in] dvsInitParam          Mandatory.\n
+     * \param[in] gdcConfig             Mandatory.\n
+     * \return                          Error code for status. zero on success, non-zero on failure
+     */
+    ia_err reconfigDvs(const cca_dvs_init_param& dvsInitParam, const cca_gdc_configurations& gdcConfigs);
+    /*!
      * \brief update zoom factor/region/coordinate.
      * DVS algo supports to zoom the image. Set the zoom params before calling runDVS.
      *
-     * \param[in] StreamId              Mandatory.\n
+     * \param[in] DvsId                 Mandatory.\n
      * \param[in] params                Mandatory.\n
      *                                  zoom related params.
      * \return                          Error code for status. zero on success, non-zero on failure
@@ -305,11 +313,11 @@ public:
      *                                  lard data.
      * \param[in] nvm                   Mandatory.\n
      *                                  sensor nvm data.
-     * \param[in] streamId              Optional.\n
-     *                                  the stream id for aic handle
+     * \param[in] aicId                 Optional.\n
+     *                                  the aic id for aic handle
      * \return                          Error code for status. zero on success, non-zero on failure
      */
-    ia_err updateTuning(uint8_t tag, const ia_lard_input_params &lardParams, const cca_nvm &nvm, int32_t streamId = -1);
+    ia_err updateTuning(uint8_t tag, const ia_lard_input_params &lardParams, const cca_nvm &nvm, int32_t aicId = -1);
 
     /*!
      * \brief Update tuning data in run time.
@@ -324,11 +332,11 @@ public:
      *                                  sensor nvm data.
      * \param[out] pLardResults         Mandatory.\n
      *                                  lard results
-     * \param[in] streamId              Optional.\n
+     * \param[in] aicId                 Optional.\n
      *                                  the stream id for aic handle
      * \return                          Error code for status. zero on success, non-zero on failure
     */
-    ia_err updateTuning(uint8_t tag, const ia_lard_input_params &lardParams, const cca_nvm &nvm, ia_lard_results **pLardResults, int32_t streamId = -1);
+    ia_err updateTuning(uint8_t tag, const ia_lard_input_params &lardParams, const cca_nvm &nvm, ia_lard_results **pLardResults, int32_t aicId = -1);
 
     /*!
      * \brief parse embedded data in run time.
@@ -624,6 +632,8 @@ private:
     uint32_t mMaxNumberOfStats;
     ia_mkn* mMknData;
     uint32_t mInitBitmap;
+    cca_stream_ids mAicStreamIds;
+    std::map<int32_t, uint32_t> mAicTuningModeMap;
     uint32_t mNumExpo;
 
     /*
