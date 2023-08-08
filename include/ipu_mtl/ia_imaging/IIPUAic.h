@@ -187,12 +187,12 @@ public:
      *                                       Tuning file.
      * \param[in] cmc                        Mandatory.\n
      *                                       Parsed cmc data.
-     * \param[in] streamId                   Optional.\n
+     * \param[in] aicId                      Optional.\n
      *                                       The stream id for aic handle.
      * \return                               Error code.
      */
     virtual ia_err updateTuning(const ia_binary_data *aiqb, const ia_cmc_t *cmc,
-                                int32_t streamId = -1) = 0;
+                                int32_t aicId = -1) = 0;
 
     /*!
      * \brief pass parameters for statistic analysis.
