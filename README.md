@@ -16,6 +16,6 @@ There are 4 repositories that provide the complete setup:
 ## Deployment
 ipu6-camera-bins should be copied to build server and target
 ```
-cp -r ipu6-camera-bins/include/* /usr/include/
-cp -r ipu6-camera-bins/lib/* /usr/lib/
+cp -r ipu6-camera-bins/include/{ipu6,ipu6ep,ipu6epmtl} /usr/include/
+cp -r ipu6-camera-bins/lib/x86_64-linux-gnu/* /usr/lib/x86_64-linux-gnu/
 ```

@@ -1,0 +1,18 @@
+prefix=/usr
+exec_prefix=${prefix}
+libdir=${exec_prefix}/lib/x86_64-linux-gnu
+includedir=${prefix}/include
+
+Name: libiacss-ipu6ep
+Description: Camera Subsystem libraries on IA
+URL:
+Version: 
+Libs: -L${libdir} -lgcss-ipu6ep -lia_camera -lia_cipf -lia_cipr_core
+Cflags: -I${includedir}/ipu6ep \
+        -I${includedir}/ipu6ep/ia_camera \
+        -I${includedir}/ipu6ep/ia_cipf   \
+        -I${includedir}/ipu6ep/ia_cipf_common \
+        -I${includedir}/ipu6ep/ia_cipf_css \
+        -I${includedir}/ipu6ep/ia_cipr \
+        -I${includedir}/ipu6ep/ia_tools \
+        -I${includedir}/ipu6ep/gcss

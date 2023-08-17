@@ -1,0 +1,11 @@
+prefix=/usr
+exec_prefix=${prefix}
+libdir=${exec_prefix}/lib/x86_64-linux-gnu
+includedir=${prefix}/include
+
+Name: libia_imaging-ipu6ep
+Description: ia_imaging libraries
+URL: http://www.intel.com
+Version: 
+Libs: -L${libdir}
+Cflags: -I${includedir}/ipu6ep/ia_imaging
