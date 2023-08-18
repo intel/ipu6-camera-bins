@@ -1,0 +1,62 @@
+#!/bin/bash
+
+set -e
+
+srcdir=$(dirname "$(dirname "$(realpath "${BASH_SOURCE[0]}")")")
+cd "${srcdir}"
+
+git describe --tags || { echo "Not a git repository. Die." >&2; exit 1; }
+
+which patchelf >/dev/null 2>&1 || { echo "Missing patchelf. Die." >&2; exit 1; }
+
+RM="git rm -f"
+MV="git mv"
+
+soversion=0
+
+flavors=("ipu6:ipu_tgl")
+flavors+=("ipu6ep:ipu_adl")
+flavors+=("ipu6epmtl:ipu_mtl")
+
+for flavor in "${flavors[@]}"; do
+  ipu_ver=${flavor%:*}
+  platform=${flavor#*:}
+
+  appendix=;
+  if test "${ipu_ver}" != "ipu6"; then
+    appendix=-${ipu_ver};
+  fi;
+
+  libdir="lib/${platform}"
+
+  # Remove symlinks for libgcss
+  ${RM} "${libdir}/libgcss.so.0" "${libdir}/libgcss.so"
+  ${MV} "${libdir}/libgcss.so.0.0.0" "${libdir}/libgcss.so"
+
+  replace_args=();
+  for file in "${libdir}"/*.so; do
+    fname=$(basename "${file}");
+    replace_args+=("--replace-needed");
+    replace_args+=("${fname}");
+    replace_args+=("${fname%.so}${appendix}.so.${soversion}");
+  done;
+
+  for file in "${libdir}"/*.so; do
+    fname="$(basename "${file%.so}")";
+    soname="${fname}${appendix}.so.${soversion}"
+    patchelf --set-soname "${soname}" "${file}";
+    patchelf "${replace_args[@]}" "${file}";
+    if test -n "$(patchelf --print-rpath "${file}")"; then
+      patchelf --remove-rpath "${file}";
+    fi;
+    case "${fname}" in
+      libia_aiqb_parser)
+        patchelf --add-needed "libia_log${appendix}.so.${soversion}" "${file}";
+        ;;
+      libia_cca)
+        patchelf --add-needed "libia_coordinate${appendix}.so.${soversion}" "${file}";
+        ;;
+    esac;
+    $MV "${file}" "${libdir}/${soname}";
+  done;
+done
