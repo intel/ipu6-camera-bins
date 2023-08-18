@@ -16,6 +16,14 @@ There are 4 repositories that provide the complete setup:
 ## Deployment
 ipu6-camera-bins should be copied to build server and target
 ```
+# Runtime files
+cp -r ipu6-camera-bins/lib/*/lib* /usr/lib/
+cp -r ipu6-camera-bins/lib/firmware/intel/*.bin /lib/firmware/intel/
+# Development files
 cp -r ipu6-camera-bins/include/* /usr/include/
-cp -r ipu6-camera-bins/lib/* /usr/lib/
+cp -r ipu6-camera-bins/lib/*/pkgconfig/* /usr/lib/pkgconfig/
+for lib in ipu6-camera-bins/lib/*/lib*.so.*; do \
+  lib=${lib##*/}; \
+  ln -s $lib /usr/lib/${lib%.*}; \
+done
 ```

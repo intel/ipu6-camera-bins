@@ -1,9 +1,9 @@
 prefix=/usr
-exec_prefix=${prefix}/ipu_adl
-libdir=${prefix}/lib/ipu_adl
+exec_prefix=${prefix}
+libdir=${exec_prefix}/lib
 includedir=${prefix}/include/ipu_adl
 
-Name: libia_imaging
+Name: libia_imaging-ipu6ep
 Description: ia_imaging libraries
 URL: http://www.intel.com
 Version: 

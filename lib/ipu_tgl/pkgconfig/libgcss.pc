@@ -1,6 +1,6 @@
 prefix=/usr
-exec_prefix=${prefix}/ipu_tgl
-libdir=${prefix}/lib/ipu_tgl
+exec_prefix=${prefix}
+libdir=${exec_prefix}/lib
 includedir=${prefix}/include/ipu_tgl
 
 Name: libgcss

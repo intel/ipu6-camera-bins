@@ -1,13 +1,13 @@
 prefix=/usr
-exec_prefix=${prefix}/ipu_adl
-libdir=${prefix}/lib/ipu_adl
+exec_prefix=${prefix}
+libdir=${exec_prefix}/lib
 includedir=${prefix}/include/ipu_adl
 
-Name: libiacss
+Name: libiacss-ipu6ep
 Description: Camera Subsystem libraries on IA
 URL:
 Version: 
-Libs: -L${libdir} -lgcss -lia_camera -lia_cipf -lia_cipr_core
+Libs: -L${libdir} -lgcss-ipu6ep -lia_camera-ipu6ep -lia_cipf-ipu6ep -lia_cipr_core-ipu6ep
 Cflags: -I${includedir} \
         -I${includedir}/ia_camera \
         -I${includedir}/ia_cipf   \
