@@ -1,0 +1,11 @@
+prefix=/usr
+exec_prefix=${prefix}
+libdir=${exec_prefix}/lib/x86_64-linux-gnu
+includedir=${prefix}/include
+
+Name: libipu6
+Description: ipu6 fw library
+URL: http://www.intel.com
+Version: VERSION
+Libs: -L${libdir} -lipu6
+Cflags: -I${includedir}/libipu
