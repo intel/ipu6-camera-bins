@@ -15,7 +15,42 @@ jobs:
         run: |
           sudo apt-get update --quiet
           sudo apt-get install --no-install-recommends --yes \
+            build-essential \
+            patchelf \
+            pkg-config \
             shellcheck
 
       - name: "lint"
         run: shellcheck ./scripts/dfsg-ize
+
+      - name: "Install files"
+        run: |
+          sudo mkdir -p /lib/firmware/intel
+
+          cat README.md | \
+            awk 'BEGIN { \
+                FS="/"; \
+              } \
+              /^```/ { \
+                getline; \
+                if ($1 == "# Runtime files") { \
+                  while ($1 != "```") { \
+                    print $0; \
+                    getline; \
+                  } \
+                } \
+              }' | \
+            sed 's,ipu6-camera-bins/,./,' | \
+            sudo sh -x
+
+      - name: "Test linking with pkg-config"
+        run: |
+          echo "int main() {return 0;}" | tee test.c
+          for pc in $(find . -type f -name \*.pc -printf "%f\n"); do
+            pc=${pc%.pc}
+            echo "Compiling against $pc"
+            gcc test.c -o a.out \
+              -Wl,--no-as-needed -Wl,--no-undefined \
+              $(pkg-config --cflags --libs $pc)
+            ldd a.out
+          done
