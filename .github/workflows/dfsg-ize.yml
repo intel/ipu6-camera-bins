@@ -1,0 +1,21 @@
+name: "DFSG-ize"
+on:
+  push:
+  pull_request:
+
+jobs:
+  linking:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: "Install prerequisites"
+        env:
+          DEBIAN_FRONTEND: "noninteractive"
+        run: |
+          sudo apt-get update --quiet
+          sudo apt-get install --no-install-recommends --yes \
+            shellcheck
+
+      - name: "lint"
+        run: shellcheck ./scripts/dfsg-ize
