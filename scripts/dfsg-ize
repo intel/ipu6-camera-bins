@@ -53,9 +53,6 @@ for flavor in "${flavors[@]}"; do
       libia_aiqb_parser)
         patchelf --add-needed "libia_log${appendix}.so.${soversion}" "${file}";
         ;;
-      libia_cca)
-        patchelf --add-needed "libia_coordinate${appendix}.so.${soversion}" "${file}";
-        ;;
     esac;
     $MV "${file}" "${libdir}/${soname}";
   done;
