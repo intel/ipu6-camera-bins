@@ -5,6 +5,9 @@ on:
 
 jobs:
   dfsg-checks:
+    strategy:
+      matrix:
+        strip: [strip, nostrip]
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
@@ -23,6 +26,13 @@ jobs:
       - name: "lint"
         run: shellcheck ./scripts/dfsg-ize
 
+      - name: "Strip binaries"
+        if: ${{ matrix.strip == 'strip' }}
+        run: |
+          for lib in $(find . -type f -name lib\*.so.\*); do
+            strip "${lib}";
+          done
+
       - name: "Install files"
         run: |
           cat README.md | \
@@ -40,6 +50,18 @@ jobs:
               }' | \
             sed 's,ipu6-camera-bins/,./,' | \
             sudo sh -x
+
+      - name: "Test linking with ld-linux.so"
+        run: |
+          ld_linux=$(which /lib/*/ld-linux*)
+          for lib in $(find . -type f -name lib\*.so.\*); do
+            echo "Verifying ${lib}"
+            rm -f ret; LD_DEBUG=all "${ld_linux}" --verify "${lib}" || echo $? >ret
+            if [ -e ret ]; then
+              echo "Return value: $(<ret)"
+              test "$(<ret)" != "1"
+            fi
+          done
 
       - name: "Test linking with pkg-config"
         run: |
