@@ -1,5 +1,5 @@
 /*
- * Copyright 2012-2022 Intel Corporation
+ * Copyright 2012-2023 Intel Corporation
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -119,6 +119,7 @@ typedef enum
     ia_aiq_sensor_monoir_stream = 1,         /*!< MONOIR sensor stream. */
     ia_aiq_sensor_OG0VA1B_ir_stream = 2,     /*!< WA for OG sensor. */
     ia_aiq_sensor_rgbir_stream = 4,          /*!< RGBIR sensor IR only stream or RGB+IR stream. */
+    ia_aiq_sensor_auto_switch_stream = 5     /*!< 4C/1C sensor auto switch mode. */
 } ia_aiq_sensor_stream_type;
 
 /*!
@@ -279,7 +280,8 @@ typedef enum
 {
     ia_aiq_bracket_mode_none,             /*!< No bracketing used. */
     ia_aiq_bracket_mode_ull  = (1U << 0U),  /*!< Ultra Low Light bracketing used. */
-    ia_aiq_bracket_mode_hdr  = (1U << 1U)   /*!< High Dynamic Range bracketing used. */
+    ia_aiq_bracket_mode_hdr  = (1U << 1U),   /*!< High Dynamic Range bracketing used. */
+    ia_aiq_bracket_mode_ull_auto_switch = (1U << 2U)   /*!< 1C (0) 4C (1) auto switch indication. */
 } ia_aiq_bracket_mode;
 
 /*!
