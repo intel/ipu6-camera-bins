@@ -7,7 +7,7 @@ This repository provides the libraries and firmware of camera related for chrome
 * Library binary dependencies for IPU6EPADLN HAL
 
 ## Release Note:
-2023-07-19:
+2023-11-29:
 OS:           Chrome 64 bits
 TGL FW tag:   scci_master_20220523_2100
-Test Build:   internal build(nissa-466)
+Test Build:   internal build(nissa-576)
