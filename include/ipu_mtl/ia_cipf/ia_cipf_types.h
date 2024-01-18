@@ -357,7 +357,8 @@ typedef enum ia_cipf_terminal_type {
     ia_cipf_terminal_type_frame_input,
     ia_cipf_terminal_type_frame_output,
     ia_cipf_terminal_type_param_input,
-    ia_cipf_terminal_type_param_output
+    ia_cipf_terminal_type_param_output,
+    ia_cipf_terminal_type_max
 } ia_cipf_terminal_type_t;
 
 /**
