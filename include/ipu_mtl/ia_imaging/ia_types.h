@@ -242,6 +242,7 @@ typedef struct {
     void (*vdebug)(const char *fmt, va_list ap);
     void (*verror)(const char *fmt, va_list ap);
     void (*vinfo)(const char *fmt, va_list ap);
+    void (*vperf)(const char *fmt, va_list ap);
 } ia_env;
 
 typedef struct {

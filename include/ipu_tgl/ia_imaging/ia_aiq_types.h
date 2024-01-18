@@ -736,6 +736,8 @@ typedef struct {
     float* tone_map_lut;            /*!< Tone Mapping Gain LUT. Range [0.0 FLT_MAX] */
     unsigned int tone_map_lut_size; /*!< Number of elements in tone mapping LUT. */
     float base_gamma;               /*!< gamma */
+    float second_cp_x;              /*!< second_cp_x */
+    float second_cp_y;              /*!< second_cp_y */
     float btm;                      /*!< bottom range border */
     float rng;                      /*!< dynamic range  */
     float top_short_border[10U];
