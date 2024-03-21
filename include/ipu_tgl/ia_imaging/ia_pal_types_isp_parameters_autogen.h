@@ -5041,6 +5041,8 @@ typedef struct
     int32_t short_is_invalid;
     /*!< max_use_long Max use of long exposure in the output blend*/
     int32_t max_use_long;
+    /*!< min_use_long Min use of long exposure in the output blend [GPU only]*/
+    int32_t min_use_long;
     /*!< short_denoise_power use of denoised short-exposure in blend*/
     int32_t short_denoise_power;
     /*!< use_shrt_smth_for_dist use short-smoothed for calculating distance*/
