@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2020-2022 Intel Corporation.
+ * Copyright (C) 2020-2024 Intel Corporation.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -109,6 +109,10 @@ private:
     void deleteAiqResult();
     ia_err resetAiqResult(aiq_results* results, CCAModuleBitMap bitmap) const;
 
+    ia_err initAiqResultEle(aiq_results *aiqResults) const;
+
+    ia_err queryColdStartResults(cca_aiq_results_storage *results);
+
 #ifndef ENABLE_CUSTOMIZED_STD_LIB
     std::map<uint64_t, cca_aiq_results_storage> mAiqResultsMap;
     std::list<uint64_t> mFrameIdList;
@@ -121,6 +125,7 @@ private:
     uint8_t mStorageLen;
     mutex_t mStorageMutex;
     aiq_results *mAiqResults;
+    aiq_results mColdStartAiqResults;
 };
 }//cca
 #endif //CCASTORAGE_H_
