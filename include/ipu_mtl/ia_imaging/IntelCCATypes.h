@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2019-2023 Intel Corporation.
+ * Copyright (C) 2019-2024 Intel Corporation.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -325,8 +325,10 @@ typedef struct
 {
     float32_t accurate_r_per_g;           /*!< Accurate White Point for the image. */
     float32_t accurate_b_per_g;           /*!< Accurate White Point for the image. */
+    float32_t final_r_per_g;              /*!< Final White Point, including color appearance modeling. */
+    float32_t final_b_per_g;              /*!< Final White Point, including color appearance modeling.*/
+    uint32_t cct_estimate;                /*!< Correlated Color Temperature estimate calculated from the accurate WP. */
     float32_t distance_from_convergence;  /*!< Range [0.0f, 1.0f]. Distance from convergence. Value 0.0f means converged. */
-    unsigned int cct_estimate;        /*!< Correlated Color Temperature estimate calculated from the accurate WP. */
 } cca_awb_results;
 
 /*!
@@ -690,6 +692,7 @@ struct cca_init_params{
     uint8_t aiqStorageLen;           /*!< Mandatory. lehgth of history to store algo results */
     uint8_t aecFrameDelay;           /*!< Mandatory. frame delay for auto exposure take effect */
     cca_stream_ids aic_stream_ids;   /*!< Optional. the aic id for aic handle*/
+    uint32_t num_exposures;          /*!< Optional.  one exposure result returned by default, two more exposure for HDR */
     cca_init_params() :
         frameUse(ia_aiq_frame_use_preview),
         conversionGainRatio(1),
@@ -698,7 +701,8 @@ struct cca_init_params{
         dvsZoomRatio(1.0f),
         enableVideoStablization(false),
         aiqStorageLen(3),
-        aecFrameDelay(2)
+        aecFrameDelay(2),
+        num_exposures(1)
         {
             bitmap = CCA_MODULE_AE | CCA_MODULE_AF | CCA_MODULE_AWB |
                      CCA_MODULE_PA | CCA_MODULE_SA | CCA_MODULE_GBCE |

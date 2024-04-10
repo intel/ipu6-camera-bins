@@ -147,6 +147,15 @@ public:
     ia_err init(const cca_init_params& initParams);
 
     /*!
+     * \brief reconfigure dol.
+     *
+     * \param[in] dolMode               Mandatory.\n
+     * \param[in] conversionGainRatio   Mandatory.\n
+     * \return                          Error code for status. zero on success, non-zero on failure
+     */
+    ia_err reconfigDol(ia_bcomp_dol_mode_t dolMode, float32_t conversionGainRatio);
+
+    /*!
      * \brief Set input statistics and information (e.g faces) about the captured image.
      * CCA Flow algorithms need various information about the conditions in which the frame and statistics were captured in order to
      * calculate new parameters.
@@ -389,6 +398,16 @@ public:
     * \return                          Error code for status. zero on success, non-zero on failure
     */
     ia_err queryAiqResults(uint64_t frameId, cca_aiq_results_storage* results);
+
+    /*!
+    * \brief Save Aiq results.
+    *  Save Aiq results to internal CCAStorage.
+    *
+    * \param[out] results              Mandatory.\n
+    *                                  Aiq results
+    * \return                          Error code for status. zero on success, non-zero on failure
+    */
+    ia_err saveAiqResults(uint64_t frameId, const cca_aiq_results_storage &results);
 
 #ifdef PAC_ENABLE
     /*!
@@ -658,6 +677,8 @@ private:
     */
     ia_bcomp* mBcompState;
     ia_bcomp_results* mBcompResults;
+    ia_bcomp_dol_mode_t mDolMode;
+    float32_t mDolRatio;
 
     /*
     * ia_lard - a library for parsing the cpff and loading it in a dynamic way
