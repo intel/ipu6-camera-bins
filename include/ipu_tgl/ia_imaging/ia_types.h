@@ -1,5 +1,5 @@
 /*
- * Copyright 2012-2023 Intel Corporation
+ * Copyright 2012-2024 Intel Corporation
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -242,6 +242,7 @@ typedef struct {
     void (*vdebug)(const char *fmt, va_list ap);
     void (*verror)(const char *fmt, va_list ap);
     void (*vinfo)(const char *fmt, va_list ap);
+    void (*vperf)(const char *fmt, va_list ap);
 } ia_env;
 
 typedef struct {
@@ -321,6 +322,7 @@ typedef enum
     FACEBOXES_FD,
     CENTERNET_FD,
     OS_FD,
+    GOOGLE_FD,
     UNKNOWN_FD
 } FD_IMPL_TYPE;
 
