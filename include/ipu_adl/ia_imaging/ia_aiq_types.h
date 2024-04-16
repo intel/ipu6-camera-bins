@@ -1,5 +1,5 @@
 /*
- * Copyright 2012-2023 Intel Corporation
+ * Copyright 2012-2024 Intel Corporation
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -281,7 +281,8 @@ typedef enum
     ia_aiq_bracket_mode_none,             /*!< No bracketing used. */
     ia_aiq_bracket_mode_ull  = (1U << 0U),  /*!< Ultra Low Light bracketing used. */
     ia_aiq_bracket_mode_hdr  = (1U << 1U),   /*!< High Dynamic Range bracketing used. */
-    ia_aiq_bracket_mode_ull_auto_switch = (1U << 2U)   /*!< 1C (0) 4C (1) auto switch indication. */
+    ia_aiq_bracket_mode_ull_auto_switch = (1U << 2U),   /*!< 1C (0) 4C (1) auto switch indication. */
+    ia_aiq_bracket_mode_shdr_ldr_switch = (1U << 3U)    /*!< shdr S and L (0) ldr long only (1) - for DOL */
 } ia_aiq_bracket_mode;
 
 /*!
