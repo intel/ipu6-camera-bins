@@ -22,10 +22,7 @@ for flavor in "${flavors[@]}"; do
   ipu_ver=${flavor%:*}
   platform=${flavor#*:}
 
-  appendix=;
-  if test "${ipu_ver}" != "ipu6"; then
-    appendix=-${ipu_ver};
-  fi;
+  appendix=-${ipu_ver};
 
   libdir="lib/${platform}"
 
