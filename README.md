@@ -16,6 +16,14 @@ There are 4 repositories that provide the complete setup:
 ## Deployment
 ipu6-camera-bins should be copied to build server and target
 ```
+# Runtime files
+mkdir -p /lib/firmware/intel/ipu
+cp -r ipu6-camera-bins/lib/firmware/intel/ipu/*.bin /lib/firmware/intel/ipu
+# For developers using engineer samples, try use unsigned FW if authenticate fail:
+# cp -r ipu6-camera-bins/lib/firmware/intel/ipu/unsigned/*.bin /lib/firmware/intel/ipu
+cp -P ipu6-camera-bins/lib/lib* /usr/lib/
+# Development files
+mkdir -p /usr/include/ipu6 /usr/lib/pkgconfig
 cp -r ipu6-camera-bins/include/* /usr/include/
-cp -r ipu6-camera-bins/lib/* /usr/lib/
+cp -r ipu6-camera-bins/lib/pkgconfig/* /usr/lib/pkgconfig/
 ```
