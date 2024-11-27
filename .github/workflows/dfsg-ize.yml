@@ -1,0 +1,89 @@
+name: "DFSG-ize"
+on:
+  push:
+  pull_request:
+
+permissions: {}
+
+jobs:
+  dfsg-checks:
+    strategy:
+      matrix:
+        strip: [strip, nostrip]
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: "Install prerequisites"
+        env:
+          DEBIAN_FRONTEND: "noninteractive"
+        run: |
+          sudo apt-get update --quiet
+          sudo apt-get install --no-install-recommends --yes \
+            build-essential \
+            pkg-config
+
+      - name: "Strip binaries"
+        if: ${{ matrix.strip == 'strip' }}
+        run: |
+          for lib in $(find . -type f -name lib\*.so.\*); do
+            strip "${lib}";
+          done
+
+      - name: "Install files"
+        run: |
+          sudo mkdir -p /lib/firmware/intel
+
+          cat README.md | \
+            awk 'BEGIN { \
+                FS="/"; \
+              } \
+              /^```/ { \
+                getline; \
+                if ($1 == "# Runtime files") { \
+                  while ($1 != "```") { \
+                    print $0; \
+                    getline; \
+                  } \
+                } \
+              }' | \
+            sed 's,ipu6-camera-bins/,./,' | \
+            sudo sh -x
+
+      - name: "Test linking with ld-linux.so"
+        run: |
+          ld_linux=$(which /lib/*/ld-linux*)
+          for lib in $(find . -type f -name lib\*.so.\*); do
+            echo "Verifying ${lib}"
+            rm -f ret; LD_DEBUG=all "${ld_linux}" --verify "${lib}" || echo $? >ret
+            if [ -e ret ]; then
+              echo "Return value: $(<ret)"
+              test "$(<ret)" != "1"
+            fi
+          done
+
+      - name: "Test linking with pkg-config"
+        run: |
+          echo "int main() {return 0;}" | tee test.c
+          for pc in $(find . -type f -name \*.pc -printf "%f\n"); do
+            pc=${pc%.pc}
+            echo "Compiling against $pc"
+            gcc test.c -o a.out \
+              -Wl,--no-as-needed -Wl,--no-undefined \
+              $(pkg-config --cflags --libs $pc)
+            ldd a.out
+          done
+
+      - name: "Test linking with a single shared lib directly"
+        run: |
+          echo "int main() {return 0;}" | tee test.c
+          for lib in $(find . -type f -name lib\*.so.\*); do
+            soname=${lib##*/}
+            libname=${soname#lib}
+            libname=${libname%.so.*}
+            echo "Compiling against ${soname}"
+            gcc test.c -o a.out \
+              -Wl,--no-as-needed -Wl,--no-undefined \
+              -L${lib%/*} -l${libname}
+            ldd a.out
+          done

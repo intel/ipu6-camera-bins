@@ -21,9 +21,13 @@ mkdir -p /lib/firmware/intel/ipu
 cp -r ipu6-camera-bins/lib/firmware/intel/ipu/*.bin /lib/firmware/intel/ipu
 # For developers using engineer samples, try use unsigned FW if authenticate fail:
 # cp -r ipu6-camera-bins/lib/firmware/intel/ipu/unsigned/*.bin /lib/firmware/intel/ipu
+for lib in ipu6-camera-bins/lib/lib*.so.*; do \
+  lib=${lib##*/}; \
+  ln -s $lib ipu6-camera-bins/lib/${lib%.*}; \
+done
 cp -P ipu6-camera-bins/lib/lib* /usr/lib/
 # Development files
-mkdir -p /usr/include/ipu6 /usr/lib/pkgconfig
+mkdir -p /usr/include /usr/lib/pkgconfig
 cp -r ipu6-camera-bins/include/* /usr/include/
 cp -r ipu6-camera-bins/lib/pkgconfig/* /usr/lib/pkgconfig/
 ```
