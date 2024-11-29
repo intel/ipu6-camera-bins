@@ -14,7 +14,8 @@ There are 4 repositories that provide the complete setup:
 - Headerfiles for those libraries
 
 ## Deployment
-ipu6-camera-bins should be copied to build server and target
+- ipu6-camera-bins should be copied to build server and target.
+- Users can specify destination path per your request.
 ```
 cp -r ipu6-camera-bins/include/* /usr/include/
 cp -r ipu6-camera-bins/lib/* /usr/lib/
