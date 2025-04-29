@@ -1,0 +1,12 @@
+prefix=/usr
+exec_prefix=${prefix}
+libdir=${exec_prefix}/lib64
+includedir=${prefix}/include/ipu6ep
+
+Name: libgcss-ipu6ep
+Description: Graph Configuration Subsystem library
+URL:
+Version: 
+Libs: -L${libdir} -lgcss-ipu6ep
+Cflags: -I${includedir} \
+        -I${includedir}/ia_camera
